@@ -1,0 +1,12 @@
+<div style="display:flex;justify-content: space-between;">
+  <div class="chart-container">
+    <canvas *ngIf="chartData" baseChart [chartType]="chartType" [data]="chartData2" [labels]="chartLabels2" [options]="chartOptions2"
+      [colors]="colorOptions">
+    </canvas>
+  </div>
+  <div class="chart-container">
+    <canvas *ngIf="chartData" baseChart [chartType]="chartType" [data]="chartData" [labels]="chartLabels" [options]="chartOptions"
+      [colors]="colorOptions" style="margin-left:12vw;">
+    </canvas>
+  </div>
+</div>

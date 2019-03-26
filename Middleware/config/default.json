@@ -1,0 +1,47 @@
+{
+    "environment": {
+      "merakiConfig": {
+        "dbUserName" : "postgres",
+        "dbPassword" : "postgres",
+        "dbPort" : 5432,
+        "dbName" : "merakidb"
+      },
+      "constants": {
+        "expressPort": 4004,
+        "apclientsJobTimer" : "*/10 * * * *",
+        "posJobTimer" : "*/10 * * * *",
+        "mvCameraJobTimer" : "*/10 * * * *"
+      }
+    },
+    "simulator": {
+      "checkout" :{
+        "queueconstant" : 100
+      },
+      "scanning" : {
+        "apMac1" : "00:2b:01:00:07:00",
+        "apMac2" : "00:a6:ca:f9:6a:00",
+        "apMac3" : "84:3d:c6:0a:bc:00",
+        "apMac4" : "00:c6:03:00:09:00",
+        "apiForSimulatedScanningApiData" : "http://localhost:4004/api/v0/meraki/scanningsimulator/generateApClientMap",
+        "minimum_clients_ap" : 2,
+        "maximum_clients_ap" : 10,
+        "client_mac_1" :"c1:2b:00:00:00:00",
+        "client_mac_2" :"c2:2b:00:00:00:00"
+      },
+      "pos":{
+        "posSimulatedData" : "http://localhost:4004/api/v0/meraki/posSimulator/generatePOSdata"
+      },
+      "merakicam":{
+        "entryZoneId" : 1,
+        "checkoutZoneId" : 2,
+        "kidsZoneId" : 3,
+        "groceryZoneId" : 4,
+        "apparelZoneId" : 5,
+        "furnitureZoneId" : 6,
+        "electronicsZoneId" : 7,
+        "exitZoneId" : 8,
+        "fetchCameraDetectionsApi" : "http://localhost:4004/api/v0/meraki/camera/"
+      }
+
+    }
+  }

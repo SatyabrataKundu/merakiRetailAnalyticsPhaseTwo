@@ -1,0 +1,103 @@
+<mat-toolbar color="primary" style="background: rgb(255, 255, 255);
+background: linear-gradient(90deg, rgb(16, 38, 59) 0%, rgba(13, 143, 182, 0.774) 100%);">
+  <mat-toolbar-row style="display: flex; justify-content: space-between">
+
+    <img src="../assets/MerakleTransparent.png" alt="" height="40px" style="margin-right: 20px;">
+
+    <span>Meraki Retail Analytics</span>
+
+    <div>
+
+      <button mat-icon-button [matMenuTriggerFor]="toggleMenu">
+        <mat-icon>highlight</mat-icon>
+      </button>
+
+      <button mat-icon-button [matMenuTriggerFor]="notificationMenu" (click)="clearNotification()">
+        <mat-icon matBadge={{notificationCount}} matBadgeColor="warn">notification_important</mat-icon>
+      </button>
+
+
+      <mat-menu #notificationMenu="matMenu">
+        <mat-list>
+          <mat-list-item *ngFor="let i of emptyZones"> <strong
+              style="color: rgb(143, 143, 143); font-size: 15px;">{{i}}</strong> </mat-list-item>
+        </mat-list>
+        <button mat-button style="float: right; margin: 0px 10px 10px 0px;" (click)="clearNotificationList()">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-menu>
+
+
+      <mat-menu #toggleMenu="matMenu">
+        <h6 style="text-align: center;">Light Controls</h6>
+          <mat-list (click) = "$event.stopPropagation()">
+            <mat-list-item *ngFor="let i of zones">
+              <strong style="float:left; width: 150px;">{{i.zonename}}</strong>
+ 
+              <mat-slide-toggle [color]="color" [checked]="checked" [disabled]="disabled" (change)="toggle(i,$event)"></mat-slide-toggle> 
+            </mat-list-item>
+          </mat-list>
+        </mat-menu>
+
+
+
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+
+
+<div style="background-color: #eeeeee52;">
+  <div class=wrapper>
+    <information-cards></information-cards>
+  </div>
+
+  <div class="chart-wrapper">
+    <div class="info-center">
+    </div>
+  </div>
+
+  <div class="donut-chart" style="display:flex; margin-top: 1vw; justify-content: space-between">
+
+    <div style="width:fit-content; text-align: center;">
+      <donut-chart></donut-chart>
+    </div>
+
+  </div>
+  <div class="chart-wrapper">
+    <div class="info-center">
+      <p>Checkout Wait Time</p>
+      <div class="wait-time-wrapper">
+        <div [ngClass]="{'card-green': i.waittime<=5, 
+                         'card-yellow': i.waittime>5 && i.waittime<10, 
+                         'card-red': i.waittime>=10}" *ngFor="let i of posWaitTime">
+          <span>Counter {{i.pos_counter_number}} : <h5>{{i.waittime}} min</h5></span>
+        </div>
+      </div>
+
+
+      <!-- <p>Latest POS Sales Amount</p>
+        <div class="latest-pos-sales">
+          <div class="sales-data"><span>12,000</span></div>
+          <div class="sales-data"><span>2,000</span></div>
+          <div class="sales-data"><span>1,500</span></div>
+          <div class="sales-data"><span>1,500</span></div>
+          <div class="sales-data"><span>1,567</span></div>
+        </div>  
+      </div> -->
+
+
+    </div>
+  </div>
+  <div class="bar-chart-wrapper">
+    <charts></charts>
+  </div>
+
+  <notifier-container></notifier-container>
+
+  <footer
+    style="background-color:rgb(228, 228, 228); height: 100px; display: flex; justify-content: center; align-items: center;">
+    <p>Ⓒ Team Merakle Semicolons 2019</p>
+  </footer>
+
+  <router-outlet></router-outlet>

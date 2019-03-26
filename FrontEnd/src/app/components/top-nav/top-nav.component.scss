@@ -1,0 +1,15 @@
+*{
+    font-family: 'Roboto'
+}
+
+mat-toolbar{
+    display: flex;
+    background-color: #6fcd94;
+    color: white;
+    justify-content: space-between;
+
+    button{
+        margin-inline-end: 1.2vw;
+        font-weight: 400;
+    }
+}
