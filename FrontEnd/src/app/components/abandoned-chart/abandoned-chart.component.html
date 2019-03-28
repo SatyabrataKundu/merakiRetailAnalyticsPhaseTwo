@@ -1,7 +1,7 @@
 <p id="chart-label">Abandonment Analysis</p>
 <mat-form-field>
   <mat-select placeholder="Choose Period" [(ngModel)]="selectedValue" name="item" (selectionChange)=changeGran($event)>
-    <mat-option *ngFor="let i of period" [value]="i.value">{{i.viewValue}}</mat-option>
+    <mat-option *ngFor="let i of period" [value]="i.viewValue">{{i.viewValue}}</mat-option>
   </mat-select>
 </mat-form-field>
 <div class="chart-container">

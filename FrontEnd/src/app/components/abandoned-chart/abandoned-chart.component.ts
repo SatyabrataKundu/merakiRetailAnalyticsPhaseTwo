@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'abandoned-chart',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AbandonedChartComponent implements OnInit {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  initAbandonedData: any;
+  selectedValue : string;
 
   period = [
     { value: "Hourly Till Now", viewValue: "Today" },
@@ -24,8 +28,8 @@ export class AbandonedChartComponent implements OnInit {
   public colorOptions: Array<any> = [
     {
       // grey
-      backgroundColor: "rgba(139, 12, 10, 0.3)",
-      borderColor: "#12236B"
+      backgroundColor: "rgba(225, 0, 0, 0.4)",
+      borderColor: "rgba(225, 0, 0, 1)"
     }
   ];
   public chartOptions: any = {
@@ -59,7 +63,40 @@ export class AbandonedChartComponent implements OnInit {
   }
   };
 
+
+  changeGran(garnularity){
+    this.chartLabels = [];
+    console.log(garnularity.value);
+    this.http.get('http://localhost:4004/api/v0/meraki/checkout/totalAbandonments?pattern=' + garnularity.value)
+    .subscribe(res => {
+      this.chartData = [];
+      console.log(res);
+      this.initAbandonedData = res;
+      for(let i of this.initAbandonedData){
+        this.chartData.push(i.count);
+        this.chartLabels.push(i.timerange);
+      }
+      this.updateChart(this.chartData, this.chartLabels)
+    })
+  }
+
+  updateChart(data,labels){
+    this.chartData = data;
+    this.chartLabels = labels;
+  }
+
   ngOnInit() {
+    this.selectedValue = 'Today';  
+    this.chartLabels = [];
+    this.http.get('http://localhost:4004/api/v0/meraki/checkout/totalAbandonments?pattern=Today')
+    .subscribe(res => {
+      this.chartData = [];
+      this.initAbandonedData = res;
+      for(let i of this.initAbandonedData){
+        this.chartData.push(i.count);
+        this.chartLabels.push(i.timerange);
+      }
+    })
   }
 
 }
