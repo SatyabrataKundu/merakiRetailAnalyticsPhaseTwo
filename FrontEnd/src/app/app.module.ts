@@ -33,6 +33,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartdataService } from './services/chartdata.service';
 import { NotificationPanelComponent } from './components/notification-panel/notification-panel.component';
+import { AbandonedChartComponent } from './components/abandoned-chart/abandoned-chart.component';
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -84,7 +85,8 @@ const customNotifierOptions: NotifierOptions = {
     ChartsComponent,
     StackedBarChartComponent,
     DonutChartComponent,
-    NotificationPanelComponent
+    NotificationPanelComponent,
+    AbandonedChartComponent
   ],
   imports: [
     BrowserModule,

@@ -30,14 +30,15 @@ background: linear-gradient(90deg, rgb(16, 38, 59) 0%, rgba(13, 143, 182, 0.774)
 
       <mat-menu #toggleMenu="matMenu">
         <h6 style="text-align: center;">Light Controls</h6>
-          <mat-list (click) = "$event.stopPropagation()">
-            <mat-list-item *ngFor="let i of zones">
-              <strong style="float:left; width: 150px;">{{i.zonename}}</strong>
- 
-              <mat-slide-toggle [color]="color" [checked]="checked" [disabled]="disabled" (change)="toggle(i,$event)"></mat-slide-toggle> 
-            </mat-list-item>
-          </mat-list>
-        </mat-menu>
+        <mat-list (click)="$event.stopPropagation()">
+          <mat-list-item *ngFor="let i of zones">
+            <strong style="float:left; width: 150px;">{{i.zonename}}</strong>
+
+            <mat-slide-toggle [color]="color" [checked]="checked" [disabled]="disabled" (change)="toggle(i,$event)">
+            </mat-slide-toggle>
+          </mat-list-item>
+        </mat-list>
+      </mat-menu>
 
 
 
@@ -76,25 +77,23 @@ background: linear-gradient(90deg, rgb(16, 38, 59) 0%, rgba(13, 143, 182, 0.774)
       </div>
 
 
-      <!-- <p>Latest POS Sales Amount</p>
-        <div class="latest-pos-sales">
-          <div class="sales-data"><span>12,000</span></div>
-          <div class="sales-data"><span>2,000</span></div>
-          <div class="sales-data"><span>1,500</span></div>
-          <div class="sales-data"><span>1,500</span></div>
-          <div class="sales-data"><span>1,567</span></div>
-        </div>  
-      </div> -->
-
-
     </div>
   </div>
   <div class="bar-chart-wrapper">
     <charts></charts>
   </div>
+<br>
+<br>
+
+  <div class="abandoned-chart-container">
+    <div class="row">
+      <div class="col-12">
+          <abandoned-chart></abandoned-chart>
+      </div>
+  </div>
+  </div>
 
   <notifier-container></notifier-container>
-
   <footer
     style="background-color:rgb(228, 228, 228); height: 100px; display: flex; justify-content: center; align-items: center;">
     <p>Ⓒ Team Merakle Semicolons 2019</p>
