@@ -382,4 +382,147 @@ router.get("/currentVisitorsPerZone", function (req, res) {
 });
 
 
+router.post("/datasetgen", function (req, res) {
+
+    var responseObject = {};
+    var dataList = [];
+    var zoneList = [];
+
+    let dateValue = req.body.tsValue;
+    console.log('date value ',dateValue);
+
+    var selectQuery = "select zone_id, zone_name from meraki.meraki_zones";
+    db.any(selectQuery)
+    .then(function (result) {
+        result.forEach(function (zoneObject) {
+
+            console.log("zoneobject ",zoneObject)
+            //Generate number of clients. 
+            var gen1 = rn.generator({
+                min: 0,
+                max: 2,
+                integer: true
+            })
+    
+            var gen2 = rn.generator({
+                min: 0,
+                max: 10,
+                integer: true
+            })
+ 
+            var gen3 = rn.generator({
+                min: 1,
+                max: 2,
+                integer: true
+            })
+
+            var gen4 = rn.generator({
+                min: 2,
+                max: 3,
+                integer: true
+            })
+
+            var gen5 = rn.generator({
+                min: 1,
+                max: 3,
+                integer: true
+            })
+    
+            var datetime = new Date(dateValue);
+            let ts = datetime.getTime();
+            let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
+            let yearValue = dateFormat(datetime, "yyyy");
+            let monthValue = dateFormat(datetime, "m");
+            let weekValue = dateFormat(datetime, "W");
+            let dayValue = dateFormat(datetime, "d");
+            let hourValue = dateFormat(datetime, "H");
+            let minuteValue = dateFormat(datetime, "M");
+            let dayStringValue = dateFormat(datetime, "ddd");
+
+            console.log('DAY OF THE WEEK ', dayStringValue);
+    
+            let dbInsertCamData = {};
+            dbInsertCamData.ts = ts;
+            dbInsertCamData.dateFormat_date = formattedDateString;
+            dbInsertCamData.dateFormat_year = yearValue;
+            dbInsertCamData.dateFormat_month = monthValue;
+            dbInsertCamData.dateFormat_week = weekValue;
+            dbInsertCamData.dateFormat_day = dayValue;
+            dbInsertCamData.dateFormat_hour = hourValue;
+            dbInsertCamData.dateFormat_minute = minuteValue;
+    
+            var numberOfPeopleDetected = 0;
+            if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
+                numberOfPeopleDetected = gen2();
+            }
+            else if (zoneObject.zone_id ===3 || zoneObject.zone_id === 4 || zoneObject.zone_id ===5) {
+                numberOfPeopleDetected = gen3();
+            }
+            else if (zoneObject.zone_id ===2) {
+                numberOfPeopleDetected = gen4();
+            }
+            else if (zoneObject.zone_id ===6) {
+                numberOfPeopleDetected = gen5();
+            }
+            else if(zoneObject.zone_id === 7){
+                numberOfPeopleDetected = gen1();
+            }
+            else if(zoneObject.zone_id === 8 || zoneObject.zone_id === 11){
+                numberOfPeopleDetected = 20 + gen1();
+            }
+            else{
+                numberOfPeopleDetected = 15+ gen1();
+            }
+
+            if(dayStringValue === 'Sun' || dayStringValue === 'Sat'){
+                console.log('ITS WEEEKEND');
+
+                numberOfPeopleDetected = numberOfPeopleDetected+5;
+            }
+            if(hourValue === 18 ){
+                numberOfPeopleDetected = numberOfPeopleDetected + 100;
+            }
+
+            for (i = 0; i < numberOfPeopleDetected; i++) {
+                var genOID = rn.generator({
+                    min: 1000,
+                    max: 9999,
+                    integer: true
+                })
+                if(zoneObject.zone_id === 8  && i<20  ){
+                    dbInsertCamData.personOID = 10001+i;
+                    dbInsertCamData.zoneId = zoneObject.zone_id;
+                }
+                if(zoneObject.zone_id === 11 && i<20  ){
+                    dbInsertCamData.personOID = 20001+i;
+                    dbInsertCamData.zoneId = zoneObject.zone_id;
+                }
+                else if(zoneObject.zone_id === 9 && i<15){
+                    dbInsertCamData.personOID = 30001+i;
+                    dbInsertCamData.zoneId = zoneObject.zone_id;
+                }
+                else if(zoneObject.zone_id === 10 && i<15){
+                    dbInsertCamData.personOID = 40001+i;
+                    dbInsertCamData.zoneId = zoneObject.zone_id;
+                }
+                else{
+                    dbInsertCamData.personOID = genOID();
+                    dbInsertCamData.zoneId = zoneObject.zone_id;
+                }
+                _performDBInsert(dbInsertCamData);
+                dataList.push(dbInsertCamData);
+            }
+        });
+
+    })
+    .catch(function (err) {
+        console.log("not able to get connection " + err);
+      
+    });
+    responseObject.status = "SUCCESS";
+    res.status(200).send(responseObject);
+});
+
+
+
 module.exports = router;
