@@ -18,7 +18,8 @@ var checkout = require("./routes/checkout/index");
 
 cronJobForAPClients.clientsJob();
 cronJobForPosData.posJob();
-cronJobForMerakiCamData.cameraJob();
+
+// cronJobForMerakiCamData.cameraJob();
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

@@ -79,6 +79,8 @@ router.get("/", function (req, res) {
             dbInsertCamData.dateFormat_day = dayValue;
             dbInsertCamData.dateFormat_hour = hourValue;
             dbInsertCamData.dateFormat_minute = minuteValue;
+
+            console.log('dbInsertCamData',dbInsertCamData);
     
             var numberOfPeopleDetected = 0;
             if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
@@ -389,14 +391,11 @@ router.post("/datasetgen", function (req, res) {
     var zoneList = [];
 
     let dateValue = req.body.tsValue;
-    console.log('date value ',dateValue);
 
     var selectQuery = "select zone_id, zone_name from meraki.meraki_zones";
     db.any(selectQuery)
     .then(function (result) {
         result.forEach(function (zoneObject) {
-
-            console.log("zoneobject ",zoneObject)
             //Generate number of clients. 
             var gen1 = rn.generator({
                 min: 0,
@@ -440,6 +439,7 @@ router.post("/datasetgen", function (req, res) {
             let dayStringValue = dateFormat(datetime, "ddd");
 
             console.log('DAY OF THE WEEK ', dayStringValue);
+            console.log('HOUR OF THE DAY IS ',hourValue);
     
             let dbInsertCamData = {};
             dbInsertCamData.ts = ts;
@@ -477,12 +477,16 @@ router.post("/datasetgen", function (req, res) {
             if(dayStringValue === 'Sun' || dayStringValue === 'Sat'){
                 console.log('ITS WEEEKEND');
 
-                numberOfPeopleDetected = numberOfPeopleDetected+5;
+                numberOfPeopleDetected = numberOfPeopleDetected+4;
+
             }
-            if(hourValue === 18 ){
-                numberOfPeopleDetected = numberOfPeopleDetected + 100;
+            if(hourValue == 18 || hourValue == 19){
+                numberOfPeopleDetected = numberOfPeopleDetected + 3;
+
+                console.log('HOUR IS 18 SO ADDING 10 TO THE NUMBEROFPEOPLEDETECTED, ',numberOfPeopleDetected);
             }
 
+            console.log('NUMBER OF PEOPLE DETECTED ARE ',numberOfPeopleDetected);
             for (i = 0; i < numberOfPeopleDetected; i++) {
                 var genOID = rn.generator({
                     min: 1000,
@@ -508,7 +512,7 @@ router.post("/datasetgen", function (req, res) {
                 else{
                     dbInsertCamData.personOID = genOID();
                     dbInsertCamData.zoneId = zoneObject.zone_id;
-                }
+                 }
                 _performDBInsert(dbInsertCamData);
                 dataList.push(dbInsertCamData);
             }

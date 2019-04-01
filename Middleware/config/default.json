@@ -14,6 +14,11 @@
       }
     },
     "simulator": {
+      "datasetup" :{
+        "startDate" : "2019-03-04",
+        "stopDate" :  "2019-03-10",
+        "url" : "http://localhost:4004/api/v0/meraki/camera/datasetgen"
+      },
       "checkout" :{
         "queueconstant" : 100
       },

@@ -4,27 +4,23 @@ var Request = require("request");
 const debug = require("debug");
 var dateFormat = require("dateformat");
 
-// var startDate = new Date();
-let startDate = new Date("2019-03-23");
-
-// var stopDate = new Date(year,month,date[,hour,minute,second,millisecond ])
+let startDate = new Date(config.get("simulator.datasetup.startDate"));
 console.log('start date ', startDate.getTime());
-let stopDate = new Date("2019-03-23");
+let stopDate = new Date(config.get("simulator.datasetup.stopDate"));
 console.log('stopDate ', stopDate);
 
 let dateArray = getDates(startDate, stopDate);
-console.log(dateArray);
 
 
 dateArray.forEach(function (dateValue) {
     for (hourValue = 2; hourValue <= 16; hourValue++) {
         let tempDateForEachHour = new Date(dateValue.getTime() + (hourValue * 60 * 60 * 1000));
-        for (i = 0; i <= 59; i++) {
-            let tempDateForEachMinute = tempDateForEachHour.getTime() + (i * 60 * 1000);
+        for (i = 0; i < 6; i++) {
+            let tempDateForEachMinute = tempDateForEachHour.getTime() + (i*10 * 60 * 1000);
             let tempDate = new Date(tempDateForEachMinute);
             console.log('Per minute date ', tempDate);
 
-            var cameraDataUrl = "http://localhost:4004/api/v0/meraki/camera/datasetgen";
+            var cameraDataUrl = config.get("simulator.datasetup.url");
           
             let requestParams = {};
             requestParams.tsValue = tempDateForEachMinute;
@@ -54,10 +50,10 @@ dateArray.forEach(function (dateValue) {
 
 function getDates(startDate1, stopDate1) {
     let dateArray1 = new Array();    
-    console.log('current value of stop date', stopDate1);
-    while (stopDate1 <= startDate1) {
-        dateArray1.push(stopDate1);
-        stopDate1 = new Date(stopDate1.getTime() + 1 * 86400000);
+    console.log('current value of start date', startDate1);
+    while (startDate1 <= stopDate1) {
+        dateArray1.push(startDate1);
+        startDate1 = new Date(startDate1.getTime() + 1 * 86400000);
     }
     return dateArray1;
 }
