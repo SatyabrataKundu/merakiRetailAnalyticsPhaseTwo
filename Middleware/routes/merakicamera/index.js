@@ -152,7 +152,7 @@ router.get("/", function (req, res) {
 
 function _performDBInsert(dbInsertCamData) {
     return new Promise(function (fulfill, reject) {
-        var insertQueryForDB = "INSERT INTO meraki.camera_detections "
+        var insertQueryForDB = "INSERT INTO meraki.visitor_predictions "
             + "(person_oid,"
             + "zoneId,"
             + "datetime, "
@@ -162,7 +162,10 @@ function _performDBInsert(dbInsertCamData) {
             + "dateformat_week, "
             + "dateformat_day, "
             + "dateformat_hour, "
-            + "dateformat_minute)"
+            + "dateformat_minute,"
+            + "rush_hour,"
+            + "shop_closed"
+            + ")"
             + " VALUES ("
             + dbInsertCamData.personOID + ","
             + dbInsertCamData.zoneId + ","
@@ -173,7 +176,9 @@ function _performDBInsert(dbInsertCamData) {
             + dbInsertCamData.dateFormat_week + ","
             + dbInsertCamData.dateFormat_day + ","
             + dbInsertCamData.dateFormat_hour + ","
-            + dbInsertCamData.dateFormat_minute
+            + dbInsertCamData.dateFormat_minute + ","
+            + dbInsertCamData.rush_hour + ","
+            + dbInsertCamData.shop_closed
             + ")";
 
         db.none(insertQueryForDB)
@@ -328,8 +333,6 @@ router.post("/clients", function(req, res){
 })
 
 
-
-
 router.get("/zones", function (req, res) {
 
     var responseObject = {};
@@ -436,7 +439,7 @@ router.post("/datasetgen", function (req, res) {
             let dayValue = dateFormat(datetime, "d");
             let hourValue = dateFormat(datetime, "H");
             let minuteValue = dateFormat(datetime, "M");
-            let dayStringValue = dateFormat(datetime, "ddd");
+            let dayStringValue = dateFormat(datetime, "dddd");
 
             console.log('DAY OF THE WEEK ', dayStringValue);
             console.log('HOUR OF THE DAY IS ',hourValue);
@@ -450,6 +453,8 @@ router.post("/datasetgen", function (req, res) {
             dbInsertCamData.dateFormat_day = dayValue;
             dbInsertCamData.dateFormat_hour = hourValue;
             dbInsertCamData.dateFormat_minute = minuteValue;
+            dbInsertCamData.rush_hour = false;
+            dbInsertCamData.shop_closed = false;
     
             var numberOfPeopleDetected = 0;
             if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
@@ -482,8 +487,12 @@ router.post("/datasetgen", function (req, res) {
             }
             if(hourValue == 18 || hourValue == 19){
                 numberOfPeopleDetected = numberOfPeopleDetected + 3;
-
+                dbInsertCamData.rush_hour = true;
                 console.log('HOUR IS 18 SO ADDING 10 TO THE NUMBEROFPEOPLEDETECTED, ',numberOfPeopleDetected);
+            }
+
+            if(hourValue >= 23 || hourValue <= 7){
+                dbInsertCamData.shop_closed = true;
             }
 
             console.log('NUMBER OF PEOPLE DETECTED ARE ',numberOfPeopleDetected);

@@ -5,6 +5,7 @@ var chalk = require("chalk");
 var debug = require("debug")("app");
 var cors = require("cors");
 var config = require("config");
+var dateFormat = require("dateformat");
 var scanningapi = require("./routes/scanningapi/index");
 
 var cronJobForAPClients = require("./jobs/AccessPointClientsJob");
@@ -49,3 +50,8 @@ app.set("port", process.env.PORT || expressPort);
 var server = app.listen(app.get("port"), function () {
 	debug(`Express server listening on port ${chalk.red(server.address().port)}`);
 });
+
+var datetime = new Date();
+let dayStringValue = dateFormat(datetime, "dddd");
+
+console.log(dayStringValue);
