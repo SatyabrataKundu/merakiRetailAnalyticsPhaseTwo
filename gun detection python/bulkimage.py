@@ -32,6 +32,7 @@ for file_type in ['data/n']:
             firstFrame = gray  	
         if gun_exist:
             print(current_image_path +",guns detected")
+            cv2.imwrite("data/detected/"+ str(img),frame)
             count=1
         else:
             print(current_image_path +",guns NOT detected")

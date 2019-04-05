@@ -4,3 +4,4 @@ target/
 activemq-data/
 .settings/
 package-lock.json
+detected/
