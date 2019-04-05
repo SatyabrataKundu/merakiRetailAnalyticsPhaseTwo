@@ -11,11 +11,11 @@ gun_exist = False
 
 gun_cascade = cv2.CascadeClassifier('cascade.xml')
 #frame = cv2.imread('data/download.jpg')  
-frame = cv2.imread('data/armas.jpg')  
+frame = cv2.imread('data/Random_Images/10007.jpg')  
 frame = imutils.resize(frame, width=500)
-gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-gray = cv2.GaussianBlur(gray, (21, 21), 0)
-gun = gun_cascade.detectMultiScale(gray, 1.3, 5, minSize = (100, 100))
+# gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+gray = cv2.GaussianBlur(frame, (21, 21), 0)
+gun = gun_cascade.detectMultiScale(gray, 1.3, 5, minSize = (24, 24))
 if len(gun) > 0:
         gun_exist = True
 for (x,y,w,h) in gun:
