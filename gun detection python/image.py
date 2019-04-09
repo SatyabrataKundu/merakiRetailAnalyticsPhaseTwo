@@ -11,7 +11,7 @@ gun_exist = False
 
 gun_cascade = cv2.CascadeClassifier('cascade.xml')
 #frame = cv2.imread('data/download.jpg')  
-frame = cv2.imread('data/Random_Images/10007.jpg')  
+frame = cv2.imread('data/Random_Images/100046.jpg')
 frame = imutils.resize(frame, width=500)
 # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 gray = cv2.GaussianBlur(frame, (21, 21), 0)

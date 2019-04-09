@@ -11,7 +11,7 @@ firstFrame = None
 gun_exist = False
 
 gun_cascade = cv2.CascadeClassifier('cascade.xml')
-for file_type in ['data/n']:
+for file_type in ['data/Random_Images']:
 # for file_type in ['data/p']:
 # for file_type in ['data/Random_Images']:
     for img in os.listdir(file_type):
