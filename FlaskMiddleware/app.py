@@ -1,23 +1,18 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from models import predictedValues
+from timeSeriesWeeklyData import weeklyPredcitions
 import psycopg2
 import os
 import json
+import schedule
+import time
 
-app = Flask(__name__)
+def weeklyPredcitionsStore():
+    seconds = time.time()
+    local_time = time.ctime(seconds)
+    print('weekly prediction started at : ',local_time)
+    weeklyPredcitions()
 
-@app.route('/', methods=['GET'])
-def index():
-    
-    fetchedList = predictedValues()
-    list=[]
-    for r in fetchedList:
-        data={}
-        data['count']=r
-        list.append(data)
-    return jsonify (list)
+schedule.every().tuesday.at("11:01").do(weeklyPredcitionsStore)
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
+while True:
+    schedule.run_pending()
+    time.sleep(1)

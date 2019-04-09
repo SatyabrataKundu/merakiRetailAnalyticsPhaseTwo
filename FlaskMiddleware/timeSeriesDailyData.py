@@ -1,70 +1,95 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
+#%%
 import pandas as pd
+import numpy as np
 import math
+import psycopg2
 from pandas import datetime
+import itertools
 import matplotlib.pyplot as plt
+from statsmodels.tsa.arima_model import ARIMA
+import warnings
 
-def parser(x):
-    return datetime.strptime(x,'%Y-%m-%d')
+warnings.filterwarnings('ignore')
 
-visitors = pd.read_csv('data-1554282555093.csv',index_col=0, parse_dates=[0], date_parser=parser)
+conn = psycopg2.connect("dbname=merakidb user=postgres password=postgres")
+cur = conn.cursor()
 
-visitors.plot()
+cur.execute(
+     'select dateformat_date, count(distinct(person_oid)) from meraki.visitor_predictions group by dateformat_date;')
 
+rows = cur.fetchall()
 
-# In[ ]:
+valueList = []
 
+for r in rows:
+    value = []
+    value.append(r[1])
+    valueList.append(value)
 
-from statsmodels.graphics.tsaplots import plot_acf
-visitorsDiff = visitors.diff(periods=3)
-visitorsDiff = visitorsDiff[3:]
-visitorsDiff.head()
-# visitorsDiff.plot(color='green')
+valueList = np.array(valueList)
 
+totalValues = len(valueList)
+print(totalValues)
 
-# In[ ]:
-
-
-x = visitors.values
-train = x[0:20]
-test = x[20:]
+x = valueList
+train = x[0:(math.ceil(totalValues*.8))]
+test = x[(math.ceil(totalValues*.8)):]
 predictions = []
 
+p = d = q = range(0, 9)
+pdq = list(itertools.product(p, d, q))
 
-# In[ ]:
+list1 = []
+aicOrderDict = {}
 
+for p in pdq:
+    try:
+        model_arima = ARIMA(train, order=p)
+        model_arima_fit = model_arima.fit()
+        list1.append(model_arima_fit.aic)
+        aicOrderDict[model_arima_fit.aic] = p
+    except:
+        continue
 
-##  ARIMA MODEL
+list1.sort()
+lowestAicValue = list1[0]
+bestFitOrder = aicOrderDict[lowestAicValue]
 
-
-# In[ ]:
-
-
-from statsmodels.tsa.arima_model import ARIMA
-
-model_arima = ARIMA(train, order=(2,0,1))
+model_arima = ARIMA(train, order=bestFitOrder)
 model_arima_fit = model_arima.fit()
 
+testList = []
 
-predictions = model_arima_fit.forecast(steps=3)[0]
-print (model_arima_fit.aic)
-print (predictions.tolist())
-print ('Total Values ---> ',len(predictions))
+predictions = model_arima_fit.forecast(steps=365)[0]
+print(model_arima_fit.aic)
+
+for t in test:
+    testList.append(math.ceil(t[0]))
+
+print(testList)
+print(predictions.tolist())
+print('Total Values ---> ', len(predictions))
 
 plt.plot(test)
 plt.plot(predictions)
 
+do = 1
 
-# In[ ]:
+if (do == 1):
+    cur.execute("DELETE FROM meraki.daily_visitor_predictions")
+    for i in range(0, 365):
+        dayCount = i+1
+        visitorCount = math.ceil(predictions[i])
+        cur.execute(
+            "INSERT INTO meraki.daily_visitor_predictions (dateformat_day,count) VALUES (%s, %s);", (dayCount, visitorCount))
+        conn.commit()
 
+    # weekCountDictionary=[]
 
-import itertools
-p=d=q=range(0,10)
-pdq = list(itertools.product(p,d,q))
-pdq
+    # for i in range(0,52):
+    #     countDictionary={}
+    #     countDictionary["week"]=i+1
+    #     countDictionary["count"]=math.ceil(predictions[i])
+    #     weekCountDictionary.append(countDictionary)
 
+    # return weekCountDictionary
