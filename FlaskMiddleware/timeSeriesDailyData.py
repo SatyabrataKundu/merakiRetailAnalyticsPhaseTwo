@@ -48,6 +48,7 @@ for p in pdq:
         model_arima_fit = model_arima.fit()
         list1.append(model_arima_fit.aic)
         aicOrderDict[model_arima_fit.aic] = p
+        print('.')
     except:
         continue
 

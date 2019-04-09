@@ -1,0 +1,26 @@
+<annotation>
+	<folder>ForLabelling</folder>
+	<filename>320.jpg</filename>
+	<path>C:\Users\subhadip_jot\Desktop\Frames\ForLabelling\320.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1080</width>
+		<height>607</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>357</xmin>
+			<ymin>241</ymin>
+			<xmax>631</xmax>
+			<ymax>452</ymax>
+		</bndbox>
+	</object>
+</annotation>
