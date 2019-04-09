@@ -1,7 +1,7 @@
 <annotation>
 	<folder>ForLabelling</folder>
-	<filename>356.jpg</filename>
-	<path>C:\Users\subhadip_jot\Desktop\Frames\ForLabelling\356.jpg</path>
+	<filename>357.jpg</filename>
+	<path>C:\Users\subhadip_jot\Desktop\Frames\ForLabelling\357.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -17,10 +17,10 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>332</xmin>
-			<ymin>130</ymin>
+			<xmin>329</xmin>
+			<ymin>127</ymin>
 			<xmax>526</xmax>
-			<ymax>402</ymax>
+			<ymax>394</ymax>
 		</bndbox>
 	</object>
 </annotation>
