@@ -5,3 +5,6 @@ activemq-data/
 .settings/
 package-lock.json
 detected/
+myenv/
+pipfile
+pipfile.lock
