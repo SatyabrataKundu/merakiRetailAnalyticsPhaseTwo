@@ -61,8 +61,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
-    <option name="y" value="56" />
+    <option name="x" value="9" />
+    <option name="y" value="11" />
     <option name="width" value="1400" />
     <option name="height" value="837" />
   </component>
@@ -83,6 +83,17 @@
               <item name="gun detection python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="D:\Semicolon\Phase 2\merakiRetailAnalyticsPhaseTwo\gun detection python" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="data" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="gun detection python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\Semicolon\Phase 2\merakiRetailAnalyticsPhaseTwo\gun detection python" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="TensorFlow" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="gun detection python" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\Semicolon\Phase 2\merakiRetailAnalyticsPhaseTwo\gun detection python" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="TensorFlow" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Data" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -173,7 +184,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2496474" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
