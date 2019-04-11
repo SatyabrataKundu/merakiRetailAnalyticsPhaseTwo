@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Images</folder>
+	<filename>2248.jpg</filename>
+	<path>C:\Users\satyabrata_kundu\Desktop\TensorFlow_Preparations\Second_Iterations\Images\2248.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1438</width>
+		<height>1438</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>874</xmin>
+			<ymin>319</ymin>
+			<xmax>1165</xmax>
+			<ymax>612</ymax>
+		</bndbox>
+	</object>
+</annotation>
