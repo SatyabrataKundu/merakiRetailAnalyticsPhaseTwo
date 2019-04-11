@@ -8,3 +8,5 @@ detected/
 myenv/
 pipfile
 pipfile.lock
+.idea/
+venv/
