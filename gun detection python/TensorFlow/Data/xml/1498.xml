@@ -1,0 +1,26 @@
+<annotation>
+	<folder>numbered</folder>
+	<filename>1498.jpg</filename>
+	<path>C:\Users\ashishkumar_bhavsar\Desktop\SuperImpose\numbered\1498.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1438</width>
+		<height>1438</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>760</xmin>
+			<ymin>948</ymin>
+			<xmax>875</xmax>
+			<ymax>1129</ymax>
+		</bndbox>
+	</object>
+</annotation>
