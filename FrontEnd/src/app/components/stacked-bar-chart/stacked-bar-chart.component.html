@@ -1,3 +1,11 @@
-<p>
-  stacked-bar-chart works!
-</p>
+<p id="chart-label">Stacked Bar Chart Analysis</p>
+<mat-form-field>
+  <mat-select placeholder="Choose Period" [(ngModel)]="selectedValue" name="item" (selectionChange)=changeGran($event)>
+    <mat-option *ngFor="let i of period" [value]="i.viewValue">{{i.viewValue}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<div class="chart-container">
+  <canvas *ngIf="chartData" baseChart [chartType]="chartType" [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+    [colors]="colorOptions" style="margin-top: 3em;">
+  </canvas>
+</div>
