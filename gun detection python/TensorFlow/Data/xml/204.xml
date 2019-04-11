@@ -1,0 +1,26 @@
+<annotation>
+	<folder>OriginalImages</folder>
+	<filename>204.jpg</filename>
+	<path>C:\Users\pratik_bangal\Desktop\Meraki\Labelling\Today's\OriginalImages\204.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1438</width>
+		<height>1438</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>262</xmin>
+			<ymin>510</ymin>
+			<xmax>723</xmax>
+			<ymax>1040</ymax>
+		</bndbox>
+	</object>
+</annotation>
