@@ -1,0 +1,26 @@
+<annotation>
+	<folder>10thApril</folder>
+	<filename>1870.jpg</filename>
+	<path>D:\MERAKI-RETAIL-ANALYTICS-PHASE2\ImageLebel_Cascade_GUI_Softwares\TENSORFLOW\10thApril\1870.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1438</width>
+		<height>1438</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>652</xmin>
+			<ymin>751</ymin>
+			<xmax>1002</xmax>
+			<ymax>1129</ymax>
+		</bndbox>
+	</object>
+</annotation>
