@@ -1,0 +1,26 @@
+<annotation>
+	<folder>10april</folder>
+	<filename>2340.jpg</filename>
+	<path>D:\Softwares\softwares\10april\2340.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1438</width>
+		<height>1438</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>559</xmin>
+			<ymin>351</ymin>
+			<xmax>870</xmax>
+			<ymax>786</ymax>
+		</bndbox>
+	</object>
+</annotation>
