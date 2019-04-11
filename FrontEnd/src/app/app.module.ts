@@ -34,6 +34,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartdataService } from './services/chartdata.service';
 import { NotificationPanelComponent } from './components/notification-panel/notification-panel.component';
 import { AbandonedChartComponent } from './components/abandoned-chart/abandoned-chart.component';
+import { TestChartComponent } from './components/test-chart/test-chart.component';
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -86,7 +87,8 @@ const customNotifierOptions: NotifierOptions = {
     StackedBarChartComponent,
     DonutChartComponent,
     NotificationPanelComponent,
-    AbandonedChartComponent
+    AbandonedChartComponent,
+    TestChartComponent
   ],
   imports: [
     BrowserModule,
