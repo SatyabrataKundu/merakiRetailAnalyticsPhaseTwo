@@ -1,7 +1,7 @@
 <annotation>
-	<folder>100165-100329</folder>
+	<folder>Image_3rdIteration</folder>
 	<filename>100318.jpg</filename>
-	<path>D:\FromVM\Third_Iteration\FrameExtractedFromVideo\100165-100329\100318.jpg</path>
+	<path>D:\merakiRetailAnalyticsPhaseTwo\gun detection python\TensorFlow\Data\Image_3rdIteration\100318.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -18,9 +18,9 @@
 		<difficult>0</difficult>
 		<bndbox>
 			<xmin>489</xmin>
-			<ymin>103</ymin>
-			<xmax>630</xmax>
-			<ymax>265</ymax>
+			<ymin>99</ymin>
+			<xmax>654</xmax>
+			<ymax>264</ymax>
 		</bndbox>
 	</object>
 </annotation>

@@ -1,7 +1,7 @@
 <annotation>
-	<folder>Source</folder>
+	<folder>Image_3rdIteration</folder>
 	<filename>1381.jpg</filename>
-	<path>C:\Users\satyabrata_kundu\Desktop\lebeling_Images\Source\1381.jpg</path>
+	<path>D:\merakiRetailAnalyticsPhaseTwo\gun detection python\TensorFlow\Data\Image_3rdIteration\1381.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -19,8 +19,8 @@
 		<bndbox>
 			<xmin>360</xmin>
 			<ymin>261</ymin>
-			<xmax>533</xmax>
-			<ymax>383</ymax>
+			<xmax>532</xmax>
+			<ymax>338</ymax>
 		</bndbox>
 	</object>
 </annotation>

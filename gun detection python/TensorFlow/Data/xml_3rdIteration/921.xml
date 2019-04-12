@@ -1,7 +1,7 @@
 <annotation>
-	<folder>751-1000</folder>
+	<folder>Image_3rdIteration</folder>
 	<filename>921.jpg</filename>
-	<path>D:\MERAKI-RETAIL-ANALYTICS-PHASE2\ImageLebel_Cascade_GUI_Softwares\TENSORFLOW\751-1000\921.jpg</path>
+	<path>D:\merakiRetailAnalyticsPhaseTwo\gun detection python\TensorFlow\Data\Image_3rdIteration\921.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -20,7 +20,7 @@
 			<xmin>550</xmin>
 			<ymin>228</ymin>
 			<xmax>770</xmax>
-			<ymax>388</ymax>
+			<ymax>327</ymax>
 		</bndbox>
 	</object>
 </annotation>

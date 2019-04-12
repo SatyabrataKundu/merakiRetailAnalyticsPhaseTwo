@@ -1,7 +1,7 @@
 <annotation>
-	<folder>FrameFromVideo</folder>
-	<filename>1171.jpg</filename>
-	<path>D:\Meraki reatail Analytics\FrameFromVideo\1171.jpg</path>
+	<folder>Image_3rdIteration</folder>
+	<filename>1471.jpg</filename>
+	<path>D:\merakiRetailAnalyticsPhaseTwo\gun detection python\TensorFlow\Data\Image_3rdIteration\1471.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -14,13 +14,13 @@
 	<object>
 		<name>gun</name>
 		<pose>Unspecified</pose>
-		<truncated>1</truncated>
+		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>416</xmin>
-			<ymin>180</ymin>
-			<xmax>657</xmax>
-			<ymax>607</ymax>
+			<xmin>276</xmin>
+			<ymin>216</ymin>
+			<xmax>484</xmax>
+			<ymax>353</ymax>
 		</bndbox>
 	</object>
 </annotation>
