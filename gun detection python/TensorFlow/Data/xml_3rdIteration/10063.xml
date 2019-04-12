@@ -1,7 +1,7 @@
-<annotation verified="yes">
-	<folder>images</folder>
-	<filename>100163.jpg</filename>
-	<path>C:\Users\subhadip_jot\Desktop\Frames\12.4.2019\images\100163.jpg</path>
+<annotation>
+	<folder>Image_3rdIteration</folder>
+	<filename>10063.jpg</filename>
+	<path>D:\merakiRetailAnalyticsPhaseTwo\gun detection python\TensorFlow\Data\Image_3rdIteration\10063.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -17,10 +17,10 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>559</xmin>
-			<ymin>208</ymin>
-			<xmax>574</xmax>
-			<ymax>220</ymax>
+			<xmin>425</xmin>
+			<ymin>292</ymin>
+			<xmax>540</xmax>
+			<ymax>355</ymax>
 		</bndbox>
 	</object>
 </annotation>
