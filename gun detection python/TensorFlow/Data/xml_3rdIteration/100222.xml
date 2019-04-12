@@ -1,0 +1,26 @@
+<annotation>
+	<folder>100165-100329</folder>
+	<filename>100222.jpg</filename>
+	<path>D:\FromVM\Third_Iteration\FrameExtractedFromVideo\100165-100329\100222.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1080</width>
+		<height>607</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>274</xmin>
+			<ymin>278</ymin>
+			<xmax>412</xmax>
+			<ymax>368</ymax>
+		</bndbox>
+	</object>
+</annotation>
