@@ -1,0 +1,26 @@
+<annotation>
+	<folder>images</folder>
+	<filename>10077.jpg</filename>
+	<path>C:\Users\subhadip_jot\Desktop\Frames\13.4.2019\images\10077.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>640</width>
+		<height>360</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>443</xmin>
+			<ymin>146</ymin>
+			<xmax>538</xmax>
+			<ymax>190</ymax>
+		</bndbox>
+	</object>
+</annotation>
