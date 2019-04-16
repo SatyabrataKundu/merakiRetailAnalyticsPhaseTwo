@@ -1,0 +1,26 @@
+<annotation>
+	<folder>FrameFromVideo</folder>
+	<filename>398.jpg</filename>
+	<path>D:\Gun_Detection\FrameFromVideo\398.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1080</width>
+		<height>607</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>326</xmin>
+			<ymin>159</ymin>
+			<xmax>688</xmax>
+			<ymax>376</ymax>
+		</bndbox>
+	</object>
+</annotation>
