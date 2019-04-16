@@ -10,3 +10,4 @@ pipfile
 pipfile.lock
 .idea/
 venv/
+__pycache__/
