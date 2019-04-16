@@ -1,0 +1,26 @@
+<annotation>
+	<folder>FrameFromVideo</folder>
+	<filename>899.jpg</filename>
+	<path>D:\Meraki reatail Analytics\ImageLableing\5th Iteration\FrameFromVideo\FrameFromVideo\899.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1080</width>
+		<height>607</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>307</xmin>
+			<ymin>29</ymin>
+			<xmax>676</xmax>
+			<ymax>534</ymax>
+		</bndbox>
+	</object>
+</annotation>
