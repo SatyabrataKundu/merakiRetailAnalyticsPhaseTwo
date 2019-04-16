@@ -1,5 +1,5 @@
 import os
-path = '..\data\\n'
+path = '..\data\FrameFromVideo'
 # path = '..\data\p'
 # path = '..\data\Random_Images'
 files = os.listdir(path)

@@ -10,7 +10,7 @@ import imutils
 import datetime
 
 
-camera = cv2.VideoCapture('../data/GUN_In_Different_Angle.mp4')
+camera = cv2.VideoCapture('../data/custom_video/24.mp4')
 
 # initialize the first frame in the video stream
 firstFrame = None

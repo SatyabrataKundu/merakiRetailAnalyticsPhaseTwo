@@ -12,7 +12,7 @@ def rotateImage(image, angle,count):
 
 def start():
     count = 100000
-    for file_type in ['..\data\\p']:
+    for file_type in ['..\data\FrameFromVideo']:
       for img in os.listdir(file_type):
                 current_image_path = str(file_type) + "/" + str(img)
                 img1 = cv2.imread(current_image_path)

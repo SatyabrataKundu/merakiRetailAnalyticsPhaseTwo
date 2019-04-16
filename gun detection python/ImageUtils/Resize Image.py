@@ -3,7 +3,7 @@ import os
 
 def resize():
 
-        for file_type in ['..\data\\n']:
+        for file_type in ['..\data\FrameFromVideo']:
             for img in os.listdir(file_type):
                 current_image_path = str(file_type) + "/" + str(img)
                 img1 = cv2.imread(current_image_path)

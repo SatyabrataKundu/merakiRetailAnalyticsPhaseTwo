@@ -11,3 +11,4 @@ pipfile.lock
 .idea/
 venv/
 __pycache__/
+custom_video/
