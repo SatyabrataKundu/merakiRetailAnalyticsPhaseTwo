@@ -3,13 +3,26 @@ var router = express.Router();
 var dateFormat = require("dateformat");
 var promise = require("bluebird");
 var config = require("config");
+var rn = require('random-number');
+
 var dbOptions = {
     // Initialization Options
     promiseLib: promise
 };
 var pgp = require("pg-promise")(dbOptions);
 
+router.get("/getimage",function(req,res){
 
+    var gen = rn.generator({
+        min: 1,
+        max: 660,
+        integer: true
+    })
+
+    let fileName = gen() + ".jpg";
+    let filePath = "D:/MERAKI-RETAIL-ANALYTICS-PHASE2/FROM_VM/Third_Iteration/images/" + fileName;
+    res.sendFile(filePath);
+})
 var connectionString = "postgres://" + config.get("environment.merakiConfig.dbUserName") + ":" +
     config.get("environment.merakiConfig.dbPassword") + "@localhost:" + config.get("environment.merakiConfig.dbPort") +
     "/" + config.get("environment.merakiConfig.dbName");
