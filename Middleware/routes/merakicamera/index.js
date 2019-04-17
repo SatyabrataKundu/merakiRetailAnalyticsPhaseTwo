@@ -537,5 +537,25 @@ router.post("/datasetgen", function (req, res) {
 });
 
 
+router.get("/weekly_predictions", function (req, res) {
+
+    let datetime = new Date();
+    let weekValue = dateFormat(datetime, "W");
+
+    var responseObject = {};
+    var selectQuery = "select dateformat_week as week, count as predicted from meraki.weekly_visitor_predictions where dateformat_week >"+weekValue;
+    db.any(selectQuery)
+    .then(function (result) {
+        console.log("db select success for date ", result);
+        res.status(200).send(result);
+
+    })
+    .catch(function (err) {
+        console.log("not able to get connection " + err);
+        res.status(500).send(JSON.stringify(err.message));
+    });
+});
+
+
 
 module.exports = router;
