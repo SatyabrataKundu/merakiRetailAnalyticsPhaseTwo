@@ -11,86 +11,78 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
-conn = psycopg2.connect("dbname=merakidb user=postgres password=postgres")
-cur = conn.cursor()
+def dailyPredictions():
+    print('***** PREDICTION STARTED *****')
 
-cur.execute(
-     'select dateformat_date, count(distinct(person_oid)) from meraki.visitor_predictions group by dateformat_date;')
+    conn = psycopg2.connect("dbname=merakidb user=postgres password=postgres")
+    cur = conn.cursor()
 
-rows = cur.fetchall()
+    cur.execute('select dateformat_date, count(distinct(person_oid)) from meraki.visitor_predictions group by dateformat_date;')
 
-valueList = []
+    rows = cur.fetchall()
 
-for r in rows:
-    value = []
-    value.append(r[1])
-    valueList.append(value)
+    valueList = []
 
-valueList = np.array(valueList)
+    for r in rows:
+        value = []
+        value.append(r[1])
+        valueList.append(value)
 
-totalValues = len(valueList)
-print(totalValues)
+    valueList = np.array(valueList)
 
-x = valueList
-train = x[0:(math.ceil(totalValues*.8))]
-test = x[(math.ceil(totalValues*.8)):]
-predictions = []
+    totalValues = len(valueList)
+    print(totalValues)
 
-p = d = q = range(0, 9)
-pdq = list(itertools.product(p, d, q))
+    x = valueList
+    train = x[0:(math.ceil(totalValues*.8))]
+    test = x[(math.ceil(totalValues*.8)):]
+    predictions = []
 
-list1 = []
-aicOrderDict = {}
+    p = d = q = range(0, 9)
+    pdq = list(itertools.product(p, d, q))
 
-for p in pdq:
-    try:
-        model_arima = ARIMA(train, order=p)
-        model_arima_fit = model_arima.fit()
-        list1.append(model_arima_fit.aic)
-        aicOrderDict[model_arima_fit.aic] = p
-        print('.')
-    except:
-        continue
+    list1 = []
+    aicOrderDict = {}
 
-list1.sort()
-lowestAicValue = list1[0]
-bestFitOrder = aicOrderDict[lowestAicValue]
+    for p in pdq:
+        try:
+            model_arima = ARIMA(train, order=p)
+            model_arima_fit = model_arima.fit()
+            list1.append(model_arima_fit.aic)
+            aicOrderDict[model_arima_fit.aic] = p
+            print('.')
+        except:
+            continue
 
-model_arima = ARIMA(train, order=bestFitOrder)
-model_arima_fit = model_arima.fit()
+    list1.sort()
+    lowestAicValue = list1[0]
+    bestFitOrder = aicOrderDict[lowestAicValue]
 
-testList = []
+    model_arima = ARIMA(train, order=bestFitOrder)
+    model_arima_fit = model_arima.fit()
 
-predictions = model_arima_fit.forecast(steps=365)[0]
-print(model_arima_fit.aic)
+    testList = []
 
-for t in test:
-    testList.append(math.ceil(t[0]))
+    predictions = model_arima_fit.forecast(steps=365)[0]
+    print(model_arima_fit.aic)
 
-print(testList)
-print(predictions.tolist())
-print('Total Values ---> ', len(predictions))
+    for t in test:
+        testList.append(math.ceil(t[0]))
 
-plt.plot(test)
-plt.plot(predictions)
+    print(testList)
+    print(predictions.tolist())
+    print('Total Values ---> ', len(predictions))
 
-do = 1
+    plt.plot(test)
+    plt.plot(predictions)
 
-if (do == 1):
-    cur.execute("DELETE FROM meraki.daily_visitor_predictions")
-    for i in range(0, 365):
-        dayCount = i+1
-        visitorCount = math.ceil(predictions[i])
-        cur.execute(
-            "INSERT INTO meraki.daily_visitor_predictions (dateformat_day,count) VALUES (%s, %s);", (dayCount, visitorCount))
-        conn.commit()
+    do = 1
 
-    # weekCountDictionary=[]
-
-    # for i in range(0,52):
-    #     countDictionary={}
-    #     countDictionary["week"]=i+1
-    #     countDictionary["count"]=math.ceil(predictions[i])
-    #     weekCountDictionary.append(countDictionary)
-
-    # return weekCountDictionary
+    if (do == 1):
+        cur.execute("DELETE FROM meraki.daily_visitor_predictions")
+        for i in range(0, 365):
+            dayCount = i+1
+            visitorCount = math.ceil(predictions[i])
+            cur.execute(
+                "INSERT INTO meraki.daily_visitor_predictions (dateformat_day,count) VALUES (%s, %s);", (dayCount, visitorCount))
+            conn.commit()

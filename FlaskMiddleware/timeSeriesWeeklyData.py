@@ -87,13 +87,3 @@ def weeklyPredcitions():
             conn.commit()
     
     print(" ********** Weekly Visitor Prediction Table Populated ********** ")
-
-    # weekCountDictionary=[]
-
-    # for i in range(0,52):
-    #     countDictionary={}
-    #     countDictionary["week"]=i+1
-    #     countDictionary["count"]=math.ceil(predictions[i])
-    #     weekCountDictionary.append(countDictionary)
-
-    # return weekCountDictionary

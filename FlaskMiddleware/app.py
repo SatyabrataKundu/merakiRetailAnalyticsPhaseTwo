@@ -1,17 +1,18 @@
 from timeSeriesWeeklyData import weeklyPredcitions
-import psycopg2
+from timeSeriesDailyData import dailyPredictions
 import os
 import json
 import schedule
 import time
 
-def weeklyPredcitionsStore():
+def PredcitionsStore():
     seconds = time.time()
     local_time = time.ctime(seconds)
     print('weekly prediction started at : ',local_time)
     weeklyPredcitions()
+    dailyPredictions()
 
-schedule.every().tuesday.at("11:01").do(weeklyPredcitionsStore)
+schedule.every().wednesday.at("14:18").do(PredcitionsStore)
 
 while True:
     schedule.run_pending()
