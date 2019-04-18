@@ -537,7 +537,7 @@ router.post("/datasetgen", function (req, res) {
 });
 
 
-router.get("/weekly_predictions", function (req, res) {
+router.get("/weeklyPredictions", function (req, res) {
 
     let datetime = new Date();
     let weekValue = dateFormat(datetime, "W");
@@ -555,6 +555,40 @@ router.get("/weekly_predictions", function (req, res) {
         res.status(500).send(JSON.stringify(err.message));
     });
 });
+
+router.get("/dailyPredictions", function (req, res) {
+    var now = new Date();
+    var start = new Date(now.getFullYear(), 0, 0);
+    var diff = now - start;
+    var day = Math.floor(diff / (1000 * 60 * 60 * 24));
+    console.log('Day of year: ' + day);
+    
+    var selectQuery = "select dateformat_day as day, count as predicted from meraki.daily_visitor_predictions where dateformat_day >"+ day;
+    db.any(selectQuery)
+    .then(function (result) {
+        console.log("db select success for date ", result);
+        res.status(200).send(result);
+
+    })
+    .catch(function (err) {
+        console.log("not able to get connection " + err);
+        res.status(500).send(JSON.stringify(err.message));
+    });
+})
+
+router.get("/hourlyPredictions", function (req, res){
+    var selectQuery = "select dateformat_hour as hour, count as predicted from meraki.hourly_visitor_predictions"
+    db.any(selectQuery)
+    .then(function (result) {
+        console.log("db select success for date ", result);
+        res.status(200).send(result);
+
+    })
+    .catch(function (err) {
+        console.log("not able to get connection " + err);
+        res.status(500).send(JSON.stringify(err.message));
+    });
+})
 
 
 

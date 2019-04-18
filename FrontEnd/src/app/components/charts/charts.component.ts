@@ -47,6 +47,15 @@ export class ChartsComponent implements OnInit {
     "timeRange": "today"	
   };
 
+  current={
+    label: 'current',
+    data: []
+  }
+
+  predicted={
+    label: 'predicted',
+    data: []
+  }
   public chartType: string = "bar";
   public chartLabels: Array<any> = [];
   public chartData: Array<number> = [];
