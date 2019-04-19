@@ -1,0 +1,26 @@
+<annotation>
+	<folder>OriginalImages</folder>
+	<filename>1293.jpg</filename>
+	<path>C:\Users\pratik_bangal\Desktop\Meraki\Labelling\Friday\OriginalImages\1293.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1080</width>
+		<height>607</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>464</xmin>
+			<ymin>204</ymin>
+			<xmax>587</xmax>
+			<ymax>279</ymax>
+		</bndbox>
+	</object>
+</annotation>

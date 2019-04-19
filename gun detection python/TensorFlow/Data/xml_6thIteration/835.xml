@@ -1,0 +1,26 @@
+<annotation>
+	<folder>OriginalExtraImages</folder>
+	<filename>835.jpg</filename>
+	<path>C:\Users\pratik_bangal\Desktop\Meraki\Labelling\Friday\OriginalExtraImages\835.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1080</width>
+		<height>607</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>gun</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>644</xmin>
+			<ymin>198</ymin>
+			<xmax>813</xmax>
+			<ymax>272</ymax>
+		</bndbox>
+	</object>
+</annotation>
