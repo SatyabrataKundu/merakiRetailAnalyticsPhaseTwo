@@ -127,7 +127,7 @@ export class ChartsComponent implements OnInit {
     },
     tooltips: {
       callbacks: {
-         label: function(tooltipItem) {
+         label: function(tooltipItem) {     
                 return tooltipItem.yLabel;
          }
       }
