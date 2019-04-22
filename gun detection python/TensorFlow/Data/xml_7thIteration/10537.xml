@@ -1,0 +1,26 @@
+<annotation>
+	<folder>images</folder>
+	<filename>10537.jpg</filename>
+	<path>D:\MERAKI-RETAIL-ANALYTICS-PHASE2\FROM_VM\7thIteration\images\10537.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1920</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>knife</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1198</xmin>
+			<ymin>322</ymin>
+			<xmax>1286</xmax>
+			<ymax>379</ymax>
+		</bndbox>
+	</object>
+</annotation>
