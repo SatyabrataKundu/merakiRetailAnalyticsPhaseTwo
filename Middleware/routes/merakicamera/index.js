@@ -165,6 +165,7 @@ function _performDBInsert(dbInsertCamData) {
             + "dateformat_minute,"
             + "rush_hour,"
             + "shop_closed"
+            + "day_of_week"
             + ")"
             + " VALUES ("
             + dbInsertCamData.personOID + ","
@@ -178,7 +179,8 @@ function _performDBInsert(dbInsertCamData) {
             + dbInsertCamData.dateFormat_hour + ","
             + dbInsertCamData.dateFormat_minute + ","
             + dbInsertCamData.rush_hour + ","
-            + dbInsertCamData.shop_closed
+            + dbInsertCamData.shop_closed + ","
+            + dbInsertCamData.day_of_week
             + ")";
 
         db.none(insertQueryForDB)
@@ -455,6 +457,7 @@ router.post("/datasetgen", function (req, res) {
             dbInsertCamData.dateFormat_minute = minuteValue;
             dbInsertCamData.rush_hour = false;
             dbInsertCamData.shop_closed = false;
+            dbInsertCamData.day_of_week = dayStringValue;
     
             var numberOfPeopleDetected = 0;
             if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
