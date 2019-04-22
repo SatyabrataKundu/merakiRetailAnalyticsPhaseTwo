@@ -1,6 +1,6 @@
 CREATE TABLE meraki.hourly_visitor_predictions
 (
-    dateformat_day integer,
+    dateformat_hour integer,
     count integer
 )
 WITH (

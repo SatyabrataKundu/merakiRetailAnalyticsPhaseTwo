@@ -495,27 +495,28 @@ router.post("/datasetgen", function (req, res) {
                 dbInsertCamData.shop_closed = true;
             }
 
-            console.log('NUMBER OF PEOPLE DETECTED ARE ',numberOfPeopleDetected);
+            // console.log('NUMBER OF PEOPLE DETECTED ARE ',numberOfPeopleDetected);
+            // numberOfPeopleDetected = numberOfPeopleDetected + 20;
             for (i = 0; i < numberOfPeopleDetected; i++) {
                 var genOID = rn.generator({
-                    min: 1000,
-                    max: 9999,
+                    min: 100000,
+                    max: 999999,
                     integer: true
                 })
                 if(zoneObject.zone_id === 8  && i<20  ){
-                    dbInsertCamData.personOID = 10001+i;
+                    dbInsertCamData.personOID = 1000001+i;
                     dbInsertCamData.zoneId = zoneObject.zone_id;
                 }
                 if(zoneObject.zone_id === 11 && i<20  ){
-                    dbInsertCamData.personOID = 20001+i;
+                    dbInsertCamData.personOID = 2000001+i;
                     dbInsertCamData.zoneId = zoneObject.zone_id;
                 }
                 else if(zoneObject.zone_id === 9 && i<15){
-                    dbInsertCamData.personOID = 30001+i;
+                    dbInsertCamData.personOID = 3000001+i;
                     dbInsertCamData.zoneId = zoneObject.zone_id;
                 }
                 else if(zoneObject.zone_id === 10 && i<15){
-                    dbInsertCamData.personOID = 40001+i;
+                    dbInsertCamData.personOID = 4000001+i;
                     dbInsertCamData.zoneId = zoneObject.zone_id;
                 }
                 else{
