@@ -17,8 +17,8 @@ var cronJobForPosData = require("./jobs/PosDataGenerationJob");
 var possimulator = require("./routes/posSimulator/index");
 var checkout = require("./routes/checkout/index");
 
-cronJobForAPClients.clientsJob();
-cronJobForPosData.posJob();
+//cronJobForAPClients.clientsJob();
+//cronJobForPosData.posJob();
 
 // cronJobForMerakiCamData.cameraJob();
 var app = express();
