@@ -10,7 +10,7 @@ import imutils
 import datetime
 
 
-camera = cv2.VideoCapture('../data/custom_video/24.mp4')
+camera = cv2.VideoCapture('../data/custom_video/12.mp4')
 
 # initialize the first frame in the video stream
 firstFrame = None
@@ -27,7 +27,7 @@ while True:
         break
 
     # resize the frame, convert it to grayscale, and blur it
-    frame = imutils.resize(frame, width=720)
+    frame = imutils.resize(frame, width=1920)
     current_image_path = "../data/FrameFromVideo" + "/" + str(count)+".jpg"
     
     count = count + 1  
