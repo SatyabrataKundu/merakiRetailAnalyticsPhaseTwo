@@ -162,4 +162,94 @@ router.get("/currentVisitorCount", function (req, res) {
 });
 
 
+
+router.get("/historicalDataByCamera", function (req, res) {
+    let pattern = req.query.pattern || 'today';
+    if (pattern == 'today') {
+        var datetime = new Date();
+        let date = dateFormat(datetime, "yyyy-mm-dd");
+        db.any("select count (distinct (person_oid)), dateformat_hour  as timeRange from meraki.visitor_predictions where dateformat_date ='" + date + "' group by dateformat_hour")
+            .then(function (result) {
+                console.log("db select success for date ", result);
+                res.status(200).send(result);
+
+            })
+            .catch(function (err) {
+                console.log("not able to get connection " + err);
+                res.status(500).send(JSON.stringify(err.message));
+            });
+    } else if (pattern == 'yesterday') {
+        var datetime = new Date();
+        datetime.setDate(datetime.getDate() - 1);
+        let date = dateFormat(datetime, "yyyy-mm-dd");
+
+        db.any("select count (distinct (person_oid)), dateformat_hour as timeRange from meraki.visitor_predictions where dateformat_date ='" + date + "' group by dateformat_hour")
+            .then(function (result) {
+                console.log("db select success for date ", result);
+                res.status(200).send(result);
+
+            })
+            .catch(function (err) {
+                console.log("not able to get connection " + err);
+                res.status(500).send(JSON.stringify(err.message));
+            });
+    } else if (pattern == 'this week') {
+        let weekValue = dateFormat(datetime, "W");
+        let yearValue = dateFormat(datetime, "yyyy");
+        db.any("select count (distinct (person_oid)), dateformat_date as timeRange from meraki.visitor_predictions where dateformat_week =" + weekValue + " and dateformat_year = "+ yearValue +" group by dateformat_date")
+            .then(function (result) {
+                console.log("db select success for date ", result);
+                res.status(200).send(result);
+
+            })
+            .catch(function (err) {
+                console.log("not able to get connection " + err);
+                res.status(500).send(JSON.stringify(err.message));
+            });
+    } else if (pattern == 'last week') {
+        let weekValue = dateFormat(datetime, "W");
+        let yearValue = dateFormat(datetime, "yyyy");
+
+        weekValue = weekValue - 1;
+        db.any("select count (distinct (person_oid)), dateformat_date as timeRange from meraki.visitor_predictions where dateformat_week =" + weekValue + " and dateformat_year = "+ yearValue +" group by dateformat_date")
+            .then(function (result) {
+                console.log("db select success for date ", result);
+                res.status(200).send(result);
+
+            })
+            .catch(function (err) {
+                console.log("not able to get connection " + err);
+                res.status(500).send(JSON.stringify(err.message));
+            });
+    } else if (pattern == 'this month') {
+        let monthValue = dateFormat(datetime, "m");
+        console.log(monthValue);
+        db.any("select count (distinct (person_oid)),CONCAT('week ',dateformat_week) as timeRange  from meraki.visitor_predictions where dateformat_month =" + monthValue + " group by dateformat_week")
+            .then(function (result) {
+                console.log("db select success for date ", result);
+                res.status(200).send(result);
+
+            })
+            .catch(function (err) {
+                console.log("not able to get connection " + err);
+                res.status(500).send(JSON.stringify(err.message));
+            });
+    } else if (pattern == 'last month') {
+        let monthValue = dateFormat(datetime, "m");
+        monthValue = monthValue - 1;
+        console.log(monthValue);
+        db.any("select count (distinct (person_oid)),CONCAT('week ',dateformat_week) as timeRange  from meraki.visitor_predictions where dateformat_month =" + monthValue + " group by dateformat_week")
+            .then(function (result) {
+                console.log("db select success for date ", result);
+                res.status(200).send(result);
+
+            })
+            .catch(function (err) {
+                console.log("not able to get connection " + err);
+                res.status(500).send(JSON.stringify(err.message));
+            });
+    }
+
+});
+
 module.exports = router;

@@ -71,7 +71,6 @@ router.get("/", function (req, res) {
             let minuteValue = dateFormat(datetime, "M");
             let day_of_week = dateFormat(datetime, "dddd");
 
-    
             let dbInsertCamData = {};
             dbInsertCamData.ts = ts;
             dbInsertCamData.dateFormat_date = formattedDateString;
@@ -182,9 +181,9 @@ function _performDBInsert(dbInsertCamData) {
             + dbInsertCamData.dateFormat_hour + ","
             + dbInsertCamData.dateFormat_minute + ","
             + dbInsertCamData.rush_hour + ","
-            + dbInsertCamData.shop_closed + ","
+            + dbInsertCamData.shop_closed + ",'"
             + dbInsertCamData.day_of_week
-            + ")";
+            + "')";
 
         db.none(insertQueryForDB)
             .then(function (response) {
@@ -205,7 +204,6 @@ router.post("/clients", function(req, res){
     var zoneId = req.body.zoneId;
     var timeRange = req.body.timeRange || "today";
    
-
     console.log('Value of zone id is ',zoneId);
     console.log('value of time range is ',timeRange);
     
@@ -214,7 +212,7 @@ router.post("/clients", function(req, res){
         let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
 
         let selectDataQuery = "select count(person_oid) as detected_clients , dateformat_hour as timeRange"
-        +" from meraki.camera_detections "
+        +" from meraki.visitor_predictions "
         +" where zoneid="+zoneId
         +" and dateformat_date='"+formattedDateString
         +"' group by dateformat_hour order by dateformat_hour";
@@ -237,7 +235,7 @@ router.post("/clients", function(req, res){
         let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
 
         let selectDataQuery = "select count(person_oid) as detected_clients , dateformat_hour as timeRange"
-        +" from meraki.camera_detections "
+        +" from meraki.visitor_predictions "
         +" where zoneid="+zoneId
         +" and dateformat_date='"+formattedDateString
         +"' group by dateformat_hour order by dateformat_hour";
@@ -256,11 +254,12 @@ router.post("/clients", function(req, res){
     else if (timeRange === "this week"){
         let datetime = new Date();
         let weekValue = dateFormat(datetime, "W");
-
+        let yearValue = dateFormat(datetime, "yyyy");
         let selectDataQuery = "select count(person_oid) as detected_clients , dateformat_date as timeRange"
-        +" from meraki.camera_detections "
+        +" from meraki.visitor_predictions "
         +" where zoneid="+zoneId
         +" and dateformat_week="+weekValue
+        +" and dateformat_year="+yearValue
         +" group by dateformat_date order by dateformat_date";
         db.any(selectDataQuery)
         .then(function (result) {
@@ -277,11 +276,13 @@ router.post("/clients", function(req, res){
     else if (timeRange === "last week"){
         let datetime = new Date();
         let weekValue = dateFormat(datetime, "W") -1;
+        let yearValue = dateFormat(datetime, "yyyy");
 
         let selectDataQuery = "select count(person_oid) as detected_clients , dateformat_date as timeRange"
-        +" from meraki.camera_detections "
+        +" from meraki.visitor_predictions "
         +" where zoneid="+zoneId
         +" and dateformat_week="+weekValue
+        +" and dateformat_year="+yearValue
         +" group by dateformat_date order by dateformat_date";
         db.any(selectDataQuery)
         .then(function (result) {
@@ -298,10 +299,12 @@ router.post("/clients", function(req, res){
     else if (timeRange === "this month"){
         let datetime = new Date();
         let monthValue = dateFormat(datetime, "m");
+        let yearValue = dateFormat(datetime, "yyyy");
         let selectDataQuery = "select count(person_oid) as detected_clients , dateformat_week as timeRange"
-        +" from meraki.camera_detections "
+        +" from meraki.visitor_predictions "
         +" where zoneid="+zoneId
         +" and dateformat_month="+monthValue
+        +" and dateformat_year="+yearValue
         +" group by dateformat_week order by dateformat_week";
         db.any(selectDataQuery)
         .then(function (result) {
@@ -318,10 +321,12 @@ router.post("/clients", function(req, res){
     else if (timeRange === "last month"){
         let datetime = new Date();
         let monthValue = dateFormat(datetime, "m") -1;
+        let yearValue = dateFormat(datetime, "yyyy");
         let selectDataQuery = "select count(person_oid) as detected_clients , dateformat_week as timeRange"
-        +" from meraki.camera_detections "
+        +" from meraki.visitor_predictions "
         +" where zoneid="+zoneId
         +" and dateformat_month="+monthValue
+        +" and dateformat_year="+yearValue
         +" group by dateformat_week order by dateformat_week";
         db.any(selectDataQuery)
         .then(function (result) {
@@ -460,7 +465,6 @@ router.post("/datasetgen", function (req, res) {
             dbInsertCamData.dateFormat_minute = minuteValue;
             dbInsertCamData.rush_hour = false;
             dbInsertCamData.shop_closed = false;
-            dbInsertCamData.day_of_week = dayStringValue;
     
             var numberOfPeopleDetected = 0;
             if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
