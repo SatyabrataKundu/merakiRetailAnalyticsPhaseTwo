@@ -64,7 +64,7 @@ export class ChartdataService {
   }
 
   getChartData(){
-    return this.http.get('http://localhost:4004/api/v0/meraki/scanning/visitorPattern?pattern='+this.granularity)
+    return this.http.get('http://localhost:4004/api/v0/meraki/scanning/historicalDataByCamera?pattern='+this.granularity)
     .pipe(map((res:Response) => {
       return res;
     }))
