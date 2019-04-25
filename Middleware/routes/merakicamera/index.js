@@ -69,6 +69,8 @@ router.get("/", function (req, res) {
             let dayValue = dateFormat(datetime, "d");
             let hourValue = dateFormat(datetime, "H");
             let minuteValue = dateFormat(datetime, "M");
+            let day_of_week = dateFormat(datetime, "dddd");
+
     
             let dbInsertCamData = {};
             dbInsertCamData.ts = ts;
@@ -79,6 +81,7 @@ router.get("/", function (req, res) {
             dbInsertCamData.dateFormat_day = dayValue;
             dbInsertCamData.dateFormat_hour = hourValue;
             dbInsertCamData.dateFormat_minute = minuteValue;
+            dbInsertCamData.day_of_week = day_of_week;
 
             console.log('dbInsertCamData',dbInsertCamData);
     
@@ -164,7 +167,7 @@ function _performDBInsert(dbInsertCamData) {
             + "dateformat_hour, "
             + "dateformat_minute,"
             + "rush_hour,"
-            + "shop_closed"
+            + "shop_closed,"
             + "day_of_week"
             + ")"
             + " VALUES ("
