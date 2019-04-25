@@ -1,7 +1,7 @@
 <annotation>
-	<folder>OriginalImages</folder>
+	<folder>Image_7thIteration</folder>
 	<filename>11074.jpg</filename>
-	<path>C:\Users\pratik_bangal\Desktop\Meraki\Labelling\Monday_22April\OriginalImages\11074.jpg</path>
+	<path>D:\merakiRetailAnalyticsPhaseTwo\gun detection python\TensorFlow\Data\Image_7thIteration\11074.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -19,8 +19,8 @@
 		<bndbox>
 			<xmin>1004</xmin>
 			<ymin>298</ymin>
-			<xmax>1292</xmax>
-			<ymax>595</ymax>
+			<xmax>1249</xmax>
+			<ymax>596</ymax>
 		</bndbox>
 	</object>
 </annotation>

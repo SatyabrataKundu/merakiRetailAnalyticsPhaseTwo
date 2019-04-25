@@ -1,7 +1,7 @@
 <annotation>
-	<folder>temp</folder>
+	<folder>Image_7thIteration</folder>
 	<filename>10670.jpg</filename>
-	<path>D:\merakiRetailAnalyticsPhaseTwo\gun detection python\TensorFlow\Data\temp\10670.jpg</path>
+	<path>D:\merakiRetailAnalyticsPhaseTwo\gun detection python\TensorFlow\Data\Image_7thIteration\10670.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -12,26 +12,14 @@
 	</size>
 	<segmented>0</segmented>
 	<object>
-		<name>gun</name>
-		<pose>Unspecified</pose>
-		<truncated>0</truncated>
-		<difficult>0</difficult>
-		<bndbox>
-			<xmin>1206</xmin>
-			<ymin>287</ymin>
-			<xmax>1306</xmax>
-			<ymax>351</ymax>
-		</bndbox>
-	</object>
-	<object>
 		<name>knife</name>
 		<pose>Unspecified</pose>
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>1208</xmin>
-			<ymin>292</ymin>
-			<xmax>1304</xmax>
+			<xmin>1211</xmin>
+			<ymin>291</ymin>
+			<xmax>1302</xmax>
 			<ymax>346</ymax>
 		</bndbox>
 	</object>
