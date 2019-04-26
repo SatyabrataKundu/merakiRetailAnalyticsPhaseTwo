@@ -4,6 +4,7 @@ var dateFormat = require("dateformat");
 var promise = require("bluebird");
 var config = require("config");
 var rn = require('random-number');
+var path = require('path');
 
 var dbOptions = {
     // Initialization Options
@@ -15,12 +16,13 @@ router.get("/getimage",function(req,res){
 
     var gen = rn.generator({
         min: 1,
-        max: 660,
+        max: 2289,
         integer: true
     })
 
     let fileName = gen() + ".jpg";
-    let filePath = "D:/MERAKI-RETAIL-ANALYTICS-PHASE2/FROM_VM/Third_Iteration/images/" + fileName;
+    var raltivePath =  path.join(__dirname, '..','..','..');
+    let filePath = raltivePath+"/gun detection python/TensorFlow/Data/Image_6thIteration/" + fileName;
     res.sendFile(filePath);
 })
 var connectionString = "postgres://" + config.get("environment.merakiConfig.dbUserName") + ":" +
