@@ -15,8 +15,9 @@ let dateArray = getDates(startDate, stopDate);
 dateArray.forEach(function (dateValue) {
     for (hourValue = 2; hourValue <= 16; hourValue++) {
         let tempDateForEachHour = new Date(dateValue.getTime() + (hourValue * 60 * 60 * 1000));
-        for (i = 0; i < 6; i++) {
-            let tempDateForEachMinute = tempDateForEachHour.getTime() + (i*10 * 60 * 1000);
+       // for (i = 0; i < 6; i++) {
+            let tempDateForEachMinute = tempDateForEachHour.getTime() 
+            //+ (i*10 * 60 * 1000);
             let tempDate = new Date(tempDateForEachMinute);
             console.log('Per minute date ', tempDate);
 
@@ -42,7 +43,7 @@ dateArray.forEach(function (dateValue) {
             });
 
 
-        }
+     //   }
 
     }
 });

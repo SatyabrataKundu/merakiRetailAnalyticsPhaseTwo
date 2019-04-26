@@ -10,13 +10,14 @@
         "expressPort": 4004,
         "apclientsJobTimer" : "*/10 * * * *",
         "posJobTimer" : "*/10 * * * *",
-        "mvCameraJobTimer" : "*/10 * * * *"
+        "mvCameraJobTimer" : "*/10 * * * *",
+        "snapshotTimer" : "*/10 * * * *"
       }
     },
     "simulator": {
       "datasetup" :{
         "startDate" : "2018-1-01",
-        "stopDate" :  "2018-1-10",
+        "stopDate" :  "2018-1-31",
         "url" : "http://localhost:4004/api/v0/meraki/camera/datasetgen"
       },
       "checkout" :{
@@ -45,7 +46,8 @@
         "furnitureZoneId" : 6,
         "electronicsZoneId" : 7,
         "exitZoneId" : 8,
-        "fetchCameraDetectionsApi" : "http://localhost:4004/api/v0/meraki/camera/"
+        "fetchCameraDetectionsApi" : "http://localhost:4004/api/v0/meraki/camera/",
+        "getSnapshotImage" : "http://localhost:4004/api/v0/meraki/checkout/getimage"
       }
 
     }
