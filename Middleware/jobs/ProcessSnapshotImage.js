@@ -3,11 +3,11 @@ var config = require("config");
 var Request = require("request");
 var fs = require('fs');
 var promise = require("bluebird");
-
+var sys   = require('sys');
 // Use child_process.spawn method from  
 // child_process module and assign it 
 // to variable spawn 
-var spawn = require("child_process").spawn;
+const { spawn } = require('child_process');
 
 
 var imageJob = function ImageDetectionJob() {
@@ -22,10 +22,10 @@ var imageJob = function ImageDetectionJob() {
         console.log("DOWNLOAD DONE.")
 
          //POST call to scanning api method to perform logic and db insertion.
-         _callPythonImageProcessing().then(function (result) {
-          console.log("RESULT OF PROMISE ",result);
+         runPy.then(function(fromRunpy) {
+          console.log('Response from promise ',JSON.stringify(fromRunpy));
+        
       });
-
 
       });
     });
@@ -34,23 +34,24 @@ var imageJob = function ImageDetectionJob() {
 }
 
   
-function _callPythonImageProcessing(){
-  return new Promise(function (fulfill, reject) {
+let runPy  =
+   new Promise(function (fulfill, reject) {
     console.log('Inside promise');
-    var process = spawn('python',["./../gun detection python/TensorFlow/models/research/object_detection/Object_detection_image.py.py", "./image-snapshot.jpg"] ); 
-    if(process === undefined){
-      let err = {}
-      err.message = 'Process is undefined';
-      reject(err);
-    }
+    var process = spawn('python',["D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/gun detection python/TensorFlow/models/research/object_detection/Object_detection_image.py", "image-snapshot.jpg"] ); 
+    process.stderr.on('data', (data) => {
+
+      reject(data);
+  });
+  
     let returnData = {};
     returnData.isGunDetected = "true";
-    fulfill(returnData);
+    
     process.stdout.on('data', function(data) { 
       console.log('---------------------DATA----------------------------',data.toString());
   } ) 
+  fulfill(returnData);
  });
-}
+
 
 
 module.exports.snapshotApi = imageJob;

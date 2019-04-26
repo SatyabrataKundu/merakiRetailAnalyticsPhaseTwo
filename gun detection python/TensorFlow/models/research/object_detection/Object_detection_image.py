@@ -21,9 +21,10 @@ import cv2
 import numpy as np
 import tensorflow as tf
 import sys
-
+print('IN PYTHON FILE')
 # This is needed since the notebook is stored in the object_detection folder.
 sys.path.append("..")
+os.chdir("D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/gun detection python/TensorFlow/models/research/object_detection/")
 
 # Import utilites
 from utils import label_map_util
@@ -32,7 +33,7 @@ from utils import visualization_utils as vis_util
 # Name of the directory containing the object detection module we're using
 MODEL_NAME = 'inference_graph'
 IMAGE_NAME = sys.argv[1]
-print('Name of the Image: ',IMAGE_NAME)
+#print('Name of the Image: ',IMAGE_NAME)
 
 # Grab path to current working directory
 CWD_PATH = os.getcwd()
@@ -40,6 +41,7 @@ CWD_PATH = os.getcwd()
 # Path to frozen detection graph .pb file, which contains the model that is used
 # for object detection.
 PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,'frozen_inference_graph.pb')
+#print('path to inference graph pb  ',PATH_TO_CKPT)
 
 # Path to label map file
 PATH_TO_LABELS = os.path.join(CWD_PATH,'inference_graph','labelmap.pbtxt')
@@ -110,13 +112,13 @@ vis_util.visualize_boxes_and_labels_on_image_array(
     line_thickness=8,
     min_score_thresh=0.99)
 final_score = np.squeeze(scores)
-print(scores)
-print(category_index)
+#print('scores :',scores)
+#print('category_index: ',category_index)
 isGunDetected=False
 for i in range(100):
  if scores is None or final_score[i] > 0.99:
   isGunDetected=True
-print(isGunDetected)
+print('GUN DETECTED : ',isGunDetected)
 # All the results have been drawn on image. Now display the image.
 #cv2.imshow('Object detector', image)
 
