@@ -6,6 +6,7 @@
   "dependencies": {
     "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
+    "child-process": "^1.0.2",
     "config": "^3.0.1",
     "cors": "^2.8.5",
     "date-and-time": "^0.6.3",
@@ -20,6 +21,7 @@
     "nodemon": "^1.18.9",
     "pg": "^7.8.0",
     "pg-promise": "^8.5.5",
+    "python-shell": "^1.0.7",
     "random-number": "0.0.9",
     "request": "^2.88.0"
   },
