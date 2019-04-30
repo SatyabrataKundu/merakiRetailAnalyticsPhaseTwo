@@ -16,19 +16,16 @@ var connectionString = "postgres://" + config.get("environment.merakiConfig.dbUs
 var db = pgp(connectionString);
 
 router.get("/", function (req, res) {
-
     var responseObject = {};
     var dataList = [];
     var zoneList = [];
 
+    let dateValue = req.body.tsValue;
 
     var selectQuery = "select zone_id, zone_name from meraki.meraki_zones";
     db.any(selectQuery)
     .then(function (result) {
-        console.log("db select success for date ", result);
         result.forEach(function (zoneObject) {
-
-            console.log("zoneobject ",zoneObject)
             //Generate number of clients. 
             var gen1 = rn.generator({
                 min: 0,
@@ -69,8 +66,11 @@ router.get("/", function (req, res) {
             let dayValue = dateFormat(datetime, "d");
             let hourValue = dateFormat(datetime, "H");
             let minuteValue = dateFormat(datetime, "M");
-            let day_of_week = dateFormat(datetime, "dddd");
+            let dayStringValue = dateFormat(datetime, "dddd");
 
+            console.log('DAY OF THE WEEK ', dayStringValue);
+            console.log('HOUR OF THE DAY IS ',hourValue);
+      
             let dbInsertCamData = {};
             dbInsertCamData.ts = ts;
             dbInsertCamData.dateFormat_date = formattedDateString;
@@ -80,9 +80,8 @@ router.get("/", function (req, res) {
             dbInsertCamData.dateFormat_day = dayValue;
             dbInsertCamData.dateFormat_hour = hourValue;
             dbInsertCamData.dateFormat_minute = minuteValue;
-            dbInsertCamData.day_of_week = day_of_week;
-
-            console.log('dbInsertCamData',dbInsertCamData);
+            dbInsertCamData.rush_hour = false;
+            dbInsertCamData.shop_closed = false;
     
             var numberOfPeopleDetected = 0;
             if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
@@ -106,35 +105,54 @@ router.get("/", function (req, res) {
             else{
                 numberOfPeopleDetected = 15+ gen1();
             }
+
+            if(dayStringValue === 'Sun' || dayStringValue === 'Sat'){
+                console.log('ITS WEEEKEND');
+
+                numberOfPeopleDetected = numberOfPeopleDetected+4;
+
+            }
+            if(hourValue == 18 || hourValue == 19){
+                numberOfPeopleDetected = numberOfPeopleDetected + 3;
+                dbInsertCamData.rush_hour = true;
+                console.log('HOUR IS 18 SO ADDING 10 TO THE NUMBEROFPEOPLEDETECTED, ',numberOfPeopleDetected);
+            }
+
+            if(hourValue >= 23 || hourValue <= 7){
+                dbInsertCamData.shop_closed = true;
+            }
+
+            // console.log('NUMBER OF PEOPLE DETECTED ARE ',numberOfPeopleDetected);
+            // numberOfPeopleDetected = numberOfPeopleDetected + 20;
+          
             for (i = 0; i < numberOfPeopleDetected; i++) {
                 var genOID = rn.generator({
-                    min: 1000,
-                    max: 9999,
+                    min: 100000,
+                    max: 999999,
                     integer: true
                 })
                 if(zoneObject.zone_id === 8  && i<20  ){
-                    dbInsertCamData.personOID = 10001+i;
+                    dbInsertCamData.personOID = 1000001+i;
                     dbInsertCamData.zoneId = zoneObject.zone_id;
                 }
                 if(zoneObject.zone_id === 11 && i<20  ){
-                    dbInsertCamData.personOID = 20001+i;
+                    dbInsertCamData.personOID = 2000001+i;
                     dbInsertCamData.zoneId = zoneObject.zone_id;
                 }
                 else if(zoneObject.zone_id === 9 && i<15){
-                    dbInsertCamData.personOID = 30001+i;
+                    dbInsertCamData.personOID = 3000001+i;
                     dbInsertCamData.zoneId = zoneObject.zone_id;
                 }
                 else if(zoneObject.zone_id === 10 && i<15){
-                    dbInsertCamData.personOID = 40001+i;
+                    dbInsertCamData.personOID = 4000001+i;
                     dbInsertCamData.zoneId = zoneObject.zone_id;
                 }
                 else{
                     dbInsertCamData.personOID = genOID();
                     dbInsertCamData.zoneId = zoneObject.zone_id;
-                }
-                 _performDBInsert(dbInsertCamData);
+                 }
+                _performDBInsert(dbInsertCamData);
                 dataList.push(dbInsertCamData);
-                console.log('value of datalist is ',dataList);
             }
         });
 
@@ -143,10 +161,6 @@ router.get("/", function (req, res) {
         console.log("not able to get connection " + err);
       
     });
-
-
- 
-
     responseObject.status = "SUCCESS";
     res.status(200).send(responseObject);
 });
@@ -371,7 +385,7 @@ router.get("/currentVisitorsPerZone", function (req, res) {
     +" on cam.zoneid = zones.zone_id and  "
     +" cam.dateformat_date = '"+formattedDateString+"' and cam.dateformat_hour="+hourValue 
     +" and cam.dateformat_minute= (select dateformat_minute from meraki.visitor_predictions "
-    +" order by unique_camera_detection_key desc LIMIT 1 ) "
+    +" order by datetime desc LIMIT 1 ) "
     +" where  zones.zone_name not like 'Checkout%'"	
     +" group by zones.zone_id, zones.zone_name";
 
@@ -381,7 +395,7 @@ router.get("/currentVisitorsPerZone", function (req, res) {
     +" cam.dateformat_date = '"+formattedDateString+"' and cam.dateformat_hour="+hourValue 
     +" and  zones.zone_name like 'Checkout%'"
     +" and cam.dateformat_minute= (select dateformat_minute from meraki.visitor_predictions "
-    +" order by unique_camera_detection_key desc LIMIT 1 ) ";
+    +" order by datetime desc LIMIT 1 ) ";
 
     var finalSelect = selectQuery + " UNION ALL " + checkoutSelectQuery;
     db.any(finalSelect)

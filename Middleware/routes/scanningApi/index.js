@@ -148,7 +148,9 @@ router.get("/currentVisitorCount", function (req, res) {
     +" from meraki.visitor_predictions where "
     +" dateformat_date = '"+formattedDateString+"' and dateformat_hour="+hourValue 
     +" and dateformat_minute= (select dateformat_minute from meraki.visitor_predictions "
-    +" order by unique_camera_detection_key desc LIMIT 1 ) 	";
+    +" order by datetime desc LIMIT 1 ) 	";
+
+    console.log('CURRENT VISITORS  ',selectQuery)
     db.any(selectQuery)
         .then(function (result) {
             console.log("db select success for date ", result);
