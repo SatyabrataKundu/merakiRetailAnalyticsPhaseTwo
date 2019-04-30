@@ -33,6 +33,8 @@ def dailyPredictions():
     totalValues = len(valueList)
     print(totalValues)
 
+    ts_log = np.log(valueList)
+
     x = valueList
     train = x[0:(math.ceil(totalValues*.8))]
     test = x[(math.ceil(totalValues*.8)):]
