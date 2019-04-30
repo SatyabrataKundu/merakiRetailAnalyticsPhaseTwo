@@ -23,6 +23,9 @@ export class StackedBarChartComponent implements OnInit {
     data: []
   }
 
+  predictedArray : any = []
+  currentArray : any = []
+
   // {
   //   label: 'Current',
   //   data: [41, 11, 24, 54, 70, 57, 27,41, 11, 24, 54, 70, 57, 27,41, 11, 24, 54, 70, 57, 27] 
@@ -38,7 +41,7 @@ export class StackedBarChartComponent implements OnInit {
   ];
 
   public chartType: string = "bar";
-  public chartLabels = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  public chartLabels = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
   public chartData = [];
 
@@ -62,13 +65,15 @@ export class StackedBarChartComponent implements OnInit {
       yAxes: [
         {
           display: true,
-          stepSize: 1,
+          stepSize: 3,
           gridLines: {
             drawOnChartArea: true
           },
           ticks: {
-            maxTicksLimit: 8,
-            beginAtZero: true
+            maxTicksLimit: 2,
+            beginAtZero: false,
+            max: 800,
+            min: 700
           },
         }
       ]
@@ -92,19 +97,29 @@ export class StackedBarChartComponent implements OnInit {
   //     })
   // }
 
-  // updateChart(data, labels) {
-  //   this.chartData = data;
-  //   this.chartLabels = labels;
-  // }
+  updateChart(currentData, predictedData) {
+    this.chartData.push(currentData)
+    this.chartData.push(predictedData)
+  }
 
   ngOnInit() {
-    
-    for(var i=0;i<22;i++){
-      this.current["data"].push(i)
-      this.predicted["data"].push(i*i)
-    }
 
-    this.chartData.push(this.current)
-    this.chartData.push(this.predicted)
+    this.http.get('http://localhost:4004/api/v0/meraki/camera/dailyPredictions')
+    .subscribe(res => {
+      this.predictedArray = res
+      for(let i of this.predictedArray){
+        this.predicted["data"].push(i.predicted)
+      }
+    })
+
+    this.http.get('http://localhost:4004/api/v0/meraki/scanning/historicalDataByCamera?pattern=this%20week')
+    .subscribe(res => {
+      this.currentArray = res
+      for(let i of this.currentArray){
+        this.current["data"].push(i.count)
+      }
+    })
+    
+    this.updateChart(this.current, this.predicted);
 }
 }

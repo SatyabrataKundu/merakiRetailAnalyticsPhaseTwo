@@ -49,14 +49,16 @@ export class ChartsComponent implements OnInit {
 
   current={
     label: 'current',
-    data: []
+    data: [],
+    type: 'line'
   }
 
   predicted={
     label: 'predicted',
-    data: []
+    data: [],
+    type: 'line'
   }
-  public chartType: string = "bar";
+  public chartType: string = "line";
   public chartLabels: Array<any> = [];
   public chartData: Array<number> = [];
   public colorOptions: Array<any> = [
