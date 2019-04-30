@@ -367,20 +367,20 @@ router.get("/currentVisitorsPerZone", function (req, res) {
     let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
     let hourValue = dateFormat(datetime, "H");
 
-    var selectQuery = "SELECT COUNT(DISTINCT(cam.person_oid)), zones.zone_id , zones.zone_name from meraki.meraki_zones zones left join meraki.camera_detections cam "
+    var selectQuery = "SELECT COUNT(DISTINCT(cam.person_oid)), zones.zone_id , zones.zone_name from meraki.meraki_zones zones left join meraki.visitor_predictions cam "
     +" on cam.zoneid = zones.zone_id and  "
     +" cam.dateformat_date = '"+formattedDateString+"' and cam.dateformat_hour="+hourValue 
-    +" and cam.dateformat_minute= (select dateformat_minute from meraki.camera_detections "
+    +" and cam.dateformat_minute= (select dateformat_minute from meraki.visitor_predictions "
     +" order by unique_camera_detection_key desc LIMIT 1 ) "
     +" where  zones.zone_name not like 'Checkout%'"	
     +" group by zones.zone_id, zones.zone_name";
 
     var checkoutSelectQuery = "SELECT COUNT(DISTINCT(cam.person_oid)), 15 , 'Checkout'"
-    +" from meraki.camera_detections cam, meraki.meraki_zones zones where "
+    +" from meraki.visitor_predictions cam, meraki.meraki_zones zones where "
     +" cam.zoneid = zones.zone_id and  "
     +" cam.dateformat_date = '"+formattedDateString+"' and cam.dateformat_hour="+hourValue 
     +" and  zones.zone_name like 'Checkout%'"
-    +" and cam.dateformat_minute= (select dateformat_minute from meraki.camera_detections "
+    +" and cam.dateformat_minute= (select dateformat_minute from meraki.visitor_predictions "
     +" order by unique_camera_detection_key desc LIMIT 1 ) ";
 
     var finalSelect = selectQuery + " UNION ALL " + checkoutSelectQuery;
@@ -507,6 +507,7 @@ router.post("/datasetgen", function (req, res) {
 
             // console.log('NUMBER OF PEOPLE DETECTED ARE ',numberOfPeopleDetected);
             // numberOfPeopleDetected = numberOfPeopleDetected + 20;
+          
             for (i = 0; i < numberOfPeopleDetected; i++) {
                 var genOID = rn.generator({
                     min: 100000,

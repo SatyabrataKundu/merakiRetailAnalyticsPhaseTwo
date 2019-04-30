@@ -14,15 +14,15 @@ var cronJobForMerakiCamData = require("./jobs/MVCameraDataJob");
 
 var scanningsimulator = require("./routes/scanningsimulator/index");
 var cronJobForPosData = require("./jobs/PosDataGenerationJob");
-var cronJobForImageDetection = require("./jobs/ProcessSnapshotImage");
+// var cronJobForImageDetection = require("./jobs/ProcessSnapshotImage");
 
 var possimulator = require("./routes/posSimulator/index");
 var checkout = require("./routes/checkout/index");
 
-//cronJobForAPClients.clientsJob();
-//cronJobForPosData.posJob();
-cronJobForImageDetection.snapshotApi();
-// cronJobForMerakiCamData.cameraJob();
+cronJobForAPClients.clientsJob();
+cronJobForPosData.posJob();
+//cronJobForImageDetection.snapshotApi();
+cronJobForMerakiCamData.cameraJob();
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

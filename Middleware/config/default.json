@@ -11,13 +11,13 @@
         "apclientsJobTimer" : "*/10 * * * *",
         "posJobTimer" : "*/10 * * * *",
         "mvCameraJobTimer" : "*/10 * * * *",
-        "snapshotTimer" : "*/10 * * * * *"
+        "snapshotTimer" : "*/10 * * * *"
       }
     },
     "simulator": {
       "datasetup" :{
-        "startDate" : "2018-1-01",
-        "stopDate" :  "2018-1-31",
+        "startDate" : "2018-3-29",
+        "stopDate" :  "2018-3-29",
         "url" : "http://localhost:4004/api/v0/meraki/camera/datasetgen"
       },
       "checkout" :{
