@@ -12,7 +12,7 @@ CREATE TABLE meraki.visitor_predictions
     dateformat_minute integer,
     rush_hour boolean,
     shop_closed boolean,
-    day_of_week character varying(10)
+    day_of_week character varying(10) COLLATE pg_catalog."default"
 )
 WITH (
     OIDS = FALSE
