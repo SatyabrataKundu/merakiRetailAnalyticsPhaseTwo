@@ -24,6 +24,7 @@ export class StackedBarChartComponent implements OnInit {
   }
 
   predictedArray : any = []
+  predictedArrayFiltered = []
   currentArray : any = []
 
   // {
@@ -43,7 +44,15 @@ export class StackedBarChartComponent implements OnInit {
   public chartType: string = "bar";
   public chartLabels = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
-  public chartData = [];
+  public chartData = [
+  {
+    label: 'current',
+    data: []
+  },
+  {
+    label: 'predicted',
+    data: []
+  }];
 
   public colorOptions: Array<any> = [
     {
@@ -108,7 +117,7 @@ export class StackedBarChartComponent implements OnInit {
     .subscribe(res => {
       this.predictedArray = res
       for(let i of this.predictedArray){
-        this.predicted["data"].push(i.predicted)
+        this.chartData[1]["data"].push(i.predicted)
       }
     })
 
@@ -116,10 +125,10 @@ export class StackedBarChartComponent implements OnInit {
     .subscribe(res => {
       this.currentArray = res
       for(let i of this.currentArray){
-        this.current["data"].push(i.count)
+        this.chartData[0]["data"].push(i.count)
       }
     })
     
-    this.updateChart(this.current, this.predicted);
+    console.log(this.chartData)
 }
 }
