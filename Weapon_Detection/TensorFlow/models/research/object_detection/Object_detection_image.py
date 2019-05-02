@@ -1,7 +1,7 @@
 ######## Image Object Detection Using Tensorflow-trained Classifier #########
 #
-# Author: Evan Juras
-# Date: 1/15/18
+# Author: satyabrata Kundu
+# Date: 2/5/19
 # Description: 
 # This program uses a TensorFlow-trained classifier to perform object detection.
 # It loads the classifier uses it to perform object detection on an image.
@@ -33,9 +33,15 @@ from utils import visualization_utils as vis_util
 
 # Name of the directory containing the object detection module we're using
 MODEL_NAME = 'inference_graph'
-IMAGE_NAME = sys.argv[1]
-print('Name of the Image: ',IMAGE_NAME)
-
+# Source of the image directory and name of the snapshot images
+SOURCE_IMAGE_PATH = sys.argv[1]
+IMAGE_NAME = sys.argv[2]
+CURRENT_IMAGE_PATH = str(SOURCE_IMAGE_PATH) + "/" + str(IMAGE_NAME)
+print('Name of the Image: ',CURRENT_IMAGE_PATH)
+# Distination of the image directory
+if len(sys.argv) > 3 :
+    DESTINATION_IMAGE_PATH = sys.argv[3]
+    print('Name of the Image: ',DESTINATION_IMAGE_PATH)
 # Grab path to current working directory
 CWD_PATH = os.getcwd()
 
@@ -48,7 +54,7 @@ PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,'frozen_inference_graph.pb')
 PATH_TO_LABELS = os.path.join(CWD_PATH,'inference_graph','labelmap.pbtxt')
 
 # Path to image
-PATH_TO_IMAGE = os.path.join(CWD_PATH,IMAGE_NAME)
+PATH_TO_IMAGE = os.path.join(CWD_PATH,CURRENT_IMAGE_PATH)
 
 # Number of classes the object detector can identify
 NUM_CLASSES = 6
@@ -111,18 +117,19 @@ vis_util.visualize_boxes_and_labels_on_image_array(
     category_index,
     use_normalized_coordinates=True,
     line_thickness=8,
-    min_score_thresh=0.85)
+    min_score_thresh=0.95)
 final_score = np.squeeze(scores)
 #print('scores :',scores)
 #print('category_index: ',category_index)
 isGunDetected=False
 for i in range(100):
- if scores is None or final_score[i] > 0.85:
+ if scores is None or final_score[i] > 0.95:
   isGunDetected=True
 print('GUN DETECTED : ',isGunDetected)
 
 # All the results have been drawn on image. Now display the image.
-if(isGunDetected) :
- cv2.imwrite("D:/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/Data/detected/"+ str(IMAGE_NAME.replace('D:/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/Data/Image_3rdIteration/','')),image)
+if len(sys.argv) > 3  :
+    if(isGunDetected) :
+        cv2.imwrite( DESTINATION_IMAGE_PATH + str(IMAGE_NAME),image)
 # Clean up
 cv2.destroyAllWindows()

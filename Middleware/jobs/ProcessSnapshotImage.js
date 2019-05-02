@@ -37,14 +37,14 @@ var imageJob = function ImageDetectionJob() {
 let runPy  =
    new Promise(function (fulfill, reject) {
     console.log('Inside promise');
-    var process = spawn('python',["D:/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/Object_detection_image.py", "image-snapshot.jpg"] ); 
+    var process = spawn('python',[config.get("environment.constants.homeDirectory")+"Weapon_Detection/TensorFlow/models/research/object_detection/Object_detection_image.py", "image-snapshot.jpg"] ); 
     process.stderr.on('data', (data) => {
 
       reject(data);
   });
   
     let returnData = {};
-    returnData.isGunDetected = "true";
+    //returnData.isGunDetected = "true";
     
     process.stdout.on('data', function(data) { 
       console.log('---------------------DATA----------------------------',data.toString());
