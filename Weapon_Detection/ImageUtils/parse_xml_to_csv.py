@@ -42,13 +42,13 @@ def main():
 
 	
     #for folder in ['train','test']:
-    for folder in ['D:/Semicolon/Phase 2/merakiRetailAnalyticsPhaseTwo/gun detection python/TensorFlow/Data/Neg']:
+    for folder in ['D:/Semicolon/Phase 2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/Data/Neg']:
         image_path = os.path.join(os.getcwd(), ('' + folder))
         xml_df = xml_to_csv(image_path)
 		
 		#saving dataframe as *.csv in 'images/' folder.
         #xml_df.to_csv(('images/' + folder + '_labels.csv'), index=None)
-        xml_df.to_csv(('D:/Semicolon/Phase 2/merakiRetailAnalyticsPhaseTwo/gun detection python/TensorFlow/Data/csv/' + "Negative" + '_labels.csv'), index=None)
+        xml_df.to_csv(('D:/Semicolon/Phase 2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/Data/csv/' + "Negative" + '_labels.csv'), index=None)
         print('Successfully converted xml to csv.')
 
 
