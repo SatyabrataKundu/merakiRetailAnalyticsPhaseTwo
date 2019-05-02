@@ -588,6 +588,26 @@ router.get("/dailyPredictions", function (req, res) {
     var diff = now - start;
     var day = Math.floor(diff / (1000 * 60 * 60 * 24));
     console.log('Day of year: ' + day);
+     let dayValue = dateFormat(now, "dddd");
+
+     if(dayValue === 'Tuesday'){
+         day = day -1
+     }
+     else if(dayValue === 'Wednesday'){
+         day = day - 2;
+     }
+     else if(dayValue === 'Thursday'){
+         day = day -3;
+     }
+     else if(dayValue === 'Friday'){
+         day = day -4;
+     }
+     else if(dayValue === 'Saturday'){
+         day = day -5;
+     }
+     else if(dayValue === 'Sunday'){
+         day = day -6
+     }
     
     var selectQuery = "select dateformat_day as day, count as predicted from meraki.daily_visitor_predictions where dateformat_day >"+ day;
     db.any(selectQuery)
@@ -749,4 +769,5 @@ router.get("/historicalDataByCamera", function (req, res) {
     }
 
 });
+
 module.exports = router;
