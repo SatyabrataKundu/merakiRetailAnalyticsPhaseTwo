@@ -104,7 +104,7 @@ export class DonutChartComponent implements OnInit {
       this.http.get('http://localhost:4004/api/v0/meraki/posSimulator/totalTransactions')
         .subscribe(res => {
           totalTransactions = res[0].count;
-          this.http.get('http://localhost:4004/api/v0/meraki/scanning/visitorCountByDate')
+          this.http.get('http://localhost:4004/api/v0/meraki/camera/visitorCountByDate')
             .subscribe(res => {
               totalVisitors = res[0].count;
               this.http.get('http://localhost:4004/api/v0/meraki/checkout/totalCheckoutZoneAbandonmentsToday')

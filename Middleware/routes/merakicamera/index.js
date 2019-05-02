@@ -618,4 +618,21 @@ router.get("/hourlyPredictions", function (req, res){
 
 
 
+router.get("/visitorCountByDate", function (req, res) {
+    var datetime = new Date();
+    let date = req.query.date || dateFormat(datetime, "yyyy-mm-dd");
+    console.log("value of date ", date);
+
+    db.any("select count (distinct (person_oid)) from meraki.visitor_predictions where dateformat_date ='" + date + "'")
+        .then(function (result) {
+            console.log("db select success for date ", result);
+            res.status(200).send(result);
+
+        })
+        .catch(function (err) {
+            console.log("not able to get connection " + err);
+            res.status(500).send(JSON.stringify(err.message));
+        });
+});
+
 module.exports = router;
