@@ -24,7 +24,7 @@ export class InformationCardsComponent implements OnInit {
     
     Observable
     timer(500, 1000 * 10).subscribe(() => {
-      this.http.get('http://localhost:4004/api/v0/meraki/scanning/currentVisitorCount')
+      this.http.get('http://localhost:4004/api/v0/meraki/camera/currentVisitorCount')
       .subscribe(res => {
         this.temp = res;
         this.currentVisitor = this.temp[0].visitor_count;
@@ -42,7 +42,7 @@ export class InformationCardsComponent implements OnInit {
         this.totalCheckouts = this.temp[0].count;
       })
 
-      this.http.get('http://localhost:4004/api/v0/meraki/scanning/visitorCountByDate')
+      this.http.get('http://localhost:4004/api/v0/meraki/camera/visitorCountByDate')
       .subscribe(res => {
         this.temp = res;
         this.totalVisitors = this.temp[0].count;

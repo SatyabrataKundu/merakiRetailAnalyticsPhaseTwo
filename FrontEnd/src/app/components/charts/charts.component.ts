@@ -281,7 +281,7 @@ export class ChartsComponent implements OnInit {
     })
 
 
-    this.http.get('http://localhost:4004/api/v0/meraki/scanning/historicalDataByCamera?pattern=today')
+    this.http.get('http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today')
     .subscribe(res => {
       this.chartData=[];
       this.visitorPatternInitData=res;
@@ -291,7 +291,7 @@ export class ChartsComponent implements OnInit {
       this.setChartData(this.chartData);
     })
 
-    this.http.get('http://localhost:4004/api/v0/meraki/scanning/historicalDataByCamera?pattern=today')
+    this.http.get('http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today')
     .subscribe(res => {
       this.chartLabels=[];
       this.visitorPatternInitData=res;

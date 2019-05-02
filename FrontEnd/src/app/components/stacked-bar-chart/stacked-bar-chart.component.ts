@@ -121,7 +121,7 @@ export class StackedBarChartComponent implements OnInit {
       }
     })
 
-    this.http.get('http://localhost:4004/api/v0/meraki/scanning/historicalDataByCamera?pattern=this%20week')
+    this.http.get('http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=this%20week')
     .subscribe(res => {
       this.currentArray = res
       for(let i of this.currentArray){
