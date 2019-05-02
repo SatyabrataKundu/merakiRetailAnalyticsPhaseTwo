@@ -46,11 +46,11 @@ export class StackedBarChartComponent implements OnInit {
 
   public chartData = [
   {
-    label: 'current',
+    label: 'Current Visitors',
     data: []
   },
   {
-    label: 'predicted',
+    label: 'Predicted Visitors',
     data: []
   }];
 
@@ -106,13 +106,14 @@ export class StackedBarChartComponent implements OnInit {
   //     })
   // }
 
-  updateChart(currentData, predictedData) {
-    this.chartData.push(currentData)
-    this.chartData.push(predictedData)
-  }
+  // updateChart(currentData, predictedData) {
+  //   this.chartData.push(currentData)
+  //   this.chartData.push(predictedData)
+  // }
 
   ngOnInit() {
 
+  
     this.http.get('http://localhost:4004/api/v0/meraki/camera/dailyPredictions')
     .subscribe(res => {
       this.predictedArray = res
@@ -123,6 +124,7 @@ export class StackedBarChartComponent implements OnInit {
 
     this.http.get('http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=this%20week')
     .subscribe(res => {
+      
       this.currentArray = res
       for(let i of this.currentArray){
         this.chartData[0]["data"].push(i.count)
