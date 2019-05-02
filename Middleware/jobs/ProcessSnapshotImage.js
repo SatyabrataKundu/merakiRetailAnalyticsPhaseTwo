@@ -37,7 +37,7 @@ var imageJob = function ImageDetectionJob() {
 let runPy  =
    new Promise(function (fulfill, reject) {
     console.log('Inside promise');
-    var process = spawn('python',["D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/gun detection python/TensorFlow/models/research/object_detection/Object_detection_image.py", "image-snapshot.jpg"] ); 
+    var process = spawn('python',["D:/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/Object_detection_image.py", "image-snapshot.jpg"] ); 
     process.stderr.on('data', (data) => {
 
       reject(data);

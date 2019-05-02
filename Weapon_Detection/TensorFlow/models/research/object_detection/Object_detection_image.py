@@ -24,16 +24,17 @@ import sys
 print('IN PYTHON FILE')
 # This is needed since the notebook is stored in the object_detection folder.
 sys.path.append("..")
-os.chdir("D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/gun detection python/TensorFlow/models/research/object_detection/")
+os.chdir("D:/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/")
 
-# Import utilites
+# Import utilitescls
+
 from utils import label_map_util
 from utils import visualization_utils as vis_util
 
 # Name of the directory containing the object detection module we're using
 MODEL_NAME = 'inference_graph'
 IMAGE_NAME = sys.argv[1]
-#print('Name of the Image: ',IMAGE_NAME)
+print('Name of the Image: ',IMAGE_NAME)
 
 # Grab path to current working directory
 CWD_PATH = os.getcwd()
@@ -110,20 +111,18 @@ vis_util.visualize_boxes_and_labels_on_image_array(
     category_index,
     use_normalized_coordinates=True,
     line_thickness=8,
-    min_score_thresh=0.99)
+    min_score_thresh=0.85)
 final_score = np.squeeze(scores)
 #print('scores :',scores)
 #print('category_index: ',category_index)
 isGunDetected=False
 for i in range(100):
- if scores is None or final_score[i] > 0.99:
+ if scores is None or final_score[i] > 0.85:
   isGunDetected=True
 print('GUN DETECTED : ',isGunDetected)
+
 # All the results have been drawn on image. Now display the image.
-#cv2.imshow('Object detector', image)
-
-# Press any key to close the image
-cv2.waitKey(0)
-
+if(isGunDetected) :
+ cv2.imwrite("D:/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/Data/detected/"+ str(IMAGE_NAME.replace('D:/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/Data/Image_3rdIteration/','')),image)
 # Clean up
 cv2.destroyAllWindows()
