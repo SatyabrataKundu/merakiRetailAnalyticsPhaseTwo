@@ -80,9 +80,7 @@ export class StackedBarChartComponent implements OnInit {
           },
           ticks: {
             maxTicksLimit: 2,
-            beginAtZero: false,
-            max: 800,
-            min: 700
+            beginAtZero: false
           },
         }
       ]
