@@ -19,6 +19,7 @@
       "datasetup" :{
         "startDate" : "2018-06-01",
         "stopDate" :  "2018-06-30",
+        "incremental" : 0,
         "url" : "http://localhost:4004/api/v0/meraki/camera/datasetgen",
         "datawithoutoid_url" : "http://localhost:4004/api/v0/meraki/camera/datasetnew"
       },
