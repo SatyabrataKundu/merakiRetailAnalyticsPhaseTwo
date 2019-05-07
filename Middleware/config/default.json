@@ -8,18 +8,19 @@
       },
       "constants": {
         "expressPort": 4004,
-        "homeDirectory":"D:/merakiRetailAnalyticsPhaseTwo/",
+        "homeDirectory":"D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/",
         "apclientsJobTimer" : "*/10 * * * *",
         "posJobTimer" : "*/10 * * * *",
         "mvCameraJobTimer" : "*/10 * * * *",
-        "snapshotTimer" : "*/10 * * * *"
+        "snapshotTimer" : "*/1 * * * *" 
       }
     },
     "simulator": {
       "datasetup" :{
-        "startDate" : "2018-3-29",
-        "stopDate" :  "2018-3-29",
-        "url" : "http://localhost:4004/api/v0/meraki/camera/datasetgen"
+        "startDate" : "2018-06-01",
+        "stopDate" :  "2018-06-30",
+        "url" : "http://localhost:4004/api/v0/meraki/camera/datasetgen",
+        "datawithoutoid_url" : "http://localhost:4004/api/v0/meraki/camera/datasetnew"
       },
       "checkout" :{
         "queueconstant" : 100
