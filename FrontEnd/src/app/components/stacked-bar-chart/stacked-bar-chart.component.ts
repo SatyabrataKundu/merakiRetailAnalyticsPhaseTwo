@@ -1,35 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { forkJoin } from "rxjs";
 
 @Component({
-  selector: 'stacked-bar-chart',
-  templateUrl: './stacked-bar-chart.component.html',
-  styleUrls: ['./stacked-bar-chart.component.scss']
+  selector: "stacked-bar-chart",
+  templateUrl: "./stacked-bar-chart.component.html",
+  styleUrls: ["./stacked-bar-chart.component.scss"]
 })
 export class StackedBarChartComponent implements OnInit {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   initAbandonedData: any;
   selectedValue: string;
-  
-  current={
-    label: 'current',
-    data: []
-  }
-
-  predicted={
-    label: 'predicted',
-    data: []
-  }
-
-  predictedArray : any = []
-  predictedArrayFiltered = []
-  currentArray : any = []
+  predictedArray: any = [];
+  currentArray: any = [];
+  tempArray: any = [];
 
   // {
   //   label: 'Current',
-  //   data: [41, 11, 24, 54, 70, 57, 27,41, 11, 24, 54, 70, 57, 27,41, 11, 24, 54, 70, 57, 27] 
+  //   data: [41, 11, 24, 54, 70, 57, 27,41, 11, 24, 54, 70, 57, 27,41, 11, 24, 54, 70, 57, 27]
   // }
 
   period = [
@@ -42,25 +31,34 @@ export class StackedBarChartComponent implements OnInit {
   ];
 
   public chartType: string = "bar";
-  public chartLabels = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  public chartLabels = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+  ];
 
   public chartData = [
-  {
-    label: 'Current Visitors',
-    data: []
-  },
-  {
-    label: 'Predicted Visitors',
-    data: []
-  }];
+    {
+      label: "current",
+      data: []
+    },
+    {
+      label: "predicted",
+      data: []
+    }
+  ];
 
   public colorOptions: Array<any> = [
     {
       // grey
-      backgroundColor: "#ADC861",
+      backgroundColor: "#ADC861"
     },
     {
-      backgroundColor: "#808080",
+      backgroundColor: "#808080"
     }
   ];
   public chartOptions: any = {
@@ -81,12 +79,11 @@ export class StackedBarChartComponent implements OnInit {
           ticks: {
             maxTicksLimit: 2,
             beginAtZero: false
-          },
+          }
         }
       ]
     }
   };
-
 
   // changeGran(garnularity) {
   //   this.chartLabels = [];
@@ -102,33 +99,37 @@ export class StackedBarChartComponent implements OnInit {
   //       }
   //       this.updateChart(this.chartData, this.chartLabels)
   //     })
-  // }
-
-  // updateChart(currentData, predictedData) {
-  //   this.chartData.push(currentData)
-  //   this.chartData.push(predictedData)
-  // }
+  // }  
 
   ngOnInit() {
 
-  
-    this.http.get('http://localhost:4004/api/v0/meraki/camera/dailyPredictions')
-    .subscribe(res => {
-      this.predictedArray = res
-      for(let i of this.predictedArray){
-        this.chartData[1]["data"].push(i.predicted)
-      }
-    })
+    forkJoin([
+      this.http.get(
+        "http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=this%20week"
+      ),
+      this.http.get(
+        "http://localhost:4004/api/v0/meraki/camera/dailyPredictions"
+      )
+    ]).subscribe(res => {
+      this.chartData = [{
+        label: "current",
+        data: []
+      },
+      {
+        label: "predicted",
+        data: []
+      }];
+      this.currentArray = res[0];
+      this.predictedArray = res[1];
+      this.predictedArray = this.predictedArray.slice(0, 7);
 
-    this.http.get('http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=this%20week')
-    .subscribe(res => {
-      
-      this.currentArray = res
-      for(let i of this.currentArray){
-        this.chartData[0]["data"].push(i.count)
+      for (let i of this.currentArray) {
+        this.chartData[0]["data"].push(i.count);
       }
-    })
-    
-    console.log(this.chartData)
-}
+
+      for (let i of this.predictedArray) {
+        this.chartData[1]["data"].push(i.predicted);
+      }
+    });
+  }
 }

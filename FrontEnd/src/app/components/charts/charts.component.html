@@ -11,7 +11,7 @@
       </mat-select>
     </mat-form-field>
     <div class="chart-container">
-      <canvas *ngIf="chartData" baseChart [chartType]="chartType" [data]="chartData" [labels]="chartLabels" [options]="chartOptions"
+      <canvas *ngIf="chartData" baseChart [chartType]="chartType" [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
         [colors]="colorOptions" style="margin-top: 3em;">
       </canvas>
     </div>
