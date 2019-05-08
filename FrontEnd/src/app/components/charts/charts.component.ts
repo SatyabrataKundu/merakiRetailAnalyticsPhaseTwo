@@ -1,29 +1,35 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { BaseChartDirective } from 'ng2-charts';
-import { HttpClient } from '@angular/common/http';
-import { ChartdataService } from 'src/app/services/chartdata.service';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { BaseChartDirective } from "ng2-charts";
+import { HttpClient } from "@angular/common/http";
+import {forkJoin} from 'rxjs';
+import { ChartdataService } from "src/app/services/chartdata.service";
 
 @Component({
-  selector: 'charts',
-  templateUrl: './charts.component.html',
-  styleUrls: ['./charts.component.scss']
+  selector: "charts",
+  templateUrl: "./charts.component.html",
+  styleUrls: ["./charts.component.scss"]
 })
 export class ChartsComponent implements OnInit {
-
-  constructor(private http: HttpClient, private chartService: ChartdataService) { }
+  constructor(
+    private http: HttpClient,
+    private chartService: ChartdataService
+  ) {}
   selectedValue: any;
   granularity: any;
   pattern: string = "";
   isDisabled: boolean = true;
-  zones:any;
+  zones: any;
   zoneName: any;
-  zoneGranularity:any;
+  zoneGranularity: any;
   zoneDataFetched: any;
   zoneLabels: any;
   zoneChartFlag: boolean = false;
   selectedValueZone: any;
   selectedValuePeriod: any;
-  count:number = 0;
+  count: number = 0;
+
+  currentArray:any;
+  predictedArray:any;
 
   period = [
     { value: "Hourly Till Now", viewValue: "Today" },
@@ -41,37 +47,39 @@ export class ChartsComponent implements OnInit {
 
   zoneAnalysisInitData: any;
   visitorPatternInitData: any;
+  visitorPatternInitPredData: any;
 
   zoneHttpOptions = {
-    "zoneId": "1",
-    "timeRange": "today"	
+    zoneId: "1",
+    timeRange: "today"
   };
 
-  current={
-    label: 'current',
-    data: [],
-    type: 'line'
-  }
-
-  predicted={
-    label: 'predicted',
-    data: [],
-    type: 'line'
-  }
-  public chartType: string = "line";
+  public chartType: string = "bar";
   public chartLabels: Array<any> = [];
-  public chartData: Array<number> = [];
+  public chartData = [
+    {
+      label: "current",
+      data: []
+    },
+
+    {
+      label: "predicted",
+      data: []
+    }
+  ];
   public colorOptions: Array<any> = [
     {
       // grey
-      backgroundColor: "rgba(139, 208, 10, 0.3)",
-      borderColor: "#00496B"
+      backgroundColor: "#CCADC861"
+    },
+    {
+      backgroundColor: "#CD808080"
     }
   ];
   public chartOptions: any = {
     responsive: true,
     legend: {
-      display: false
+      display: true
     },
     scales: {
       yAxes: [
@@ -84,17 +92,10 @@ export class ChartsComponent implements OnInit {
           ticks: {
             maxTicksLimit: 4,
             beginAtZero: true
-          },
+          }
         }
       ]
-    },
-    tooltips: {
-      callbacks: {
-         label: function(tooltipItem) {
-                return tooltipItem.yLabel;
-         }
-      }
-  }
+    }
   };
 
   public chartType2: string = "bar";
@@ -129,177 +130,182 @@ export class ChartsComponent implements OnInit {
     },
     tooltips: {
       callbacks: {
-         label: function(tooltipItem) {     
-                return tooltipItem.yLabel;
-         }
+        label: function(tooltipItem) {
+          return tooltipItem.yLabel;
+        }
       }
-  }
+    }
   };
 
-
   proximityChartUpdate() {
-
-    this.chartService.getChartData()
-      .subscribe(res => {
-        this.chartData = [];
-        this.proximityDataFetched = res;
-        for (let i of this.proximityDataFetched) {
-          this.chartData.push(i["count"]);
-        }
-        if(this.proximityDataFetched.length == 0){
-          this.chartData.push(0);
-        }
-      })
+    this.chartService.getChartData().subscribe(res => {
+      this.chartData = [];
+      this.proximityDataFetched = res;
+      for (let i of this.proximityDataFetched) {
+        this.chartData.push(i["count"]);
+      }
+      // if (this.proximityDataFetched.length == 0) {
+      //   this.chartData.push(0);
+      // }
+    });
 
     this.setChartData(this.chartData);
   }
 
-  zoneAnalysisChartUpdate(){
-
-    
-      this.chartService.getZoneChartData()
-        .subscribe(res => {
-          this.chartData2 = [];
-          this.zoneDataFetched = res;
-          for (let i of this.zoneDataFetched) {
-            this.chartData2.push(i["detected_clients"]);
-          }
-          if(this.zoneDataFetched.length == 0){
-            this.chartData2.push(0);
-          }
-        })
+  zoneAnalysisChartUpdate() {
+    this.chartService.getZoneChartData().subscribe(res => {
+      this.chartData2 = [];
+      this.zoneDataFetched = res;
+      for (let i of this.zoneDataFetched) {
+        this.chartData2.push(i["detected_clients"]);
+      }
+      if (this.zoneDataFetched.length == 0) {
+        this.chartData2.push(0);
+      }
+    });
 
     this.setZoneChartData(this.chartData2);
-
   }
 
-  changeZone(zone){
+  changeZone(zone) {
     this.isDisabled = false;
     this.zoneName = zone.value;
     this.chartService.setZoneId(zone);
-    
-    
-      this.chartService.getZoneChartData()
-    .subscribe(res => {
+
+    this.chartService.getZoneChartData().subscribe(res => {
       this.chartLabels2 = [];
       this.zoneLabels = res;
-      for(let i of this.zoneLabels){
-        this.chartLabels2.push(i["timerange"])
+      for (let i of this.zoneLabels) {
+        this.chartLabels2.push(i["timerange"]);
       }
-    })
-
-    this.setZoneChartLabels(this.chartLabels2);
-      this.zoneAnalysisChartUpdate();
-  
-  }
-
-  changeZoneGran(gran){
-    this.zoneGranularity = gran.value;
-    this.chartService.setZoneGranularity(this.zoneGranularity);
-
-    this.chartService.getZoneChartData()
-    .subscribe(res => {
-      this.chartLabels2 = [];
-      this.zoneLabels = res;
-      for(let i of this.zoneLabels){
-        this.chartLabels2.push(i["timerange"])
-      }
-    })
+    });
 
     this.setZoneChartLabels(this.chartLabels2);
     this.zoneAnalysisChartUpdate();
   }
 
+  changeZoneGran(gran) {
+    this.zoneGranularity = gran.value;
+    this.chartService.setZoneGranularity(this.zoneGranularity);
+
+    this.chartService.getZoneChartData().subscribe(res => {
+      this.chartLabels2 = [];
+      this.zoneLabels = res;
+      for (let i of this.zoneLabels) {
+        this.chartLabels2.push(i["timerange"]);
+      }
+    });
+
+    this.setZoneChartLabels(this.chartLabels2);
+    this.zoneAnalysisChartUpdate();
+  }
 
   changeGran(gran) {
     this.granularity = gran.value;
 
     this.chartService.setGranularity(this.granularity);
 
-
-    this.chartService.getChartData()
-      .subscribe(res => {
-        this.chartLabels = [];
-        this.proximityDataFetched = res;
-        for (let i of this.proximityDataFetched) {
-          this.chartLabels.push(i.timerange);
-        }
-      })
+    this.chartService.getChartData().subscribe(res => {
+      this.chartLabels = [];
+      this.proximityDataFetched = res;
+      for (let i of this.proximityDataFetched) {
+        this.chartLabels.push(i.timerange);
+      }
+    });
     this.setChartLabels(this.chartData);
-
 
     this.proximityChartUpdate();
   }
 
   private setChartData(data) {
-    this.chartData = data;
+    this.chartData.push(data);
+    console.log(this.chartData);
   }
 
   private setChartLabels(labels) {
     this.chartLabels = labels;
   }
 
-  private setZoneChartData(data){
+  private setZoneChartData(data) {
     this.chartData2 = data;
   }
 
-  private setZoneChartLabels(labels){
+  private setZoneChartLabels(labels) {
     this.chartLabels2 = labels;
   }
 
   ngOnInit() {
-
-    this.selectedValue = 'Hourly Till Now'
+    this.selectedValue = "Hourly Till Now";
     this.selectedValueZone = 1;
-    this.selectedValuePeriod = 'Hourly Till Now';
+    this.selectedValuePeriod = "Hourly Till Now";
 
-    this.http.get('http://localhost:4004/api/v0/meraki/camera/zones')
+    this.http
+      .get("http://localhost:4004/api/v0/meraki/camera/zones")
+      .subscribe(res => {
+        this.zones = res;
+      });
+
+    this.http
+      .post(
+        "http://localhost:4004/api/v0/meraki/camera/clients",
+        this.zoneHttpOptions
+      )
+      .subscribe(res => {
+        this.chartData2 = [];
+        this.zoneAnalysisInitData = res;
+        for (let i of this.zoneAnalysisInitData) {
+          this.chartData2.push(i.detected_clients);
+        }
+        this.setZoneChartData(this.chartData2);
+      });
+
+    this.http
+      .post(
+        "http://localhost:4004/api/v0/meraki/camera/clients",
+        this.zoneHttpOptions
+      )
+      .subscribe(res => {
+        this.chartLabels2 = [];
+        this.zoneAnalysisInitData = res;
+        for (let i of this.zoneAnalysisInitData) {
+          this.chartLabels2.push(i.timerange);
+        }
+        this.setZoneChartLabels(this.chartLabels2);
+      });
+
+
+    forkJoin([
+    this.http.get("http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today"),
+    this.http.get("http://localhost:4004/api/v0/meraki/camera/hourlyPredictions")])
     .subscribe(res => {
-      this.zones = res;
-    })
+      this.chartData = [{label: "current", data: []},{label: "predicted",data: []}];
+      this.currentArray = res[0]
+      this.predictedArray = res[1]
+      this.predictedArray = this.predictedArray.slice(0,this.currentArray.length)
+      console.log(this.predictedArray)
+      console.log(this.currentArray)
 
-
-    this.http.post('http://localhost:4004/api/v0/meraki/camera/clients', this.zoneHttpOptions)
-    .subscribe(res => {
-      this.chartData2=[];
-      this.zoneAnalysisInitData = res;
-      for(let i of this.zoneAnalysisInitData){
-        this.chartData2.push(i.detected_clients);
+      for(let i of this.currentArray){
+        this.chartData[0]["data"].push(i.count)
       }
-      this.setZoneChartData(this.chartData2);
-    })
 
-
-    this.http.post('http://localhost:4004/api/v0/meraki/camera/clients', this.zoneHttpOptions)
-    .subscribe(res => {
-      this.chartLabels2=[];
-      this.zoneAnalysisInitData = res;
-      for(let i of this.zoneAnalysisInitData){
-        this.chartLabels2.push(i.timerange);
+      for(let i of this.predictedArray){
+        this.chartData[1]["data"].push(i.predicted)
       }
-      this.setZoneChartLabels(this.chartLabels2);
+      console.log(this.chartData)
     })
 
-
-    this.http.get('http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today')
-    .subscribe(res => {
-      this.chartData=[];
-      this.visitorPatternInitData=res;
-      for(let i of this.visitorPatternInitData){
-        this.chartData.push(i.count);
-      }
-      this.setChartData(this.chartData);
-    })
-
-    this.http.get('http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today')
-    .subscribe(res => {
-      this.chartLabels=[];
-      this.visitorPatternInitData=res;
-      for(let i of this.visitorPatternInitData){
-        this.chartLabels.push(i.timerange);
-      }
-      this.setChartLabels(this.chartLabels);
-    })
-
-    }
+    this.http
+      .get(
+        "http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today"
+      )
+      .subscribe(res => {
+        this.chartLabels = [];
+        this.visitorPatternInitData = res;
+        for (let i of this.visitorPatternInitData) {
+          this.chartLabels.push(i.timerange);
+        }
+        this.setChartLabels(this.chartLabels);
+      });
+  }
 }
