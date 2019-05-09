@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {Observable, timer} from 'rxjs';
 import { NotifierService } from 'angular-notifier';
 import { MatSlideToggleChange } from '@angular/material';
+import { ChatService } from '../app/services/chat.service';
 
 @Component({
   selector: 'app-root',
@@ -19,13 +20,14 @@ export class AppComponent implements OnInit{
   zones: any;
   notificationCount: number=0;
   emptyZones: Array<string> =[];
+  chatService: ChatService;
 
   zoneid:any;
   zonename:any;
 
   private notifier: NotifierService;
 
-  constructor(private http: HttpClient,  notifier: NotifierService){
+  constructor(private http: HttpClient,  notifier: NotifierService, chatService: ChatService){
     this.notifier = notifier;
   }
 
@@ -77,7 +79,6 @@ export class AppComponent implements OnInit{
     .subscribe(res => {
       this.zones = res;
     })
-
   }
 }
 

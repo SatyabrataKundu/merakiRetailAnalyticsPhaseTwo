@@ -5,11 +5,38 @@ import cv2
 import numpy as np
 import tensorflow as tf
 from flask import jsonify
+from flask_socketio import SocketIO
+import atexit
+from apscheduler.scheduler import Scheduler
+import requests
+import shutil
+import base64
+
 import sys
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
-@app.route('/')
+# defining the api-endpoint
+API_ENDPOINT = "http://localhost:4004/api/v0/meraki/checkout/getimage"
+
+cron = Scheduler(daemon=True)
+# Explicitly kick off the background thread
+cron.start()
+
+
+@cron.interval_schedule(minutes=1)
+def job():
+    print("I'm working...")
+    path="D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/image-snapshot.jpg"
+    r = requests.get(url=API_ENDPOINT,stream=True)
+    if r.status_code == 200:
+        with open(path, 'wb') as f:
+            r.raw.decode_content = True
+            shutil.copyfileobj(r.raw, f)
+            index()
+
+
 def index():
     print('IN PYTHON FILE')
     os.chdir("D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/")
@@ -19,7 +46,7 @@ def index():
     # Name of the directory containing the object detection module we're using
     MODEL_NAME = 'inference_graph'
     # Source of the image directory and name of the snapshot images
-    SOURCE_IMAGE_PATH = "D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Middleware"
+    SOURCE_IMAGE_PATH = "D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/"
     IMAGE_NAME = "image-snapshot.jpg"
     CURRENT_IMAGE_PATH = str(SOURCE_IMAGE_PATH) + "/" + str(IMAGE_NAME)
     print('Name of the Image: ',CURRENT_IMAGE_PATH)
@@ -85,10 +112,16 @@ def index():
     for i in range(100):
         if scores is None or final_score[i] > 0.95:
             isGunDetected = True
+            with open(PATH_TO_IMAGE, "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read())
     print('GUN DETECTED : ', isGunDetected)
-    return jsonify(
-        detected=isGunDetected
-    );
+    x = '{ "detected": '+str(encoded_string)+'}'
+    socketio.emit('new-message', x)
+
+
+# Shutdown your cron thread if the web process is stopped
+atexit.register(lambda: cron.shutdown(wait=False))
+
 
 if __name__ == '__main__':
-    app.run(debug=True,port=5002)
+    app.run(debug=True, port=5002)

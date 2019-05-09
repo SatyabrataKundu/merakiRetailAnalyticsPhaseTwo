@@ -15,10 +15,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
-
-
-
-
+import { ChatService } from '../app/services/chat.service';
 
 import { AppComponent } from './app.component';
 import { TopNavComponent } from './components/top-nav/top-nav.component';
@@ -113,7 +110,7 @@ const customNotifierOptions: NotifierOptions = {
     MatSlideToggleModule,
     NotifierModule.withConfig(customNotifierOptions)
   ],
-  providers: [ChartdataService],
+  providers: [ChartdataService, ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
