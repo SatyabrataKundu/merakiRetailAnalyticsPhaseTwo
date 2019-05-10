@@ -11,6 +11,8 @@ from apscheduler.scheduler import Scheduler
 import requests
 import shutil
 import base64
+import calendar;
+import time;
 
 import sys
 
@@ -28,16 +30,18 @@ cron.start()
 @cron.interval_schedule(minutes=1)
 def job():
     print("I'm working...")
-    path="D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/image-snapshot.jpg"
+    ts = calendar.timegm(time.gmtime())
+    IMAGE_NAME = "image-snapshot-" + str(ts) + ".jpg"
+    path="D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/downloaded/"+IMAGE_NAME
     r = requests.get(url=API_ENDPOINT,stream=True)
     if r.status_code == 200:
         with open(path, 'wb') as f:
             r.raw.decode_content = True
             shutil.copyfileobj(r.raw, f)
-            index()
+            index(IMAGE_NAME)
 
 
-def index():
+def index(IMAGE_NAME):
     print('IN PYTHON FILE')
     os.chdir("D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/")
     # Import utilitescls
@@ -46,11 +50,12 @@ def index():
     # Name of the directory containing the object detection module we're using
     MODEL_NAME = 'inference_graph'
     # Source of the image directory and name of the snapshot images
-    SOURCE_IMAGE_PATH = "D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/"
-    IMAGE_NAME = "image-snapshot.jpg"
+    SOURCE_IMAGE_PATH = "D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/downloaded/"
+    ts = calendar.timegm(time.gmtime())
+    # IMAGE_NAME = "image-snapshot-"+str(ts)+".jpg"
     CURRENT_IMAGE_PATH = str(SOURCE_IMAGE_PATH) + "/" + str(IMAGE_NAME)
     print('Name of the Image: ',CURRENT_IMAGE_PATH)
-    DESTINATION_IMAGE_PATH = SOURCE_IMAGE_PATH;
+    DESTINATION_IMAGE_PATH = "D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/detected/";
     CWD_PATH = os.getcwd()
     # Path to frozen detection graph .pb file, which contains the model that is used
     # for object detection.
@@ -105,18 +110,35 @@ def index():
     (boxes, scores, classes, num) = sess.run(
         [detection_boxes, detection_scores, detection_classes, num_detections],
         feed_dict={image_tensor: image_expanded})
+    vis_util.visualize_boxes_and_labels_on_image_array(
+        image,
+        np.squeeze(boxes),
+        np.squeeze(classes).astype(np.int32),
+        np.squeeze(scores),
+        category_index,
+        use_normalized_coordinates=True,
+        line_thickness=8,
+        min_score_thresh=0.95)
     final_score = np.squeeze(scores)
     # print('scores :',scores)
     # print('category_index: ',category_index)
     isGunDetected = False
+    encoded_string = ''
     for i in range(100):
         if scores is None or final_score[i] > 0.95:
             isGunDetected = True
-            with open(PATH_TO_IMAGE, "rb") as image_file:
-                encoded_string = base64.b64encode(image_file.read())
-    print('GUN DETECTED : ', isGunDetected)
-    x = '{ "detected": '+str(encoded_string)+'}'
-    socketio.emit('new-message', x)
+            imageFileName = str(IMAGE_NAME).replace(".jpg","")+ str(ts)+".jpg"
+            if (isGunDetected):
+                # ts = calendar.timegm(time.gmtime())
+
+                cv2.imwrite(DESTINATION_IMAGE_PATH+IMAGE_NAME , image)
+                time.sleep(2)
+                with open(DESTINATION_IMAGE_PATH+IMAGE_NAME, "rb") as image_file:
+                    encoded_string = base64.b64encode(image_file.read())
+                    print('GUN DETECTED : ', isGunDetected)
+                    x = '{ "detected": '+str(encoded_string)+'}'
+                    # All the results have been drawn on image. Now display the image.
+                    socketio.emit('new-message', x)
 
 
 # Shutdown your cron thread if the web process is stopped

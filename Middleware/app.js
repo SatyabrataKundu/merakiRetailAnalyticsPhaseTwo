@@ -14,14 +14,14 @@ var cronJobForMerakiCamData = require("./jobs/MVCameraDataJob");
 
 var scanningsimulator = require("./routes/scanningsimulator/index");
 var cronJobForPosData = require("./jobs/PosDataGenerationJob");
-//var cronJobForImageDetection = require("./jobs/ProcessSnapshotImage");
+var cronJobForImageDetection = require("./jobs/ProcessSnapshotImage");
 
 var possimulator = require("./routes/posSimulator/index");
 var checkout = require("./routes/checkout/index");
 
-cronJobForAPClients.clientsJob();
+//cronJobForAPClients.clientsJob();
 cronJobForPosData.posJob();
-//cronJobForImageDetection.snapshotApi();
+// cronJobForImageDetection.snapshotApi();
 cronJobForMerakiCamData.cameraJob();
 var app = express();
 app.use(bodyParser.json());
@@ -36,6 +36,21 @@ app.use("/api/v0/meraki/posSimulator", possimulator);
 app.use("/api/v0/meraki/camera",merakicamera);
 app.use("/api/v0/meraki/checkout",checkout);
 
+
+let http = require('http');
+let server = http.Server(app);
+let socketIO = require('socket.io');
+let io = socketIO(server);
+io.on('connection', (socket) => {
+    console.log('===============================================NEW USER CONNECTED BY SOCKETIO ===============================================');
+	// socket.on('new-message', (message) => {
+		//console.log("SOCKET IO MESSAGE RECEIVED BY SERVER -------",message);
+		io.emit("new-message","HELLO");
+	//  });
+
+});
+
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
 	var err = new Error("Not Found");
@@ -49,7 +64,7 @@ if (config.has("environment.constants.expressPort")) {
 
 
 app.set("port", process.env.PORT || expressPort);
-var server = app.listen(app.get("port"), function () {
+server.listen(app.get("port"), function () {
 	debug(`Express server listening on port ${chalk.red(server.address().port)}`);
 });
 
