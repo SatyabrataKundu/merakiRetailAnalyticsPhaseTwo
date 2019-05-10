@@ -55,7 +55,7 @@ export class ChartsComponent implements OnInit {
   };
 
   public chartType: string = "bar";
-  public chartLabels: Array<any> = [];
+  public chartLabels: Array<any> = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
   public chartData = [
     {
       label: "current",
@@ -281,13 +281,17 @@ export class ChartsComponent implements OnInit {
       this.chartData = [{label: "current", data: []},{label: "predicted",data: []}];
       this.currentArray = res[0]
       this.predictedArray = res[1]
-      this.predictedArray = this.predictedArray.slice(0,this.currentArray.length)
       console.log(this.predictedArray)
       console.log(this.currentArray)
 
       for(let i of this.currentArray){
-        this.chartData[0]["data"].push(i.count)
+        if( i.timerange <= 7 || i.timerange >= 23){
+        this.chartData[0]["data"].push(1)
+        }
+        else{
+        this.chartData[0]["data"].push((i.count/6))
       }
+    }
 
       for(let i of this.predictedArray){
         this.chartData[1]["data"].push(i.predicted)
@@ -295,17 +299,17 @@ export class ChartsComponent implements OnInit {
       console.log(this.chartData)
     })
 
-    this.http
-      .get(
-        "http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today"
-      )
-      .subscribe(res => {
-        this.chartLabels = [];
-        this.visitorPatternInitData = res;
-        for (let i of this.visitorPatternInitData) {
-          this.chartLabels.push(i.timerange);
-        }
-        this.setChartLabels(this.chartLabels);
-      });
+    // this.http
+    //   .get(
+    //     "http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today"
+    //   )
+    //   .subscribe(res => {
+    //     this.chartLabels = [];
+    //     this.visitorPatternInitData = res;
+    //     for (let i of this.visitorPatternInitData) {
+    //       this.chartLabels.push(i.timerange);
+    //     }
+    //     this.setChartLabels(this.chartLabels);
+    //   });
   }
 }
