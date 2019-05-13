@@ -69,8 +69,11 @@ def index(IMAGE_NAME):
     print('PATH TO IMAGE IS ', PATH_TO_IMAGE)
     NUM_CLASSES = 6
     label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
+    print('label_map value ',label_map)
     categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES,use_display_name=True)
+    print('categories..',categories)
     category_index = label_map_util.create_category_index(categories)
+    print('category_index ...',category_index)
 
     # Load the Tensorflow model into memory.
     detection_graph = tf.Graph()
@@ -87,15 +90,17 @@ def index(IMAGE_NAME):
 
     # Input tensor is the image
     image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
-
+    print('image_tensor:',image_tensor)
     # Output tensors are the detection boxes, scores, and classes
     # Each box represents a part of the image where a particular object was detected
     detection_boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
+    print('detection_boxes:',detection_boxes)
 
     # Each score represents level of confidence for each of the objects.
     # The score is shown on the result image, together with the class label.
     detection_scores = detection_graph.get_tensor_by_name('detection_scores:0')
     detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
+    print('detection_classes',detection_classes)
 
     # Number of objects detected
     num_detections = detection_graph.get_tensor_by_name('num_detections:0')
@@ -104,7 +109,9 @@ def index(IMAGE_NAME):
     # expand image dimensions to have shape: [1, None, None, 3]
     # i.e. a single-column array, where each item in the column has the pixel RGB value
     image = cv2.imread(PATH_TO_IMAGE)
+    print('image....')
     image_expanded = np.expand_dims(image, axis=0)
+    print('image_expanded')
 
     # Perform the actual detection by running the model with the image as input
     (boxes, scores, classes, num) = sess.run(
@@ -130,7 +137,7 @@ def index(IMAGE_NAME):
             imageFileName = str(IMAGE_NAME).replace(".jpg","")+ str(ts)+".jpg"
             if (isGunDetected):
                 # ts = calendar.timegm(time.gmtime())
-
+                print('Gun is detected')
                 cv2.imwrite(DESTINATION_IMAGE_PATH+IMAGE_NAME , image)
                 time.sleep(2)
                 with open(DESTINATION_IMAGE_PATH+IMAGE_NAME, "rb") as image_file:
