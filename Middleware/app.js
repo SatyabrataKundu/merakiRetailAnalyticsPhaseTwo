@@ -39,16 +39,16 @@ app.use("/api/v0/meraki/checkout",checkout);
 
 let http = require('http');
 let server = http.Server(app);
-let socketIO = require('socket.io');
-let io = socketIO(server);
-io.on('connection', (socket) => {
-    console.log('===============================================NEW USER CONNECTED BY SOCKETIO ===============================================');
-	// socket.on('new-message', (message) => {
-		//console.log("SOCKET IO MESSAGE RECEIVED BY SERVER -------",message);
-		io.emit("new-message","HELLO");
-	//  });
+// let socketIO = require('socket.io');
+// let io = socketIO(server);
+// io.on('connection', (socket) => {
+//     console.log('===============================================NEW USER CONNECTED BY SOCKETIO ===============================================');
+// 	// socket.on('new-message', (message) => {
+// 		//console.log("SOCKET IO MESSAGE RECEIVED BY SERVER -------",message);
+// 		io.emit("new-message","HELLO");
+// 	//  });
 
-});
+// });
 
 
 // catch 404 and forward to error handler
