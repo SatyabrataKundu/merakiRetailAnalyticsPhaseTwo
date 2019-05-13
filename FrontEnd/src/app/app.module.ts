@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule, MatSlideToggleModule } from '@angular/material';
+import { MatInputModule, MatSlideToggleModule, MatSnackBarModule } from '@angular/material';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
@@ -32,6 +32,7 @@ import { ChartdataService } from './services/chartdata.service';
 import { NotificationPanelComponent } from './components/notification-panel/notification-panel.component';
 import { AbandonedChartComponent } from './components/abandoned-chart/abandoned-chart.component';
 import { TestChartComponent } from './components/test-chart/test-chart.component';
+import { snackBarComponent } from './app.component';
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -85,7 +86,8 @@ const customNotifierOptions: NotifierOptions = {
     DonutChartComponent,
     NotificationPanelComponent,
     AbandonedChartComponent,
-    TestChartComponent
+    TestChartComponent,
+    snackBarComponent
   ],
   imports: [
     BrowserModule,
@@ -108,9 +110,11 @@ const customNotifierOptions: NotifierOptions = {
     MatListModule,
     MatButtonToggleModule,
     MatSlideToggleModule,
-    NotifierModule.withConfig(customNotifierOptions)
+    NotifierModule.withConfig(customNotifierOptions),
+    MatSnackBarModule
   ],
   providers: [ChartdataService, ChatService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [snackBarComponent],
 })
 export class AppModule { }

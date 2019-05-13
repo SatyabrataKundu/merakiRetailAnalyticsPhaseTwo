@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable, timer} from 'rxjs';
 import { NotifierService } from 'angular-notifier';
-import { MatSlideToggleChange } from '@angular/material';
+import { MatSlideToggleChange, MatSnackBarModule, MatSnackBar } from '@angular/material';
 import { ChatService } from '../app/services/chat.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit{
 
   private notifier: NotifierService;
 
-  constructor(private http: HttpClient,  notifier: NotifierService, chatService: ChatService){
+  constructor(private http: HttpClient,  notifier: NotifierService, chatService: ChatService, private snackBar : MatSnackBar){
     this.notifier = notifier;
   }
 
@@ -49,7 +49,14 @@ export class AppComponent implements OnInit{
     this.emptyZones=[];
   }
 
+  dismiss(){
+    this.snackBar.dismiss()
+  }
+
   ngOnInit(){
+
+    this.snackBar.openFromComponent(snackBarComponent);
+
     Observable
     timer(1,1000 * 60).subscribe(() =>
     this.http.get('http://localhost:4004/api/v0/meraki/checkout/waitTime')
@@ -82,4 +89,16 @@ export class AppComponent implements OnInit{
   }
 }
 
+@Component({
+  selector: 'snackComponent',
+  templateUrl: 'snackBar.html',
+  styles: [],
+})
+export class snackBarComponent {
+  constructor(private snack: MatSnackBar){}
+
+  dismiss(){
+    this.snack.dismiss()
+  }
+}
 

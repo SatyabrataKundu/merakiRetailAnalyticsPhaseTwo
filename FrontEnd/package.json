@@ -24,6 +24,7 @@
     "@types/socket.io-client": "^1.4.32",
     "angular-notifier": "^4.1.1",
     "animate.css": "^3.7.0",
+    "base64-to-image": "^1.0.2",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.7.3",
     "core-js": "^2.5.4",
