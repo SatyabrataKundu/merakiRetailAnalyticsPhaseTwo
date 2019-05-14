@@ -1,9 +1,9 @@
 import os
-path = '..\data\FrameFromVideo'
-# path = '..\data\p'
-# path = '..\data\Random_Images'
+path = 'D:/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/Data/SnapShots'
+# path = '../data/p'
+# path = '../data/Random_Images'
 files = os.listdir(path)
-i = 100000
+i = 1
 
 for file in files:
     os.rename(os.path.join(path, file), os.path.join(path, str(i)+'.jpg'))
