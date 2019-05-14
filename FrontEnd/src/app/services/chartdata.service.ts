@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 import { map } from "rxjs/operators";
+import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -64,11 +66,33 @@ export class ChartdataService {
   }
 
   getChartData(){
-    return this.http.get('http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern='+this.granularity)
-    .pipe(map((res:Response) => {
-      return res;
-    }))
+
+    if(this.granularity == "this week"){
+
+       return forkJoin([
+        this.http.get("http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
+        this.http.get("http://localhost:4004/api/v0/meraki/camera/dailyPredictions")])
+       .pipe(map(res => {
+         return res;
+       }))
+
+    
+    // return this.http.get('http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern='+this.granularity)
+    // .pipe(map((res:Response) => {
+    //   return res;
+    // }))
   }
+
+  else if(this.granularity == "today"){
+    return forkJoin([
+      this.http.get("http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
+      this.http.get("http://localhost:4004/api/v0/meraki/camera/hourlyPredictions")])
+     .pipe(map(res => {
+       return res;
+     }))
+  }
+
+}
 
   getZoneChartData(){
     return this.http.post('http://localhost:4004/api/v0/meraki/camera/clients',this.zoneHttpOptions)

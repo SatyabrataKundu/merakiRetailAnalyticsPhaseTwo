@@ -609,7 +609,7 @@ router.get("/dailyPredictions", function (req, res) {
         day = day - 6
     }
 
-    var selectQuery = "select dateformat_day as day, count as predicted from meraki.daily_visitor_predictions where dateformat_day >" + day;
+    var selectQuery = "select dateformat_day as day, count as predicted from meraki.daily_visitor_predictions;"
     db.any(selectQuery)
         .then(function (result) {
             console.log("db select success for date ", result);

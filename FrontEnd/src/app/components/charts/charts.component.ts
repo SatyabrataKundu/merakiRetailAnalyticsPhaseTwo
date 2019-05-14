@@ -41,6 +41,8 @@ export class ChartsComponent implements OnInit {
   ];
 
   proximityDataFetched: any;
+  proximityPredDataFetched:any;
+
   scanningDataFetched: any;
   proximityChartData = [];
   scanningChartData = [];
@@ -70,7 +72,7 @@ export class ChartsComponent implements OnInit {
   public colorOptions: Array<any> = [
     {
       // grey
-      backgroundColor: "#A0522D"
+      backgroundColor: "#CCADC861"
     },
     {
       backgroundColor: "#CD808080"
@@ -139,17 +141,24 @@ export class ChartsComponent implements OnInit {
 
   proximityChartUpdate() {
     this.chartService.getChartData().subscribe(res => {
-      this.chartData = [];
-      this.proximityDataFetched = res;
+      this.chartData = [{label: "current", data: []},{label: "predicted",data: []}];
+      this.proximityDataFetched = res[0];
+      this.proximityPredDataFetched = res[1]
+
+      console.log(res[1])
+
       for (let i of this.proximityDataFetched) {
-        this.chartData.push(i["count"]);
+        this.chartData[0]["data"].push(Math.ceil(i.count));
       }
+
+      for(let i of this.proximityPredDataFetched){
+        this.chartData[1]["data"].push(i.predicted);
+      }
+      
       // if (this.proximityDataFetched.length == 0) {
       //   this.chartData.push(0);
       // }
     });
-
-    this.setChartData(this.chartData);
   }
 
   zoneAnalysisChartUpdate() {
@@ -207,20 +216,19 @@ export class ChartsComponent implements OnInit {
 
     this.chartService.getChartData().subscribe(res => {
       this.chartLabels = [];
-      this.proximityDataFetched = res;
+      this.proximityDataFetched = res[0];
       for (let i of this.proximityDataFetched) {
         this.chartLabels.push(i.timerange);
       }
     });
-    this.setChartLabels(this.chartData);
+    this.setChartLabels(this.chartLabels);
 
     this.proximityChartUpdate();
   }
 
-  private setChartData(data) {
-    this.chartData.push(data);
-    console.log(this.chartData);
-  }
+  // private setChartData(data) {
+  //   this.chartData.push(data);
+  // }
 
   private setChartLabels(labels) {
     this.chartLabels = labels;
@@ -281,8 +289,6 @@ export class ChartsComponent implements OnInit {
       this.chartData = [{label: "current", data: []},{label: "predicted",data: []}];
       this.currentArray = res[0]
       this.predictedArray = res[1]
-      console.log(this.predictedArray)
-      console.log(this.currentArray)
 
       for(let i of this.currentArray){
         if( i.timerange <= 7 || i.timerange >= 23){
@@ -296,7 +302,6 @@ export class ChartsComponent implements OnInit {
       for(let i of this.predictedArray){
         this.chartData[1]["data"].push(i.predicted)
       }
-      console.log(this.chartData)
     })
 
     // this.http
