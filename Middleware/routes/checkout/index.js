@@ -16,13 +16,13 @@ router.get("/getimage",function(req,res){
 
     var gen = rn.generator({
         min: 1,
-        max: 1000,
+        max: 133,
         integer: true
     })
 
     let fileName = gen() + ".jpg";
     var raltivePath =  path.join(__dirname, '..','..','..');
-    let filePath = raltivePath+"/Weapon_Detection/TensorFlow/Data/Image_6thIteration/" + fileName;
+    let filePath = raltivePath+"/Weapon_Detection/TensorFlow/Data/SnapShots/" + fileName;
     res.sendFile(filePath);
 })
 var connectionString = "postgres://" + config.get("environment.merakiConfig.dbUserName") + ":" +
