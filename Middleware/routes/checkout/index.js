@@ -98,9 +98,13 @@ router.get("/totalCheckoutZoneAbandonmentsToday", function (req, res) {
     var datetime = new Date();
     let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
 
-    var posSelectQry = "select ((select count(distinct (person_oid)) from meraki.visitor_predictions where zoneid in (select zone_id from meraki.meraki_zones where zone_name like 'Checkout%')" +
-        "and dateformat_date like '" + formattedDateString + "') - (select count(unique_pos_data_key) from meraki.pos_data where dateformat_date like '" + formattedDateString + "') )as count"
-    console.log(posSelectQry);
+    var posSelectQry = "SELECT (case when sq1.count1 >0 then sq1.count1 else 0 end) as count FROM "
+    +" (select ((select count(distinct (person_oid)) from meraki.visitor_predictions where zoneid in "
+    +" (select zone_id from meraki.meraki_zones where zone_name like 'Checkout%') and dateformat_date like '" + formattedDateString + "') "
+    +" - (select count(unique_pos_data_key) from meraki.pos_data where dateformat_date like '" + formattedDateString + "') ) as count1) as sq1"
+    // var posSelectQry = "select ((select count(distinct (person_oid)) from meraki.visitor_predictions where zoneid in (select zone_id from meraki.meraki_zones where zone_name like 'Checkout%')" +
+    //     "and dateformat_date like '" + formattedDateString + "') - (select count(unique_pos_data_key) from meraki.pos_data where dateformat_date like '" + formattedDateString + "') )as count"
+     console.log('POS QUERY======================================',posSelectQry);
     db.any(posSelectQry)
         .then(function (result) {
             console.log("db select success for date ", result);

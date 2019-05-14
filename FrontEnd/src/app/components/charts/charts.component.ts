@@ -72,7 +72,7 @@ export class ChartsComponent implements OnInit {
   public colorOptions: Array<any> = [
     {
       // grey
-      backgroundColor: "#CCADC861"
+      backgroundColor: "#A0522D"
     },
     {
       backgroundColor: "#CD808080"
