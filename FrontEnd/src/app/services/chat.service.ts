@@ -4,11 +4,11 @@ export class ChatService {
     private socket;    
 
     constructor() {
-        this.socket = io(this.url);
-        console.log('IN CHAT SERVICE CONSTRUCTOR')
-        this.socket.on('new-message', (message) => {
-            console.log('NEW MESSAGE RECEIVED ',message);
-            alert("NEW MESSAGE RECEIVED "+message);
-        });
-    }
+    //     this.socket = io(this.url);
+    //     console.log('IN CHAT SERVICE CONSTRUCTOR')
+    //     this.socket.on('new-message', (message) => {
+    //     console.log(message)
+        
+    // });
+}
 }

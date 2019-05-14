@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable, timer} from 'rxjs';
 import { NotifierService } from 'angular-notifier';
-import { MatSlideToggleChange, MatSnackBarModule, MatSnackBar } from '@angular/material';
+import { MatSlideToggleChange, MatSnackBarModule, MatSnackBar, MAT_SNACK_BAR_DATA } from '@angular/material';
 import { ChatService } from '../app/services/chat.service';
+import * as io from 'socket.io-client';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +23,13 @@ export class AppComponent implements OnInit{
   emptyZones: Array<string> =[];
   chatService: ChatService;
 
+  private url = 'http://127.0.0.1:5002';
+  private socket;
+
   zoneid:any;
   zonename:any;
+
+  base64string:any;
 
   private notifier: NotifierService;
 
@@ -54,9 +60,19 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(){
+    
 
-    this.snackBar.openFromComponent(snackBarComponent);
+    this.socket = io(this.url);
+        console.log('IN CHAT SERVICE CONSTRUCTOR')
+        this.socket.on('new-message', (message) => {
+        this.base64string="data:image/jpg;base64,"+message;
+        console.log('base64recieved',this.base64string)
+        this.snackBar.openFromComponent(snackBarComponent,{
+          data:this.base64string
+        });
+    });
 
+     // this.snackBar.openFromComponent(snackBarComponent);
     Observable
     timer(1,1000 * 60).subscribe(() =>
     this.http.get('http://localhost:4004/api/v0/meraki/checkout/waitTime')
@@ -94,11 +110,24 @@ export class AppComponent implements OnInit{
   templateUrl: 'snackBar.html',
   styles: [],
 })
-export class snackBarComponent {
-  constructor(private snack: MatSnackBar){}
+export class snackBarComponent implements OnInit {
+
+  constructor(private snack: MatSnackBar, private chat: ChatService, @Inject(MAT_SNACK_BAR_DATA) public data: any){}
+  base64string = "";
+  res: any;
+  private url = 'http://127.0.0.1:5002';
+  private socket;
 
   dismiss(){
     this.snack.dismiss()
+  }
+
+  ngOnInit(){
+    // this.socket = io(this.url);
+    //     this.socket.on('new-message', (message) => {
+    //     this.base64string = message;
+    //     console.log('popup snackbar',this.base64string)
+    //     });
   }
 }
 

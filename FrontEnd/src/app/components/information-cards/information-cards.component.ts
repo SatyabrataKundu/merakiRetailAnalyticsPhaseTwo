@@ -33,7 +33,7 @@ export class InformationCardsComponent implements OnInit {
       this.http.get('http://localhost:4004/api/v0/meraki/posSimulator/totalAmount')
       .subscribe(res => {
         this.temp = res;
-        this.totalAmount = this.temp[0].sum;
+        this.totalAmount = Math.ceil((this.temp[0].sum)/70);
       })
 
     this.http.get('http://localhost:4004/api/v0/meraki/posSimulator/totalTransactions')
