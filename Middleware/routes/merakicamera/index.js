@@ -690,7 +690,7 @@ router.get("/historicalDataByCamera", function (req, res) {
         +" THEN count(distinct(T2.person_oid)) ELSE 0 END as count , T1.dateformat_hour as timeRange FROM (SELECT * FROM generate_series(0,23) as dateformat_hour)as T1 "
         +" FULL OUTER  JOIN (select * from meraki.visitor_predictions where dateformat_date ='" + date + "') as  T2 "
         +" ON  T1.dateformat_hour = T2.dateformat_hour group by T1.dateformat_hour order by T1.dateformat_hour  "
-       // db.any("select count (distinct (person_oid)), dateformat_hour  as timeRange from meraki.visitor_predictions where dateformat_date ='" + date + "' group by dateformat_hour")
+        // db.any("select count (distinct (person_oid)), dateformat_hour  as timeRange from meraki.visitor_predictions where dateformat_date ='" + date + "' group by dateformat_hour")
        db.any(selectQuery)
             .then(function (result) {
                 console.log("db select success for date ", result);
@@ -719,7 +719,15 @@ router.get("/historicalDataByCamera", function (req, res) {
     } else if (pattern == 'this week') {
         let weekValue = dateFormat(datetime, "W");
         let yearValue = dateFormat(datetime, "yyyy");
-        db.any("select count (distinct (person_oid)), dateformat_date as timeRange from meraki.visitor_predictions where dateformat_week =" + weekValue + " and dateformat_year = " + yearValue + " group by dateformat_date")
+        let selectQuery = " SELECT "
+        +" CASE WHEN count(distinct(T2.person_oid)) > 0 THEN count(distinct(T2.person_oid)) ELSE 0 END as count,  T1.dateformat_date as timeRange "
+        +" FROM (select to_char((cast(date_trunc('week', current_date) as date) + i),'YYYY-MM-DD') AS dateformat_date "
+        +" from generate_series(0,6) i)as T1 "
+        +" FULL OUTER  JOIN "
+        +" (select * from meraki.visitor_predictions where dateformat_week =" + weekValue + " and dateformat_year =" + yearValue + ") as  T2 "
+        +" ON  T1.dateformat_date = T2.dateformat_date "
+        +" group by T1.dateformat_date order by T1.dateformat_date "
+        db.any(selectQuery)
             .then(function (result) {
                 console.log("db select success for date ", result);
                 res.status(200).send(result);

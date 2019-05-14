@@ -70,7 +70,7 @@ export class ChartsComponent implements OnInit {
   public colorOptions: Array<any> = [
     {
       // grey
-      backgroundColor: "#CCADC861"
+      backgroundColor: "#A0522D"
     },
     {
       backgroundColor: "#CD808080"
@@ -289,7 +289,7 @@ export class ChartsComponent implements OnInit {
         this.chartData[0]["data"].push(1)
         }
         else{
-        this.chartData[0]["data"].push(Math.ceil(i.count/6))
+        this.chartData[0]["data"].push(Math.ceil(i.count/2))
       }
     }
 
