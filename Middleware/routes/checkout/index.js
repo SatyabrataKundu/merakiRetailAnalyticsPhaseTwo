@@ -16,7 +16,7 @@ router.get("/getimage",function(req,res){
 
     var gen = rn.generator({
         min: 1,
-        max: 2289,
+        max: 1000,
         integer: true
     })
 
