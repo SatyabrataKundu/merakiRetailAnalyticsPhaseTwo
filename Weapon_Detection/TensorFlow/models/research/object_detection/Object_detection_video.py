@@ -100,7 +100,7 @@ while(video.isOpened()):
     (boxes, scores, classes, num) = sess.run(
         [detection_boxes, detection_scores, detection_classes, num_detections],
         feed_dict={image_tensor: frame_expanded})
-
+    isGunDetected = False
     # Draw the results of the detection (aka 'visulaize the results')
     vis_util.visualize_boxes_and_labels_on_image_array(
         frame,
@@ -111,7 +111,13 @@ while(video.isOpened()):
         use_normalized_coordinates=True,
         line_thickness=8,
         min_score_thresh=0.95)
-    print(scores)
+    final_score = np.squeeze(scores)
+    for i in range(100):
+        if scores is None or final_score[i] > 0.95:
+            isGunDetected = True
+            print('GUN IS DETECTED IN THE VIDEO')
+            break
+
     # All the results have been drawn on the frame, so it's time to display it.
     cv2.imshow('Object detector', frame)
 
