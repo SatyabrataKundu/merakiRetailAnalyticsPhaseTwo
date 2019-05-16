@@ -120,13 +120,14 @@ router.get("/totalCheckoutZoneAbandonmentsToday", function (req, res) {
 module.exports = router;
 
 router.get("/totalAbandonments", function (req, res) {
-    let pattern = req.query.pattern || 'today';
+    let pattern = req.query.pattern || 'Today';
 
     if (pattern == 'Today') {
         var datetime = new Date();
-        let formattedDateString = dateFormat(datetime, "d");
-        queryString = "select (case when personCount-transactionCount>0 Then personCount-transactionCount   ELSE 0 END) as count, person.timeRange from (select count(distinct (person_oid)) as personCount, dateformat_hour as timeRange from meraki.visitor_predictions where zoneid in (select zone_id from meraki.meraki_zones where zone_name like 'Checkout%')and dateformat_day = '" + formattedDateString + "' group by dateformat_hour) as person,(select count(unique_pos_data_key) as transactionCount, dateformat_hour as timeRange from meraki.pos_data where dateformat_day = '" + formattedDateString + "' group by dateformat_hour order by dateformat_hour) as posdata where person.timeRange=posdata.timeRange";
-        console.log(queryString);
+        let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
+
+        queryString = "select (case when personCount-transactionCount>0 Then personCount-transactionCount   ELSE 0 END) as count, person.timeRange from (select count(distinct (person_oid)) as personCount, dateformat_hour as timeRange from meraki.visitor_predictions where zoneid in (select zone_id from meraki.meraki_zones where zone_name like 'Checkout%')and dateformat_date = '" + formattedDateString + "' group by dateformat_hour) as person,(select count(unique_pos_data_key) as transactionCount, dateformat_hour as timeRange from meraki.pos_data where dateformat_date = '" + formattedDateString + "' group by dateformat_hour order by dateformat_hour) as posdata where person.timeRange=posdata.timeRange";
+        console.log('ABANDONMENTS QUERY',queryString);
 
         db.any(queryString)
             .then(function (result) {
