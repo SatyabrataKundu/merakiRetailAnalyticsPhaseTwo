@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable, interval} from 'rxjs';
 import { timer } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { config } from '../../../environments/config';
 
 @Component({
   selector: 'information-cards',
@@ -23,7 +24,7 @@ export class InformationCardsComponent implements OnInit {
   ngOnInit() {
     
     Observable
-    timer(500, 1000 * 10).subscribe(() => {
+    timer(500, config.countRefreshRate).subscribe(() => {
       this.http.get('http://localhost:4004/api/v0/meraki/camera/currentVisitorCount')
       .subscribe(res => {
         this.temp = res;
