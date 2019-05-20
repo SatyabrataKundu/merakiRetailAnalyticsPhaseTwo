@@ -7,17 +7,16 @@ var cors = require("cors");
 var config = require("config");
 var dateFormat = require("dateformat");
 var scanningapi = require("./routes/scanningapi/index");
-
 var cronJobForAPClients = require("./jobs/AccessPointClientsJob");
 var merakicamera = require("./routes/merakicamera/index");
 var cronJobForMerakiCamData = require("./jobs/MVCameraDataJob");
-
 var scanningsimulator = require("./routes/scanningsimulator/index");
 var cronJobForPosData = require("./jobs/PosDataGenerationJob");
 var cronJobForImageDetection = require("./jobs/ProcessSnapshotImage");
-
 var possimulator = require("./routes/posSimulator/index");
 var checkout = require("./routes/checkout/index");
+var mvsense = require("./routes/mvsense/index");
+
 
 //cronJobForAPClients.clientsJob();
 cronJobForPosData.posJob();
@@ -35,7 +34,7 @@ app.use("/api/v0/meraki/scanningsimulator", scanningsimulator);
 app.use("/api/v0/meraki/posSimulator", possimulator);
 app.use("/api/v0/meraki/camera",merakicamera);
 app.use("/api/v0/meraki/checkout",checkout);
-
+app.use("/api/v0/meraki/mvsense",mvsense);
 
 let http = require('http');
 let server = http.Server(app);
