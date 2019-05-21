@@ -5,6 +5,7 @@ import { NotifierService } from 'angular-notifier';
 import { MatSlideToggleChange, MatSnackBarModule, MatSnackBar, MAT_SNACK_BAR_DATA } from '@angular/material';
 import { ChatService } from '../app/services/chat.service';
 import * as io from 'socket.io-client';
+import { config } from '../environments/config';
 
 @Component({
   selector: 'app-root',
@@ -74,7 +75,7 @@ export class AppComponent implements OnInit{
 
      // this.snackBar.openFromComponent(snackBarComponent);
     Observable
-    timer(1,1000 * 60).subscribe(() =>
+    timer(1,config.waitTimeRefreshRate).subscribe(() =>
     this.http.get('http://localhost:4004/api/v0/meraki/checkout/waitTime')
     .subscribe(res => {
       this.posWaitTime = res;
@@ -82,18 +83,18 @@ export class AppComponent implements OnInit{
     )
 
     Observable
-    timer(1,1000 * 60 * 10).subscribe(() =>
+    timer(1,config.notificationRefreshRate).subscribe(() =>
     this.http.get('http://localhost:4004/api/v0/meraki/camera/currentVisitorsPerZone')
     .subscribe(res => {
       this.zoneData =  res;
       for(let i of this.zoneData){
-    if(i.count == 0){
+        if(i.count == 0){
           this.notificationCount++;
           this.zoneName = i.zone_name;
           this.message = this.zoneName + " zone has 0 visitors"
           this.emptyZones.push(this.message);
           this.showNotification('default',this.message);
-    }
+        }
       }
     })
     )

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js'
 import { HttpClient } from '@angular/common/http';
 import { Observable, interval, timer } from 'rxjs';
+import { config } from '../../../environments/config';
 
 @Component({
   selector: 'donut-chart',
@@ -100,7 +101,7 @@ export class DonutChartComponent implements OnInit {
     let totalAbandonments = "0";
 
     Observable
-    timer(1, 1000 * 30).subscribe(() =>
+    timer(1, config.countRefreshRate).subscribe(() =>
       this.http.get('http://localhost:4004/api/v0/meraki/posSimulator/totalTransactions')
         .subscribe(res => {
           totalTransactions = res[0].count;
@@ -126,7 +127,7 @@ export class DonutChartComponent implements OnInit {
     )
 
     Observable
-    timer(1, 1000 * 60).subscribe(() =>
+    timer(1, config.countRefreshRate).subscribe(() =>
       this.http.get('http://localhost:4004/api/v0/meraki/camera/currentVisitorsPerZone')
         .subscribe(res => {
           this.chartData2 = [];
