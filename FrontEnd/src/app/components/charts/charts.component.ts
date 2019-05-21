@@ -105,7 +105,7 @@ export class ChartsComponent implements OnInit {
   public chartOptions: any = {
     responsive: true,
     legend: {
-      display: true
+      display: false
     },
     scales: {
       yAxes: [
@@ -176,6 +176,7 @@ export class ChartsComponent implements OnInit {
         this.proximityPredDataFetched = res[1];
 
         console.log(res);
+        console.log(granularity)
 
         for (let i of this.proximityDataFetched) {
           this.chartData[0]["data"].push(Math.ceil(i.count));
@@ -190,11 +191,13 @@ export class ChartsComponent implements OnInit {
     else if (granularity == "Daily" || granularity == "Hourly") {
       this.chartService.getChartData().subscribe(res => {
         this.chartData = [];
-        this.chartData = [{label: "visitors", data:[]}];
+        this.chartData = [{ label: "current", data: [] },
+                          { label: "predicted", data: [] }];
         let temp : any = [];
         temp = res;
 
-        console.log('Daily, Hourly Request',temp)
+        console.log(res);
+        console.log(granularity)
 
         for(let i of temp){
           this.chartData[0]["data"].push(i.count)
@@ -202,7 +205,7 @@ export class ChartsComponent implements OnInit {
 
       })
     }
-  }
+}
 
   zoneAnalysisChartUpdate() {
     this.chartService.getZoneChartData().subscribe(res => {
@@ -284,7 +287,7 @@ export class ChartsComponent implements OnInit {
       this.setChartLabels(this.chartLabels);
     } 
     
-    else if(this.granularity == "Hourly" || this.granularity =="Hourly Till Now"){
+    else{
       this.chartLabels =  [0,
       1,
       2,
@@ -309,17 +312,6 @@ export class ChartsComponent implements OnInit {
       21,
       22,
       23];
-    }
-    
-    else {
-      this.chartService.getChartData().subscribe(res => {
-        this.chartLabels = [];
-        this.proximityDataFetched = res[0];
-        for (let i of this.proximityDataFetched) {
-          this.chartLabels.push(i.timerange);
-        }
-      });
-      this.setChartLabels(this.chartLabels);
     }
 
     this.proximityChartUpdate(this.granularity);
