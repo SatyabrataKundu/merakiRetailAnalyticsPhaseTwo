@@ -75,12 +75,13 @@ export class ChartdataService {
        .pipe(map(res => {
          return res;
        }))
+  }
 
-    
-    // return this.http.get('http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern='+this.granularity)
-    // .pipe(map((res:Response) => {
-    //   return res;
-    // }))
+  else if(this.granularity == "last week"){
+    return (this.http.get("http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity)
+     .pipe(map(res => {
+       return res;
+     })))
   }
 
   else if(this.granularity == "today"){
@@ -90,6 +91,13 @@ export class ChartdataService {
      .pipe(map(res => {
        return res;
      }))
+  }
+
+  else if(this.granularity == "yesterday"){
+    return (this.http.get("http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity)
+     .pipe(map(res => {
+       return res;
+     })))
   }
 
 }

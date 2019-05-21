@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { BaseChartDirective } from "ng2-charts";
 import { HttpClient } from "@angular/common/http";
-import {forkJoin} from 'rxjs';
+import { forkJoin } from "rxjs";
 import { ChartdataService } from "src/app/services/chartdata.service";
 
 @Component({
@@ -28,8 +27,8 @@ export class ChartsComponent implements OnInit {
   selectedValuePeriod: any;
   count: number = 0;
 
-  currentArray:any;
-  predictedArray:any;
+  currentArray: any;
+  predictedArray: any;
 
   period = [
     { value: "Hourly Till Now", viewValue: "Today" },
@@ -41,7 +40,7 @@ export class ChartsComponent implements OnInit {
   ];
 
   proximityDataFetched: any;
-  proximityPredDataFetched:any;
+  proximityPredDataFetched: any;
 
   scanningDataFetched: any;
   proximityChartData = [];
@@ -57,7 +56,32 @@ export class ChartsComponent implements OnInit {
   };
 
   public chartType: string = "bar";
-  public chartLabels: Array<any> = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+  public chartLabels: Array<any> = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ];
   public chartData = [
     {
       label: "current",
@@ -139,26 +163,45 @@ export class ChartsComponent implements OnInit {
     }
   };
 
-  proximityChartUpdate() {
-    this.chartService.getChartData().subscribe(res => {
-      this.chartData = [{label: "current", data: []},{label: "predicted",data: []}];
-      this.proximityDataFetched = res[0];
-      this.proximityPredDataFetched = res[1]
+  proximityChartUpdate(granularity) {
 
-      console.log(res[1])
+    if (granularity == "Daily Till Now" || granularity == "Hourly Till Now") {
+      this.chartService.getChartData().subscribe(res => {
+        this.chartData = [
+          { label: "current", data: [] },
+          { label: "predicted", data: [] }
+        ];
+        console.log(granularity)
+        this.proximityDataFetched = res[0];
+        this.proximityPredDataFetched = res[1];
 
-      for (let i of this.proximityDataFetched) {
-        this.chartData[0]["data"].push(Math.ceil(i.count));
-      }
+        console.log(res);
 
-      for(let i of this.proximityPredDataFetched){
-        this.chartData[1]["data"].push(i.predicted);
-      }
-      
-      // if (this.proximityDataFetched.length == 0) {
-      //   this.chartData.push(0);
-      // }
-    });
+        for (let i of this.proximityDataFetched) {
+          this.chartData[0]["data"].push(Math.ceil(i.count));
+        }
+
+        for (let i of this.proximityPredDataFetched) {
+          this.chartData[1]["data"].push(i.predicted);
+        }
+      });
+    } 
+    
+    else if (granularity == "Daily" || granularity == "Hourly") {
+      this.chartService.getChartData().subscribe(res => {
+        this.chartData = [];
+        this.chartData = [{label: "visitors", data:[]}];
+        let temp : any = [];
+        temp = res;
+
+        console.log('Daily, Hourly Request',temp)
+
+        for(let i of temp){
+          this.chartData[0]["data"].push(i.count)
+        }
+
+      })
+    }
   }
 
   zoneAnalysisChartUpdate() {
@@ -214,16 +257,72 @@ export class ChartsComponent implements OnInit {
 
     this.chartService.setGranularity(this.granularity);
 
-    this.chartService.getChartData().subscribe(res => {
-      this.chartLabels = [];
-      this.proximityDataFetched = res[0];
-      for (let i of this.proximityDataFetched) {
-        this.chartLabels.push(i.timerange);
-      }
-    });
-    this.setChartLabels(this.chartLabels);
+    if (this.granularity == "Daily Till Now" || this.granularity == "Daily") {
+      this.chartService.getChartData().subscribe(res => {
+        this.chartLabels = [];
 
-    this.proximityChartUpdate();
+        if (this.granularity == "Daily Till Now") {
+          this.proximityDataFetched = res[0];
+          for (let i of this.proximityDataFetched) {
+            let now = i.timerange;
+            let newDate = new Date(now);
+            let dateString = newDate.toString().split(" ")[0];
+            this.chartLabels.push(dateString);
+          }
+        } 
+        else {
+          this.proximityDataFetched = res;
+          for (let i of this.proximityDataFetched) {
+            let now = i.timerange;
+            let newDate = new Date(now);
+            let dateString = newDate.toString().split(" ")[0];
+            this.chartLabels.push(dateString);
+          }
+        }
+      });
+
+      this.setChartLabels(this.chartLabels);
+    } 
+    
+    else if(this.granularity == "Hourly" || this.granularity =="Hourly Till Now"){
+      this.chartLabels =  [0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23];
+    }
+    
+    else {
+      this.chartService.getChartData().subscribe(res => {
+        this.chartLabels = [];
+        this.proximityDataFetched = res[0];
+        for (let i of this.proximityDataFetched) {
+          this.chartLabels.push(i.timerange);
+        }
+      });
+      this.setChartLabels(this.chartLabels);
+    }
+
+    this.proximityChartUpdate(this.granularity);
   }
 
   // private setChartData(data) {
@@ -281,40 +380,32 @@ export class ChartsComponent implements OnInit {
         this.setZoneChartLabels(this.chartLabels2);
       });
 
-
     forkJoin([
-    this.http.get("http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today"),
-    this.http.get("http://localhost:4004/api/v0/meraki/camera/hourlyPredictions")])
-    .subscribe(res => {
-      this.chartData = [{label: "current", data: []},{label: "predicted",data: []}];
-      this.currentArray = res[0]
-      this.predictedArray = res[1]
+      this.http.get(
+        "http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today"
+      ),
+      this.http.get(
+        "http://localhost:4004/api/v0/meraki/camera/hourlyPredictions"
+      )
+    ]).subscribe(res => {
+      this.chartData = [
+        { label: "current", data: [] },
+        { label: "predicted", data: [] }
+      ];
+      this.currentArray = res[0];
+      this.predictedArray = res[1];
 
-      for(let i of this.currentArray){
-        if( i.timerange <= 7 || i.timerange >= 23){
-        this.chartData[0]["data"].push(1)
+      for (let i of this.currentArray) {
+        if (i.timerange <= 7 || i.timerange >= 23) {
+          this.chartData[0]["data"].push(1);
+        } else {
+          this.chartData[0]["data"].push(i.count);
         }
-        else{
-        this.chartData[0]["data"].push(Math.ceil(i.count/6))
       }
-    }
 
-      for(let i of this.predictedArray){
-        this.chartData[1]["data"].push(i.predicted)
+      for (let i of this.predictedArray) {
+        this.chartData[1]["data"].push(i.predicted);
       }
-    })
-
-    // this.http
-    //   .get(
-    //     "http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today"
-    //   )
-    //   .subscribe(res => {
-    //     this.chartLabels = [];
-    //     this.visitorPatternInitData = res;
-    //     for (let i of this.visitorPatternInitData) {
-    //       this.chartLabels.push(i.timerange);
-    //     }
-    //     this.setChartLabels(this.chartLabels);
-    //   });
+    });
   }
 }
