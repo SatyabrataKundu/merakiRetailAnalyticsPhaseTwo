@@ -30,31 +30,85 @@ var connectionString = "postgres://" + config.get("environment.merakiConfig.dbUs
     "/" + config.get("environment.merakiConfig.dbName");
 var db = pgp(connectionString);
 
+// router.get("/waitTime", function (req, res) {
+//     var endDate = new Date();
+//     var startdate = new Date();
+//     var durationInMinutes = config.get("simulator.checkout.queueconstant");
+//     startdate.setMinutes(endDate.getMinutes() - durationInMinutes);
+//     console.log("Start Date " + startdate);
+//     console.log("End Date " + endDate);
+
+
+//     let query = "select (case when ROUND((count(distinct (cam.person_oid)) - count(distinct(unique_pos_data_key)))/2.0,2)>0 Then  ROUND((count(distinct (cam.person_oid)) - count(distinct(unique_pos_data_key)))/2.0,2) ELSE 0 END) as waitTime, "
+//             + "mapp.pos_counter_number "
+//             + "from meraki.visitor_predictions cam right outer join meraki.checkoutzone_billingcounter_map mapp "
+//             + "on cam.zoneid=mapp.zone_id and (cam.datetime between " + startdate.getTime() + " and " + endDate.getTime() + ") left outer join meraki.pos_data pos "
+//             + "on mapp.pos_counter_number=pos.pos_counter_number "
+//             + "and (pos.datetime between  " + startdate.getTime() + " and " + endDate.getTime() + ") "
+//             + " group by cam.zoneid,mapp.pos_counter_number";
+//     console.log(query);
+//     db.any(query)
+//         .then(function (result) {
+//             console.log("db select success for date ", result);
+//             res.status(200).send(result);
+
+//         })
+//         .catch(function (err) {
+//             console.log("not able to get connection " + err);
+//             res.status(500).send(JSON.stringify(err.message));
+//         });
+// });
+
+
 router.get("/waitTime", function (req, res) {
-    // res.status(200).send("success");
+    
+
+    //take average of 10 minutes of average count from meraki.mvsense_restapi_data
+    //take average of 10 minutes of pos transaction count from meraki.pos_data
+
+    //calculate waittime for any queue = avg_count * avg_pos_trans
+    // do this for all the 5 counters
+
     var endDate = new Date();
     var startdate = new Date();
     var durationInMinutes = config.get("simulator.checkout.queueconstant");
     startdate.setMinutes(endDate.getMinutes() - durationInMinutes);
-    console.log("Start Date " + startdate);
-    console.log("End Date " + endDate);
 
-    //  let query = "select (case when ROUND((count(distinct (cam.person_oid)) - count(distinct(unique_pos_data_key)))/2.0,2)>0 Then  ROUND((count(distinct (cam.person_oid)) - count(distinct(unique_pos_data_key)))/2.0,2) ELSE 0 END) as waitTime, "
-    //     + "mapp.pos_counter_number "
-    //     + "from meraki.camera_detections cam right outer join meraki.checkoutzone_billingcounter_map mapp "
-    //     + "on cam.zoneid=mapp.zone_id and (cam.datetime between " + startdate.getTime() + " and " + endDate.getTime() + ") left outer join meraki.pos_data pos "
-    //     + "on mapp.pos_counter_number=pos.pos_counter_number "
-    //     + "and (pos.datetime between  " + startdate.getTime() + " and " + endDate.getTime() + ") "
-    //     + " group by cam.zoneid,mapp.pos_counter_number";
-    let query = "select (case when ROUND((count(distinct (cam.person_oid)) - count(distinct(unique_pos_data_key)))/2.0,2)>0 Then  ROUND((count(distinct (cam.person_oid)) - count(distinct(unique_pos_data_key)))/2.0,2) ELSE 0 END) as waitTime, "
-            + "mapp.pos_counter_number "
-            + "from meraki.visitor_predictions cam right outer join meraki.checkoutzone_billingcounter_map mapp "
-            + "on cam.zoneid=mapp.zone_id and (cam.datetime between " + startdate.getTime() + " and " + endDate.getTime() + ") left outer join meraki.pos_data pos "
-            + "on mapp.pos_counter_number=pos.pos_counter_number "
-            + "and (pos.datetime between  " + startdate.getTime() + " and " + endDate.getTime() + ") "
-            + " group by cam.zoneid,mapp.pos_counter_number";
-    console.log(query);
-    db.any(query)
+    var numberOfPOSCounters = config.get("simulator.checkout.counters");
+    // var queryForAverageCount = "SELECT zone_id, sum(average_count)/10 as average_customers "
+    // + "FROM meraki.mvsense_restapi_data where start_date > 1558429800000 "
+    // + "and end_date < 1558430400000 group by zone_id "
+
+    // var queryForAvgTransactions = 	"select T1.pos_counter_number , "
+    // +" ROUND(COUNT(T2.unique_pos_data_key)/10.0,2) as avgTransactions "
+    // +" from (select * from generate_series(1,5) as pos_counter_number ) as T1 "
+	// + " FULL OUTER JOIN ("
+    // + " select pos_counter_number , unique_pos_data_key from meraki.pos_data "
+    // + " where datetime between 1558429800000 and 1558430400000 ) as T2 "
+    // + "ON T1.pos_counter_number = T2.pos_counter_number group by T1.pos_counter_number "
+    // + "order by T1.pos_counter_number";
+
+
+
+   var finalQueryForWaitTime = " SELECT t3.pos_counter_number , "
+   + " t4.average_customers* t3.time_for_1_transaction_in_mins as waittime_inminutes FROM  "
+   + " (select T1.pos_counter_number , "
+   + " case when COUNT(T2.unique_pos_data_key) > 0 THEN "
+   + " ROUND("+durationInMinutes+"/COUNT(T2.unique_pos_data_key),2) else -1 END as time_for_1_transaction_in_mins "
+   + " from (select * from generate_series(1,"+numberOfPOSCounters+") as pos_counter_number ) as T1 "
+   + " FULL OUTER JOIN "
+   + " (select pos_counter_number , unique_pos_data_key from meraki.pos_data "
+   + " where datetime between "+startdate.getTime()+" and "+endDate.getTime()+" ) as T2 "
+   + " ON T1.pos_counter_number = T2.pos_counter_number group by T1.pos_counter_number "
+   + " order by T1.pos_counter_number) AS t3 "
+   + " FULL OUTER JOIN "
+   + " (SELECT zone_id AS pos_counter_number, ROUND(sum(average_count)/"+durationInMinutes+",2) as average_customers "
+   + " FROM meraki.mvsense_restapi_data where start_date > "+startdate.getTime()
+   + " and end_date < "+endDate.getTime()+" group by zone_id) as T4 "
+   + " ON t3.pos_counter_number = t4.pos_counter_number  ";
+   console.log(finalQueryForWaitTime);
+
+   db.any(finalQueryForWaitTime)
         .then(function (result) {
             console.log("db select success for date ", result);
             res.status(200).send(result);
@@ -64,7 +118,9 @@ router.get("/waitTime", function (req, res) {
             console.log("not able to get connection " + err);
             res.status(500).send(JSON.stringify(err.message));
         });
+
 });
+
 
 
 router.get("/totalCheckoutZoneVisitorsToday", function (req, res) {

@@ -10,7 +10,7 @@
         "expressPort": 4004,
         "homeDirectory":"D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/",
         "apclientsJobTimer" : "*/10 * * * *",
-        "posJobTimer" : "*/30 * * * * *",
+        "posJobTimer" : "*/10 * * * * *",
         "mvCameraJobTimer" : "*/10 * * * *",
         "snapshotTimer" : "*/1 * * * *",
         "mvsenseSaveRecentApiData" : "*/1 * * * *"
@@ -25,7 +25,8 @@
         "datawithoutoid_url" : "http://localhost:4004/api/v0/meraki/camera/datasetnew"
       },
       "checkout" :{
-        "queueconstant" : 100
+        "queueconstant" : 10,
+        "counters" : 5
       },
       "scanning" : {
         "apMac1" : "00:2b:01:00:07:00",
