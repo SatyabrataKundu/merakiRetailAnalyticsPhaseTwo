@@ -91,7 +91,7 @@ router.get("/waitTime", function (req, res) {
 
 
    var finalQueryForWaitTime = " SELECT t3.pos_counter_number , "
-   + " t4.average_customers* t3.time_for_1_transaction_in_mins as waittime_inminutes FROM  "
+   + " ROUND(t4.average_customers* t3.time_for_1_transaction_in_mins,2) as waittime_inminutes FROM  "
    + " (select T1.pos_counter_number , "
    + " case when COUNT(T2.unique_pos_data_key) > 0 THEN "
    + " ROUND("+durationInMinutes+"/COUNT(T2.unique_pos_data_key),2) else -1 END as time_for_1_transaction_in_mins "
