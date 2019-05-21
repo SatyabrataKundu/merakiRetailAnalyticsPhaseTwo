@@ -6,7 +6,7 @@ var rn = require('random-number');
 
 router.get("/devices/camera/analytics/recent", function (req, res) {
 
-    let zoneId = req.query.zoneId || 0
+    let zoneId = req.query.zoneId
 
     var generateEntrances = rn.generator({
         min: 0,
@@ -32,7 +32,7 @@ router.get("/devices/camera/analytics/recent", function (req, res) {
 
 
     let responseObject = {};
-    responseObject.zoneId = zoneId;
+    responseObject.zone = zoneId;
     responseObject.startTs = startDate.toISOString();
     responseObject.endTs = endDate.toISOString();
     responseObject.entrances = generateEntrances();

@@ -10,9 +10,10 @@
         "expressPort": 4004,
         "homeDirectory":"D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/",
         "apclientsJobTimer" : "*/10 * * * *",
-        "posJobTimer" : "*/10 * * * *",
+        "posJobTimer" : "*/10 * * * * *",
         "mvCameraJobTimer" : "*/10 * * * *",
-        "snapshotTimer" : "*/1 * * * *" 
+        "snapshotTimer" : "*/1 * * * *",
+        "mvsenseSaveRecentApiData" : "*/1 * * * *"
       }
     },
     "simulator": {
@@ -50,7 +51,8 @@
         "electronicsZoneId" : 7,
         "exitZoneId" : 8,
         "fetchCameraDetectionsApi" : "http://localhost:4004/api/v0/meraki/camera/",
-        "getSnapshotImage" : "http://localhost:4004/api/v0/meraki/checkout/getimage"
+        "getSnapshotImage" : "http://localhost:4004/api/v0/meraki/checkout/getimage",
+        "mvsenseRESTRecentApi" : "http://localhost:4004/api/v0/meraki/mvsense/devices/camera/analytics/recent"
       }
 
     }

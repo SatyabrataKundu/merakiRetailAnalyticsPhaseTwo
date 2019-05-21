@@ -6,7 +6,7 @@ var debug = require("debug")("app");
 var cors = require("cors");
 var config = require("config");
 var dateFormat = require("dateformat");
-var scanningapi = require("./routes/scanningapi/index");
+var scanningapi = require("./routes/scanningApi/index");
 var cronJobForAPClients = require("./jobs/AccessPointClientsJob");
 var merakicamera = require("./routes/merakicamera/index");
 var cronJobForMerakiCamData = require("./jobs/MVCameraDataJob");
@@ -16,8 +16,10 @@ var cronJobForImageDetection = require("./jobs/ProcessSnapshotImage");
 var possimulator = require("./routes/posSimulator/index");
 var checkout = require("./routes/checkout/index");
 var mvsense = require("./routes/mvsense/index");
+var cronJobForSavingCamDataForQWT = require("./jobs/SaveCameraDataForWaitTime");
 
 
+cronJobForSavingCamDataForQWT.saveCamData();
 //cronJobForAPClients.clientsJob();
 cronJobForPosData.posJob();
 // cronJobForImageDetection.snapshotApi();
