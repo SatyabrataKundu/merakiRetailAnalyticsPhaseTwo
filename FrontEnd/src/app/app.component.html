@@ -69,10 +69,12 @@ background: linear-gradient(90deg, rgb(16, 38, 59) 0%, rgba(13, 143, 182, 0.774)
     <div class="info-center">
       <p>Checkout Wait Time</p>
       <div class="wait-time-wrapper">
-        <div [ngClass]="{'card-green': i.waittime<=5, 
-                         'card-yellow': i.waittime>5 && i.waittime<10, 
-                         'card-red': i.waittime>=10}" *ngFor="let i of posWaitTime">
-          <span>Counter {{i.pos_counter_number}} : <h5>{{i.waittime}} min</h5></span>
+        <div [ngClass]="{'card-black': i.waittime_inminutes<0,
+                         'card-green': i.waittime_inminutes>=0 && i.waittime_inminutes<=5, 
+                         'card-yellow': i.waittime_inminutes>5 && i.waittime_inminutes<10, 
+                         'card-red': i.waittime_inminutes>=10}" *ngFor="let i of posWaitTime">
+          <span *ngIf="i.waittime_inminutes>=0">Counter {{i.pos_counter_number}} : <h5>{{i.waittime_inminutes}} min</h5></span>
+          <span *ngIf="i.waittime_inminutes<0">Counter {{i.pos_counter_number}} : <h5>Counter Closed</h5></span>
         </div>
       </div>
 

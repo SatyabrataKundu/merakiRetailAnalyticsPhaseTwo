@@ -100,6 +100,25 @@
           font-weight: 500;
         }
       }
+
+      .card-black{
+        flex-grow: 3;
+        width: fit-content;
+        padding: 10px;
+        border-radius: 0.5vw;
+        margin-inline-end: 2vw;
+        text-align: center;
+        justify-content: center;
+        color: rgb(243, 237, 237);
+        background:black;
+        border: 3px solid rgba(39, 68, 39, 0.432);
+        // box-shadow: 0px 5px 5px rgba(136, 136, 136, 0.651);
+
+        span{
+          font-size: 0.77vw;
+          font-weight: 500;
+        }
+      }
     }
   }
 

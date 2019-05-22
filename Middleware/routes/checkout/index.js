@@ -102,11 +102,16 @@ router.get("/waitTime", function (req, res) {
    + " ON T1.pos_counter_number = T2.pos_counter_number group by T1.pos_counter_number "
    + " order by T1.pos_counter_number) AS t3 "
    + " FULL OUTER JOIN "
-   + " (SELECT zone_id AS pos_counter_number, ROUND(sum(average_count)/"+durationInMinutes+",2) as average_customers "
-   + " FROM meraki.mvsense_restapi_data where start_date > "+startdate.getTime()
-   + " and end_date < "+endDate.getTime()+" group by zone_id) as T4 "
+   + " (  select A1.pos_counter_number,"
+   + " CASE WHEN A2.average_customers >0 THEN A2.average_customers ELSE 0 END as average_customers "
+   + " from ((select * from generate_series(1,5) as pos_counter_number ) as A1 "
+   + " FULL OUTER JOIN (SELECT zone_id AS pos_counter_number, "
+   + " ROUND(sum(average_count)/1,2) as average_customers  "
+   + " FROM meraki.mvsense_restapi_data where start_date > "+startdate.getTime()+" and "
+   + " end_date < "+endDate.getTime()+" group by zone_id) as A2 on "
+   + " A1.pos_counter_number = A2.pos_counter_number )) as T4 "
    + " ON t3.pos_counter_number = t4.pos_counter_number  ";
-   console.log(finalQueryForWaitTime);
+   console.log('QUERY FOR WAIT TIME IN MINUTES ==================',finalQueryForWaitTime);
 
    db.any(finalQueryForWaitTime)
         .then(function (result) {
