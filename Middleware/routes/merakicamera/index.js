@@ -34,8 +34,8 @@ router.get("/", function (req, res) {
                 })
 
                 var gen2 = rn.generator({
-                    min: 10,
-                    max: 25,
+                    min: 5,
+                    max: 10,
                     integer: true
                 })
 
@@ -688,7 +688,7 @@ router.get("/historicalDataByCamera", function (req, res) {
         let date = dateFormat(datetime, "yyyy-mm-dd");
         let selectQuery = "SELECT CASE WHEN count(distinct(T2.person_oid)) > 0"
         +" THEN count(distinct(T2.person_oid)) ELSE 0 END as count , T1.dateformat_hour as timeRange FROM (SELECT * FROM generate_series(0,23) as dateformat_hour)as T1 "
-        +" FULL OUTER  JOIN (select * from meraki.visitor_predictions where dateformat_date ='" + date + "') as  T2 "
+        +" FULL OUTER  JOIN (select * from meraki.visitor_predictions where dateformat_date ='" + date + "' and zoneid = 1) as  T2 "
         +" ON  T1.dateformat_hour = T2.dateformat_hour group by T1.dateformat_hour order by T1.dateformat_hour  "
         // db.any("select count (distinct (person_oid)), dateformat_hour  as timeRange from meraki.visitor_predictions where dateformat_date ='" + date + "' group by dateformat_hour")
        db.any(selectQuery)

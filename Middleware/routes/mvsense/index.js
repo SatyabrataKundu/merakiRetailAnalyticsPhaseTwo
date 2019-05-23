@@ -16,7 +16,7 @@ router.get("/devices/camera/analytics/recent", function (req, res) {
     
     var generateAvgcount =  rn.generator({
         min: 0,
-        max: 10,
+        max: 5,
         integer: false
     })
 
