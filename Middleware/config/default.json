@@ -11,7 +11,7 @@
         "homeDirectory":"D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/",
         "apclientsJobTimer" : "*/10 * * * *",
         "posJobTimer" : "*/10 * * * * *",
-        "mvCameraJobTimer" : "*/10 * * * *",
+        "mvCameraJobTimer" : "*/1 * * * *",
         "snapshotTimer" : "*/1 * * * *",
         "mvsenseSaveRecentApiData" : "*/1 * * * *"
       }

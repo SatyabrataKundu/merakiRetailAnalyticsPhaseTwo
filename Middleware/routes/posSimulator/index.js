@@ -46,8 +46,8 @@ function _performPosUrlPost() {
         integer: true
     })
     var genNumberOfTransactions = rn.generator({
-        min: 0,
-        max: 1,
+        min: 1,
+        max: 2,
         integer: true
     })
     var reqPostParams = {};

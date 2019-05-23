@@ -34,14 +34,14 @@ router.get("/", function (req, res) {
                 })
 
                 var gen2 = rn.generator({
-                    min: 0,
-                    max: 10,
+                    min: 10,
+                    max: 25,
                     integer: true
                 })
 
                 var gen3 = rn.generator({
-                    min: 1,
-                    max: 2,
+                    min: 0,
+                    max: 1,
                     integer: true
                 })
 
@@ -87,15 +87,15 @@ router.get("/", function (req, res) {
                 if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
                     numberOfPeopleDetected = gen2();
                 }
-                else if (zoneObject.zone_id === 3 || zoneObject.zone_id === 4 || zoneObject.zone_id === 5) {
+                else if (zoneObject.zone_id === 3 || zoneObject.zone_id === 4 || zoneObject.zone_id === 5 || zoneObject.zone_id === 2 || zoneObject.zone_id === 6) {
                     numberOfPeopleDetected = gen3();
                 }
-                else if (zoneObject.zone_id === 2) {
-                    numberOfPeopleDetected = gen4();
-                }
-                else if (zoneObject.zone_id === 6) {
-                    numberOfPeopleDetected = gen5();
-                }
+                // else if (zoneObject.zone_id === 2) {
+                //     numberOfPeopleDetected = gen4();
+                // }
+                // else if (zoneObject.zone_id === 6) {
+                //     numberOfPeopleDetected = gen5();
+                // }
                 else if (zoneObject.zone_id === 7) {
                     numberOfPeopleDetected = gen1();
                 }
@@ -437,8 +437,8 @@ router.post("/datasetgen", function (req, res) {
                 })
 
                 var gen3 = rn.generator({
-                    min: 1,
-                    max: 2,
+                    min: 0,
+                    max: 1,
                     integer: true
                 })
 
@@ -484,15 +484,15 @@ router.post("/datasetgen", function (req, res) {
                 if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
                     numberOfPeopleDetected = gen2();
                 }
-                else if (zoneObject.zone_id === 3 || zoneObject.zone_id === 4 || zoneObject.zone_id === 5) {
+                else if (zoneObject.zone_id === 3 || zoneObject.zone_id === 4 || zoneObject.zone_id === 5 || zoneObject.zone_id === 2 || zoneObject.zone_id === 6) {
                     numberOfPeopleDetected = gen3();
                 }
-                else if (zoneObject.zone_id === 2) {
-                    numberOfPeopleDetected = gen4();
-                }
-                else if (zoneObject.zone_id === 6) {
-                    numberOfPeopleDetected = gen5();
-                }
+                // else if (zoneObject.zone_id === 2) {
+                //     numberOfPeopleDetected = gen4();
+                // }
+                // else if (zoneObject.zone_id === 6) {
+                //     numberOfPeopleDetected = gen5();
+                // }
                 else if (zoneObject.zone_id === 7) {
                     numberOfPeopleDetected = gen1();
                 }
@@ -643,7 +643,7 @@ router.get("/visitorCountByDate", function (req, res) {
     let date = req.query.date || dateFormat(datetime, "yyyy-mm-dd");
     console.log("value of date ", date);
 
-    db.any("select count (distinct (person_oid)) from meraki.visitor_predictions where dateformat_date ='" + date + "'")
+    db.any("select count (distinct (person_oid)) from meraki.visitor_predictions where dateformat_date ='" + date + "' and zoneid=1")
         .then(function (result) {
             console.log("db select success for date ", result);
             res.status(200).send(result);

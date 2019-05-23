@@ -30,35 +30,6 @@ var connectionString = "postgres://" + config.get("environment.merakiConfig.dbUs
     "/" + config.get("environment.merakiConfig.dbName");
 var db = pgp(connectionString);
 
-// router.get("/waitTime", function (req, res) {
-//     var endDate = new Date();
-//     var startdate = new Date();
-//     var durationInMinutes = config.get("simulator.checkout.queueconstant");
-//     startdate.setMinutes(endDate.getMinutes() - durationInMinutes);
-//     console.log("Start Date " + startdate);
-//     console.log("End Date " + endDate);
-
-
-//     let query = "select (case when ROUND((count(distinct (cam.person_oid)) - count(distinct(unique_pos_data_key)))/2.0,2)>0 Then  ROUND((count(distinct (cam.person_oid)) - count(distinct(unique_pos_data_key)))/2.0,2) ELSE 0 END) as waitTime, "
-//             + "mapp.pos_counter_number "
-//             + "from meraki.visitor_predictions cam right outer join meraki.checkoutzone_billingcounter_map mapp "
-//             + "on cam.zoneid=mapp.zone_id and (cam.datetime between " + startdate.getTime() + " and " + endDate.getTime() + ") left outer join meraki.pos_data pos "
-//             + "on mapp.pos_counter_number=pos.pos_counter_number "
-//             + "and (pos.datetime between  " + startdate.getTime() + " and " + endDate.getTime() + ") "
-//             + " group by cam.zoneid,mapp.pos_counter_number";
-//     console.log(query);
-//     db.any(query)
-//         .then(function (result) {
-//             console.log("db select success for date ", result);
-//             res.status(200).send(result);
-
-//         })
-//         .catch(function (err) {
-//             console.log("not able to get connection " + err);
-//             res.status(500).send(JSON.stringify(err.message));
-//         });
-// });
-
 
 router.get("/waitTime", function (req, res) {
     
@@ -106,7 +77,7 @@ router.get("/waitTime", function (req, res) {
    + " CASE WHEN A2.average_customers >0 THEN A2.average_customers ELSE 0 END as average_customers "
    + " from ((select * from generate_series(1,5) as pos_counter_number ) as A1 "
    + " FULL OUTER JOIN (SELECT zone_id AS pos_counter_number, "
-   + " ROUND(sum(average_count)/1,2) as average_customers  "
+   + " ROUND(sum(average_count)/"+durationInMinutes+",2) as average_customers  "
    + " FROM meraki.mvsense_restapi_data where start_date > "+startdate.getTime()+" and "
    + " end_date < "+endDate.getTime()+" group by zone_id) as A2 on "
    + " A1.pos_counter_number = A2.pos_counter_number )) as T4 "
@@ -125,7 +96,6 @@ router.get("/waitTime", function (req, res) {
         });
 
 });
-
 
 
 router.get("/totalCheckoutZoneVisitorsToday", function (req, res) {
