@@ -102,16 +102,16 @@ export class DonutChartComponent implements OnInit {
 
     Observable
     timer(1, config.countRefreshRate).subscribe(() =>
-      this.http.get('http://localhost:4004/api/v0/meraki/posSimulator/totalTransactions')
+      this.http.get(config.ipAddress+'/api/v0/meraki/posSimulator/totalTransactions')
         .subscribe(res => {
           totalTransactions = res[0].count;
-          this.http.get('http://localhost:4004/api/v0/meraki/camera/visitorCountByDate')
+          this.http.get(config.ipAddress+'/api/v0/meraki/camera/visitorCountByDate')
             .subscribe(res => {
               totalVisitors = res[0].count;
-              this.http.get('http://localhost:4004/api/v0/meraki/checkout/totalCheckoutZoneAbandonmentsToday')
+              this.http.get(config.ipAddress+'/api/v0/meraki/checkout/totalCheckoutZoneAbandonmentsToday')
              .subscribe(res => {
               totalAbandonments = res[0].count;
-              this.http.get('http://localhost:4004/api/v0/meraki/checkout/totalCheckoutZoneVisitorsToday')
+              this.http.get(config.ipAddress+'/api/v0/meraki/checkout/totalCheckoutZoneVisitorsToday')
                 .subscribe(res => {
                   this.chartData = [];
                   totalCheckouts = res[0].count;
@@ -128,7 +128,7 @@ export class DonutChartComponent implements OnInit {
 
     Observable
     timer(1, config.countRefreshRate).subscribe(() =>
-      this.http.get('http://localhost:4004/api/v0/meraki/camera/currentVisitorsPerZone')
+      this.http.get(config.ipAddress+'/api/v0/meraki/camera/currentVisitorsPerZone')
         .subscribe(res => {
           this.chartData2 = [];
           this.zoneData = res;
@@ -137,7 +137,7 @@ export class DonutChartComponent implements OnInit {
           }
           this.zoneDonutChartUpdate(this.chartData2);
 
-          this.http.get('http://localhost:4004/api/v0/meraki/camera/currentVisitorsPerZone')
+          this.http.get(config.ipAddress+'/api/v0/meraki/camera/currentVisitorsPerZone')
             .subscribe(res => {
               this.chartLabels2 = [];
               this.zoneData = res;

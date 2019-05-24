@@ -76,7 +76,7 @@ export class AppComponent implements OnInit{
      // this.snackBar.openFromComponent(snackBarComponent);
     Observable
     timer(1,config.waitTimeRefreshRate).subscribe(() =>
-    this.http.get('http://localhost:4004/api/v0/meraki/checkout/waitTime')
+    this.http.get(config.ipAddress+'/api/v0/meraki/checkout/waitTime')
     .subscribe(res => {
       this.posWaitTime = res;
     })
@@ -84,7 +84,7 @@ export class AppComponent implements OnInit{
 
     Observable
     timer(1,config.notificationRefreshRate).subscribe(() =>
-    this.http.get('http://localhost:4004/api/v0/meraki/camera/currentVisitorsPerZone')
+    this.http.get(config.ipAddress+'/api/v0/meraki/camera/currentVisitorsPerZone')
     .subscribe(res => {
       this.zoneData =  res;
       for(let i of this.zoneData){
@@ -99,7 +99,7 @@ export class AppComponent implements OnInit{
     })
     )
 
-    this.http.get('http://localhost:4004/api/v0/meraki/camera/zones')
+    this.http.get(config.ipAddress+'/api/v0/meraki/camera/zones')
     .subscribe(res => {
       this.zones = res;
     })

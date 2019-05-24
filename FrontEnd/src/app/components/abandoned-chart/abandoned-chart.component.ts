@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { config } from "../../../environments/config";
 
 @Component({
   selector: 'abandoned-chart',
@@ -67,7 +68,7 @@ export class AbandonedChartComponent implements OnInit {
   changeGran(garnularity){
     this.chartLabels = [];
     console.log(garnularity.value);
-    this.http.get('http://localhost:4004/api/v0/meraki/checkout/totalAbandonments?pattern=' + garnularity.value)
+    this.http.get(config.ipAddress+'/api/v0/meraki/checkout/totalAbandonments?pattern=' + garnularity.value)
     .subscribe(res => {
       this.chartData = [];
       console.log(res);
@@ -88,7 +89,7 @@ export class AbandonedChartComponent implements OnInit {
   ngOnInit() {
     this.selectedValue = 'Today';  
     this.chartLabels = [];
-    this.http.get('http://localhost:4004/api/v0/meraki/checkout/totalAbandonments?pattern=Today')
+    this.http.get(config.ipAddress+'/api/v0/meraki/checkout/totalAbandonments?pattern=Today')
     .subscribe(res => {
       this.chartData = [];
       this.initAbandonedData = res;

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { forkJoin } from "rxjs";
 import { ChartdataService } from "src/app/services/chartdata.service";
+import { config } from "../../../environments/config";
 
 @Component({
   selector: "charts",
@@ -84,7 +85,7 @@ export class ChartsComponent implements OnInit {
   ];
   public chartData = [
     {
-      label: "current",
+      label: "actual",
       data: []
     },
 
@@ -95,17 +96,16 @@ export class ChartsComponent implements OnInit {
   ];
   public colorOptions: Array<any> = [
     {
-      // grey
-      backgroundColor: "#A0522D"
+      backgroundColor: "#8FBC8F"
     },
     {
-      backgroundColor: "#CD808080"
+      backgroundColor: "#808080"
     }
   ];
   public chartOptions: any = {
     responsive: true,
     legend: {
-      display: false
+      display: true
     },
     scales: {
       yAxes: [
@@ -164,19 +164,18 @@ export class ChartsComponent implements OnInit {
   };
 
   proximityChartUpdate(granularity) {
-
     if (granularity == "Daily Till Now" || granularity == "Hourly Till Now") {
       this.chartService.getChartData().subscribe(res => {
         this.chartData = [
-          { label: "current", data: [] },
+          { label: "actual", data: [] },
           { label: "predicted", data: [] }
         ];
-        console.log(granularity)
+        console.log(granularity);
         this.proximityDataFetched = res[0];
         this.proximityPredDataFetched = res[1];
 
         console.log(res);
-        console.log(granularity)
+        console.log(granularity);
 
         for (let i of this.proximityDataFetched) {
           this.chartData[0]["data"].push(Math.ceil(i.count));
@@ -186,26 +185,26 @@ export class ChartsComponent implements OnInit {
           this.chartData[1]["data"].push(i.predicted);
         }
       });
-    } 
-    
-    else if (granularity == "Daily" || granularity == "Hourly") {
+    } else if (granularity == "Daily" || granularity == "Hourly") {
       this.chartService.getChartData().subscribe(res => {
         this.chartData = [];
-        this.chartData = [{ label: "current", data: [] },
-                          { label: "predicted", data: [] }];
-        let temp : any = [];
+        this.chartData = [
+          { label: "actual", data: [] },
+          { label: "predicted", data: [] }
+        ];
+        let temp: any = [];
         temp = res;
 
         console.log(res);
-        console.log(granularity)
+        console.log(granularity);
 
-        for(let i of temp){
-          this.chartData[0]["data"].push(i.count)
+        for (let i of temp) {
+          this.chartData[0]["data"].push(i.count);
+          this.chartData[1]["data"].push(0);
         }
-
-      })
+      });
     }
-}
+  }
 
   zoneAnalysisChartUpdate() {
     this.chartService.getZoneChartData().subscribe(res => {
@@ -272,8 +271,7 @@ export class ChartsComponent implements OnInit {
             let dateString = newDate.toString().split(" ")[0];
             this.chartLabels.push(dateString);
           }
-        } 
-        else {
+        } else {
           this.proximityDataFetched = res;
           for (let i of this.proximityDataFetched) {
             let now = i.timerange;
@@ -285,33 +283,113 @@ export class ChartsComponent implements OnInit {
       });
 
       this.setChartLabels(this.chartLabels);
-    } 
-    
-    else{
-      this.chartLabels =  [0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23];
+    } else if (
+      this.granularity == "Hourly Till Now" ||
+      this.granularity == "Hourly"
+    ) {
+      this.chartLabels = [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ];
+    } else {
+      var dateObj = new Date();
+      var month = dateObj.getUTCMonth() + 1;
+      console.log(month);
+      var thirtyOneDays = [1, 3, 5, 7, 8, 10, 12];
+
+      for (let i of thirtyOneDays) {
+        if (i == month) {
+          this.chartLabels = [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31];
+            break;
+        }
+        else {
+          this.chartLabels=[
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30
+          ];
+        }
+      }
     }
 
     this.proximityChartUpdate(this.granularity);
@@ -339,14 +417,14 @@ export class ChartsComponent implements OnInit {
     this.selectedValuePeriod = "Hourly Till Now";
 
     this.http
-      .get("http://localhost:4004/api/v0/meraki/camera/zones")
+      .get(config.ipAddress+"/api/v0/meraki/camera/zones")
       .subscribe(res => {
         this.zones = res;
       });
 
     this.http
       .post(
-        "http://localhost:4004/api/v0/meraki/camera/clients",
+        config.ipAddress+"/api/v0/meraki/camera/clients",
         this.zoneHttpOptions
       )
       .subscribe(res => {
@@ -360,7 +438,7 @@ export class ChartsComponent implements OnInit {
 
     this.http
       .post(
-        "http://localhost:4004/api/v0/meraki/camera/clients",
+        config.ipAddress+"/api/v0/meraki/camera/clients",
         this.zoneHttpOptions
       )
       .subscribe(res => {
@@ -374,14 +452,14 @@ export class ChartsComponent implements OnInit {
 
     forkJoin([
       this.http.get(
-        "http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern=today"
+        config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern=today"
       ),
       this.http.get(
-        "http://localhost:4004/api/v0/meraki/camera/hourlyPredictions"
+        config.ipAddress+"/api/v0/meraki/camera/hourlyPredictions"
       )
     ]).subscribe(res => {
       this.chartData = [
-        { label: "current", data: [] },
+        { label: "actual", data: [] },
         { label: "predicted", data: [] }
       ];
       this.currentArray = res[0];

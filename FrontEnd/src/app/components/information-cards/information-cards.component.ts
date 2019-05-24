@@ -25,25 +25,25 @@ export class InformationCardsComponent implements OnInit {
     
     Observable
     timer(500, config.countRefreshRate).subscribe(() => {
-      this.http.get('http://localhost:4004/api/v0/meraki/camera/currentVisitorCount')
+      this.http.get(config.ipAddress+'/api/v0/meraki/camera/currentVisitorCount')
       .subscribe(res => {
         this.temp = res;
         this.currentVisitor = this.temp[0].visitor_count;
       })
 
-      this.http.get('http://localhost:4004/api/v0/meraki/posSimulator/totalAmount')
+      this.http.get(config.ipAddress+'/api/v0/meraki/posSimulator/totalAmount')
       .subscribe(res => {
         this.temp = res;
         this.totalAmount = Math.ceil((this.temp[0].sum)/70);
       })
 
-    this.http.get('http://localhost:4004/api/v0/meraki/posSimulator/totalTransactions')
+    this.http.get(config.ipAddress+'/api/v0/meraki/posSimulator/totalTransactions')
       .subscribe(res => {
         this.temp = res;
         this.totalCheckouts = this.temp[0].count;
       })
 
-      this.http.get('http://localhost:4004/api/v0/meraki/camera/visitorCountByDate')
+      this.http.get(config.ipAddress+'/api/v0/meraki/camera/visitorCountByDate')
       .subscribe(res => {
         this.temp = res;
         this.totalVisitors = this.temp[0].count;

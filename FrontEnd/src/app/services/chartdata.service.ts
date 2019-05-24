@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from "rxjs/operators";
 import { forkJoin } from 'rxjs';
+import { config } from "../../environments/config";
 
 @Injectable({
   providedIn: 'root'
@@ -70,15 +71,15 @@ export class ChartdataService {
     if(this.granularity == "this week"){
 
        return forkJoin([
-        this.http.get("http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
-        this.http.get("http://localhost:4004/api/v0/meraki/camera/dailyPredictions")])
+        this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
+        this.http.get(config.ipAddress+"/api/v0/meraki/camera/dailyPredictions")])
        .pipe(map(res => {
          return res;
        }))
   }
 
   else if(this.granularity == "last week"){
-    return (this.http.get("http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity)
+    return (this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity)
      .pipe(map(res => {
        return res;
      })))
@@ -86,15 +87,15 @@ export class ChartdataService {
 
   else if(this.granularity == "today"){
     return forkJoin([
-      this.http.get("http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
-      this.http.get("http://localhost:4004/api/v0/meraki/camera/hourlyPredictions")])
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/hourlyPredictions")])
      .pipe(map(res => {
        return res;
      }))
   }
 
   else if(this.granularity == "yesterday"){
-    return (this.http.get("http://localhost:4004/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity)
+    return (this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity)
      .pipe(map(res => {
        return res;
      })))
@@ -103,7 +104,7 @@ export class ChartdataService {
 }
 
   getZoneChartData(){
-    return this.http.post('http://localhost:4004/api/v0/meraki/camera/clients',this.zoneHttpOptions)
+    return this.http.post(config.ipAddress+'/api/v0/meraki/camera/clients',this.zoneHttpOptions)
     .pipe(map((res:Response) => {
       return res;
     }))
