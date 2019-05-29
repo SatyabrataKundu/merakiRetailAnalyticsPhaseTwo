@@ -36,8 +36,8 @@ export class ChartsComponent implements OnInit {
     { value: "Hourly", viewValue: "Yesterday" },
     { value: "Daily Till Now", viewValue: "This Week" },
     { value: "Daily", viewValue: "Last Week" },
-    { value: "Weekly Till Now", viewValue: "This Month" },
-    { value: "Weekly", viewValue: "Last Month" }
+    // { value: "Weekly Till Now", viewValue: "This Month" },
+    // { value: "Weekly", viewValue: "Last Month" }
   ];
 
   proximityDataFetched: any;
@@ -163,6 +163,9 @@ export class ChartsComponent implements OnInit {
     }
   };
 
+
+  //Camera Data Chart Update Functions start
+
   proximityChartUpdate(granularity) {
     if (granularity == "Daily Till Now" || granularity == "Hourly Till Now") {
       this.chartService.getChartData().subscribe(res => {
@@ -204,54 +207,6 @@ export class ChartsComponent implements OnInit {
         }
       });
     }
-  }
-
-  zoneAnalysisChartUpdate() {
-    this.chartService.getZoneChartData().subscribe(res => {
-      this.chartData2 = [];
-      this.zoneDataFetched = res;
-      for (let i of this.zoneDataFetched) {
-        this.chartData2.push(i["detected_clients"]);
-      }
-      if (this.zoneDataFetched.length == 0) {
-        this.chartData2.push(0);
-      }
-    });
-
-    this.setZoneChartData(this.chartData2);
-  }
-
-  changeZone(zone) {
-    this.isDisabled = false;
-    this.zoneName = zone.value;
-    this.chartService.setZoneId(zone);
-
-    this.chartService.getZoneChartData().subscribe(res => {
-      this.chartLabels2 = [];
-      this.zoneLabels = res;
-      for (let i of this.zoneLabels) {
-        this.chartLabels2.push(i["timerange"]);
-      }
-    });
-
-    this.setZoneChartLabels(this.chartLabels2);
-    this.zoneAnalysisChartUpdate();
-  }
-
-  changeZoneGran(gran) {
-    this.zoneGranularity = gran.value;
-    this.chartService.setZoneGranularity(this.zoneGranularity);
-
-    this.chartService.getZoneChartData().subscribe(res => {
-      this.chartLabels2 = [];
-      this.zoneLabels = res;
-      for (let i of this.zoneLabels) {
-        this.chartLabels2.push(i["timerange"]);
-      }
-    });
-
-    this.setZoneChartLabels(this.chartLabels2);
-    this.zoneAnalysisChartUpdate();
   }
 
   changeGran(gran) {
@@ -394,6 +349,62 @@ export class ChartsComponent implements OnInit {
 
     this.proximityChartUpdate(this.granularity);
   }
+
+  //Camera Data Chart Update Functions end
+
+
+  //Zone analysis Chart Update Functions
+
+  changeZone(zone) {
+    this.isDisabled = false;
+    this.zoneName = zone.value;
+    this.chartService.setZoneId(zone);
+
+    this.chartService.getZoneChartData().subscribe(res => {
+      this.chartLabels2 = [];
+      this.zoneLabels = res;
+      for (let i of this.zoneLabels) {
+        this.chartLabels2.push(i["timerange"]);
+      }
+    });
+
+    this.setZoneChartLabels(this.chartLabels2);
+    this.zoneAnalysisChartUpdate();
+  }
+
+  changeZoneGran(gran) {
+    this.zoneGranularity = gran.value;
+    this.chartService.setZoneGranularity(this.zoneGranularity);
+
+    this.chartService.getZoneChartData().subscribe(res => {
+      this.chartLabels2 = [];
+      this.zoneLabels = res;
+      for (let i of this.zoneLabels) {
+        this.chartLabels2.push(i["timerange"]);
+      }
+    });
+
+    this.setZoneChartLabels(this.chartLabels2);
+    this.zoneAnalysisChartUpdate();
+  }
+
+  zoneAnalysisChartUpdate() {
+    this.chartService.getZoneChartData().subscribe(res => {
+      this.chartData2 = [];
+      this.zoneDataFetched = res;
+      for (let i of this.zoneDataFetched) {
+        this.chartData2.push(i["detected_clients"]);
+      }
+      if (this.zoneDataFetched.length == 0) {
+        this.chartData2.push(0);
+      }
+    });
+
+    this.setZoneChartData(this.chartData2);
+  }
+
+  //Zone analysis Chart Update Functions
+
 
   // private setChartData(data) {
   //   this.chartData.push(data);

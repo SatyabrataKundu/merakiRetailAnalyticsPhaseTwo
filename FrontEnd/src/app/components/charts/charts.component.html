@@ -34,10 +34,11 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select placeholder="Choose Period" [(ngModel)]="selectedValuePeriod" name="item" (selectionChange)=changeZoneGran($event)>
+      <mat-select placeholder="Choose Period" [(ngModel)]="selectedValuePeriod" name="item" (selectionChange)=changeZoneGran($event) [disabled]="isDisabled">
         <mat-option *ngFor="let i of period" [value]="i.value">{{i.viewValue}}</mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-icon matTooltip="Period will be activated after change in zone" [matTooltipPosition]="'right'">information</mat-icon>
     <div class="chart-container" id="last-container">
       <canvas *ngIf="chartData" baseChart [chartType]="chartType2" [data]="chartData2" [labels]="chartLabels2"
         [options]="chartOptions2" [colors]="colorOptions2" style="margin-top: 3em;">

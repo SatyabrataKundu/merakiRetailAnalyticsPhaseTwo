@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule, MatSlideToggleModule, MatSnackBarModule } from '@angular/material';
+import { MatInputModule, MatSlideToggleModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
@@ -111,7 +111,9 @@ const customNotifierOptions: NotifierOptions = {
     MatButtonToggleModule,
     MatSlideToggleModule,
     NotifierModule.withConfig(customNotifierOptions),
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatIconModule,
+    MatTooltipModule
   ],
   providers: [ChartdataService, ChatService],
   bootstrap: [AppComponent],
