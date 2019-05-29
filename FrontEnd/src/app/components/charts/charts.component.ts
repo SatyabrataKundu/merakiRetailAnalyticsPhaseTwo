@@ -200,10 +200,14 @@ export class ChartsComponent implements OnInit {
 
         console.log(res);
         console.log(granularity);
+        let current = res[0];
+        let predicted = res[1];
 
-        for (let i of temp) {
+        for (let i of current) {
           this.chartData[0]["data"].push(i.count);
-          this.chartData[1]["data"].push(0);
+        }
+        for (let i of predicted) {
+          this.chartData[1]["data"].push(i.predicted);
         }
       });
     }

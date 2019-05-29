@@ -587,49 +587,29 @@ router.post("/datasetgen", function(req, res) {
   res.status(200).send(responseObject);
 });
 
-router.get("/weeklyPredictions", function(req, res) {
-  let datetime = new Date();
-  let weekValue = dateFormat(datetime, "W");
-
-  var responseObject = {};
-  var selectQuery =
-    "select dateformat_week as week, count as predicted from meraki.weekly_visitor_predictions where dateformat_week >" +
-    weekValue;
-  db.any(selectQuery)
-    .then(function(result) {
-      console.log("db select success for date ", result);
-      res.status(200).send(result);
-    })
-    .catch(function(err) {
-      console.log("not able to get connection " + err);
-      res.status(500).send(JSON.stringify(err.message));
-    });
-});
-
 router.get("/dailyPredictions", function(req, res) {
   var now = new Date();
-  var start = new Date(now.getFullYear(), 0, 0);
-  var diff = now - start;
-  var day = Math.floor(diff / (1000 * 60 * 60 * 24));
-  console.log("Day of year: " + day);
   let dayValue = dateFormat(now, "dddd");
-
   if (dayValue === "Tuesday") {
-    day = day - 1;
+    now.setDate(now.getDate() - 1);
   } else if (dayValue === "Wednesday") {
-    day = day - 2;
+    now.setDate(now.getDate() - 2);
   } else if (dayValue === "Thursday") {
-    day = day - 3;
+    now.setDate(now.getDate() - 3);
   } else if (dayValue === "Friday") {
-    day = day - 4;
+    now.setDate(now.getDate() - 4);
   } else if (dayValue === "Saturday") {
-    day = day - 5;
+    now.setDate(now.getDate() - 5);
   } else if (dayValue === "Sunday") {
-    day = day - 6;
+    now.setDate(now.getDate() - 6);
   }
+  let date = dateFormat(now, "mm/dd/yyyy");
 
+  console.log('PRINT DATE ', date)
   var selectQuery =
-    "select dateformat_date as day, count as predicted from meraki.prediction_value_table;";
+    "select dateformat_date as day, sum(count) as predicted from meraki.prediction_value_table where dateformat_date >= '"+date+"'  group by dateformat_date order by dateformat_date limit 7";
+
+    console.log("DAILY PREDICTIONS::::::",selectQuery)
   db.any(selectQuery)
     .then(function(result) {
       console.log("db select success for date ", result);
