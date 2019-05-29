@@ -26,8 +26,8 @@ export class StackedBarChartComponent implements OnInit {
     { value: "Hourly", viewValue: "Yesterday" },
     { value: "Daily Till Now", viewValue: "This Week" },
     { value: "Daily", viewValue: "Last Week" },
-    { value: "Weekly Till Now", viewValue: "This Month" },
-    { value: "Weekly", viewValue: "Last Month" }
+    { value: "Datewise Till Now", viewValue: "This Month" },
+    { value: "Datewise", viewValue: "Last Month" }
   ];
 
   public chartType: string = "bar";

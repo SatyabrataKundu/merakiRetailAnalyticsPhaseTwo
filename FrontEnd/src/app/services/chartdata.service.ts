@@ -32,7 +32,7 @@ export class ChartdataService {
     else if(granularity == "Daily")
     this.granularity = "last week";
     
-    else if(granularity == "Weekly Till Now")
+    else if(granularity == "Datewise Till Now")
     this.granularity = "this month";
     
     else
@@ -57,7 +57,7 @@ export class ChartdataService {
     else if(zoneGran == "Daily")
     this.zoneHttpOptions.timeRange = "last week";
     
-    else if(zoneGran == "Weekly Till Now")
+    else if(zoneGran == "Datewise Till Now")
     this.zoneHttpOptions.timeRange = "this month";
     
     else
@@ -99,6 +99,22 @@ export class ChartdataService {
      .pipe(map(res => {
        return res;
      })))
+  }
+
+  else if(this.granularity == "this month"){
+    return forkJoin([
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/monthWiseDailyPredictions")])
+     .pipe(map(res => {
+       return res;
+     }))
+  }
+  else if(this.granularity == "last month"){
+    return forkJoin([
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity)])
+     .pipe(map(res => {
+       return res;
+     }))
   }
 
 }

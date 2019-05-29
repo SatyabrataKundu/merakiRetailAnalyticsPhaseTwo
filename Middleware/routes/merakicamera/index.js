@@ -335,7 +335,7 @@ router.post("/clients", function(req, res) {
     let monthValue = dateFormat(datetime, "m");
     let yearValue = dateFormat(datetime, "yyyy");
     let selectDataQuery =
-      "select count(person_oid) as detected_clients , dateformat_week as timeRange" +
+      "select count(person_oid) as detected_clients , CONCAT('Week-',dateformat_week) as timeRange" +
       " from meraki.visitor_predictions " +
       " where zoneid=" +
       zoneId +
@@ -358,7 +358,7 @@ router.post("/clients", function(req, res) {
     let monthValue = dateFormat(datetime, "m") - 1;
     let yearValue = dateFormat(datetime, "yyyy");
     let selectDataQuery =
-      "select count(person_oid) as detected_clients , dateformat_week as timeRange" +
+      "select count(person_oid) as detected_clients ,  CONCAT('Week-',dateformat_week) as timeRange" +
       " from meraki.visitor_predictions " +
       " where zoneid=" +
       zoneId +
@@ -629,7 +629,7 @@ router.get("/dailyPredictions", function(req, res) {
   }
 
   var selectQuery =
-    "select dateformat_day as day, count as predicted from meraki.daily_visitor_predictions;";
+    "select dateformat_date as day, count as predicted from meraki.prediction_value_table;";
   db.any(selectQuery)
     .then(function(result) {
       console.log("db select success for date ", result);
@@ -819,9 +819,12 @@ router.get("/historicalDataByCamera", function(req, res) {
     let monthValue = dateFormat(datetime, "m");
     console.log(monthValue);
     db.any(
-      "select count (distinct (person_oid)),CONCAT('week ',dateformat_week) as timeRange  from meraki.visitor_predictions where dateformat_month =" +
-        monthValue +
-        " group by dateformat_week"
+      "SELECT CASE WHEN count(distinct(T2.person_oid)) > 0" +
+      " THEN count(distinct(T2.person_oid)) ELSE 0 END as count , T1.dateformat_date as timeRange FROM (SELECT * FROM generate_series(0,31) as dateformat_date)as T1 " +
+      " FULL OUTER  JOIN (select * from meraki.visitor_predictions where dateformat_month ='" +
+      monthValue +
+      "' ) as  T2 " +
+      " ON  T1.dateformat_date = T2.dateformat_day group by T1.dateformat_date order by T1.dateformat_date  "
     )
       .then(function(result) {
         console.log("db select success for date ", result);
@@ -836,9 +839,12 @@ router.get("/historicalDataByCamera", function(req, res) {
     monthValue = monthValue - 1;
     console.log(monthValue);
     db.any(
-      "select count (distinct (person_oid)),CONCAT('week ',dateformat_week) as timeRange  from meraki.visitor_predictions where dateformat_month =" +
-        monthValue +
-        " group by dateformat_week"
+      "SELECT CASE WHEN count(distinct(T2.person_oid)) > 0" +
+      " THEN count(distinct(T2.person_oid)) ELSE 0 END as count , T1.dateformat_date as timeRange FROM (SELECT * FROM generate_series(0,31) as dateformat_date)as T1 " +
+      " FULL OUTER  JOIN (select * from meraki.visitor_predictions where dateformat_month ='" +
+      monthValue +
+      "' ) as  T2 " +
+      " ON  T1.dateformat_date = T2.dateformat_day group by T1.dateformat_date order by T1.dateformat_date  "
     )
       .then(function(result) {
         console.log("db select success for date ", result);

@@ -36,8 +36,8 @@ export class ChartsComponent implements OnInit {
     { value: "Hourly", viewValue: "Yesterday" },
     { value: "Daily Till Now", viewValue: "This Week" },
     { value: "Daily", viewValue: "Last Week" },
-    // { value: "Weekly Till Now", viewValue: "This Month" },
-    // { value: "Weekly", viewValue: "Last Month" }
+    { value: "Datewise Till Now", viewValue: "This Month" },
+    { value: "Datewise", viewValue: "Last Month" }
   ];
 
   proximityDataFetched: any;
@@ -204,6 +204,28 @@ export class ChartsComponent implements OnInit {
         for (let i of temp) {
           this.chartData[0]["data"].push(i.count);
           this.chartData[1]["data"].push(0);
+        }
+      });
+    }
+    else if (granularity == "Datewise Till Now" || granularity == "Datewise") {
+      this.chartService.getChartData().subscribe(res => {
+        this.chartData = [];
+        this.chartData = [
+          { label: "actual", data: [] },
+          { label: "predicted", data: [] }
+        ];
+        let temp: any = [];
+        let current = res[0];
+        let predicted = res[1];
+
+        console.log('monthly data',res);
+        console.log(granularity);
+
+        for (let i of current) {
+          this.chartData[0]["data"].push(i.count);
+        }
+        for (let i of predicted) {
+          this.chartData[1]["data"].push(i.predicted);
         }
       });
     }
