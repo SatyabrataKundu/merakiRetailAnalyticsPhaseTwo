@@ -21,7 +21,7 @@ var connectionString =
   config.get("environment.merakiConfig.dbName");
 var db = pgp(connectionString);
 
-router.get("/", function(req, res) {
+router.get("/", function (req, res) {
   var responseObject = {};
   var dataList = [];
   var zoneList = [];
@@ -30,8 +30,8 @@ router.get("/", function(req, res) {
 
   var selectQuery = "select zone_id, zone_name from meraki.meraki_zones";
   db.any(selectQuery)
-    .then(function(result) {
-      result.forEach(function(zoneObject) {
+    .then(function (result) {
+      result.forEach(function (zoneObject) {
         //Generate number of clients.
         var gen1 = rn.generator({
           min: 0,
@@ -74,97 +74,93 @@ router.get("/", function(req, res) {
         let minuteValue = dateFormat(datetime, "M");
         let dayStringValue = dateFormat(datetime, "dddd");
 
-        console.log("DAY OF THE WEEK ", dayStringValue);
-        console.log("HOUR OF THE DAY IS ", hourValue);
+        if (hourValue >= 9 && hourValue <= 21) {
+          console.log("DAY OF THE WEEK ", dayStringValue);
+          console.log("HOUR OF THE DAY IS ", hourValue);
 
-        let dbInsertCamData = {};
-        dbInsertCamData.ts = ts;
-        dbInsertCamData.dateFormat_date = formattedDateString;
-        dbInsertCamData.dateFormat_year = yearValue;
-        dbInsertCamData.dateFormat_month = monthValue;
-        dbInsertCamData.dateFormat_week = weekValue;
-        dbInsertCamData.dateFormat_day = dayValue;
-        dbInsertCamData.dateFormat_hour = hourValue;
-        dbInsertCamData.dateFormat_minute = minuteValue;
-        dbInsertCamData.rush_hour = false;
-        dbInsertCamData.shop_closed = false;
+          let dbInsertCamData = {};
+          dbInsertCamData.ts = ts;
+          dbInsertCamData.dateFormat_date = formattedDateString;
+          dbInsertCamData.dateFormat_year = yearValue;
+          dbInsertCamData.dateFormat_month = monthValue;
+          dbInsertCamData.dateFormat_week = weekValue;
+          dbInsertCamData.dateFormat_day = dayValue;
+          dbInsertCamData.dateFormat_hour = hourValue;
+          dbInsertCamData.dateFormat_minute = minuteValue;
+          dbInsertCamData.rush_hour = false;
+          dbInsertCamData.shop_closed = false;
 
-        var numberOfPeopleDetected = 0;
-        if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
-          numberOfPeopleDetected = gen2();
-        } else if (
-          zoneObject.zone_id === 3 ||
-          zoneObject.zone_id === 4 ||
-          zoneObject.zone_id === 5 ||
-          zoneObject.zone_id === 2 ||
-          zoneObject.zone_id === 6
-        ) {
-          numberOfPeopleDetected = gen3();
-        }
-        // else if (zoneObject.zone_id === 2) {
-        //     numberOfPeopleDetected = gen4();
-        // }
-        // else if (zoneObject.zone_id === 6) {
-        //     numberOfPeopleDetected = gen5();
-        // }
-        else if (zoneObject.zone_id === 7) {
-          numberOfPeopleDetected = gen1();
-        } else if (zoneObject.zone_id === 8 || zoneObject.zone_id === 11) {
-          numberOfPeopleDetected = 20 + gen1();
-        } else {
-          numberOfPeopleDetected = 15 + gen1();
-        }
-
-        if (dayStringValue === "Sun" || dayStringValue === "Sat") {
-          console.log("ITS WEEEKEND");
-
-          numberOfPeopleDetected = numberOfPeopleDetected + 4;
-        }
-        if (hourValue == 18 || hourValue == 19) {
-          numberOfPeopleDetected = numberOfPeopleDetected + 3;
-          dbInsertCamData.rush_hour = true;
-          console.log(
-            "HOUR IS 18 SO ADDING 10 TO THE NUMBEROFPEOPLEDETECTED, ",
-            numberOfPeopleDetected
-          );
-        }
-
-        if (hourValue >= 23 || hourValue <= 7) {
-          dbInsertCamData.shop_closed = true;
-        }
-
-        // console.log('NUMBER OF PEOPLE DETECTED ARE ',numberOfPeopleDetected);
-        // numberOfPeopleDetected = numberOfPeopleDetected + 20;
-
-        for (i = 0; i < numberOfPeopleDetected; i++) {
-          var genOID = rn.generator({
-            min: 100000,
-            max: 999999,
-            integer: true
-          });
-          if (zoneObject.zone_id === 8 && i < 20) {
-            dbInsertCamData.personOID = 1000001 + i;
-            dbInsertCamData.zoneId = zoneObject.zone_id;
+          var numberOfPeopleDetected = 0;
+          if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
+            numberOfPeopleDetected = gen2();
+          } else if (
+            zoneObject.zone_id === 3 ||
+            zoneObject.zone_id === 4 ||
+            zoneObject.zone_id === 5 ||
+            zoneObject.zone_id === 2 ||
+            zoneObject.zone_id === 6
+          ) {
+            numberOfPeopleDetected = gen3();
           }
-          if (zoneObject.zone_id === 11 && i < 20) {
-            dbInsertCamData.personOID = 2000001 + i;
-            dbInsertCamData.zoneId = zoneObject.zone_id;
-          } else if (zoneObject.zone_id === 9 && i < 15) {
-            dbInsertCamData.personOID = 3000001 + i;
-            dbInsertCamData.zoneId = zoneObject.zone_id;
-          } else if (zoneObject.zone_id === 10 && i < 15) {
-            dbInsertCamData.personOID = 4000001 + i;
-            dbInsertCamData.zoneId = zoneObject.zone_id;
+
+
+          else if (zoneObject.zone_id === 7) {
+            numberOfPeopleDetected = gen1();
+          } else if (zoneObject.zone_id === 8 || zoneObject.zone_id === 11) {
+            numberOfPeopleDetected = 20 + gen1();
           } else {
-            dbInsertCamData.personOID = genOID();
-            dbInsertCamData.zoneId = zoneObject.zone_id;
+            numberOfPeopleDetected = 15 + gen1();
           }
-          _performDBInsert(dbInsertCamData);
-          dataList.push(dbInsertCamData);
+
+          if (dayStringValue === "Sunday" || dayStringValue === "Saturday") {
+            console.log("ITS WEEEKEND");
+
+            numberOfPeopleDetected = numberOfPeopleDetected + 4;
+          }
+          if (hourValue == 18 || hourValue == 19) {
+            numberOfPeopleDetected = numberOfPeopleDetected + 3;
+            dbInsertCamData.rush_hour = true;
+            console.log(
+              "HOUR IS 18 SO ADDING 10 TO THE NUMBEROFPEOPLEDETECTED, ",
+              numberOfPeopleDetected
+            );
+          }
+
+
+          if (hourValue >= 23 || hourValue <= 7) {
+            dbInsertCamData.shop_closed = true;
+          }
+
+          for (i = 0; i < numberOfPeopleDetected; i++) {
+            var genOID = rn.generator({
+              min: 100000,
+              max: 999999,
+              integer: true
+            });
+            if (zoneObject.zone_id === 8 && i < 20) {
+              dbInsertCamData.personOID = 1000001 + i;
+              dbInsertCamData.zoneId = zoneObject.zone_id;
+            }
+            if (zoneObject.zone_id === 11 && i < 20) {
+              dbInsertCamData.personOID = 2000001 + i;
+              dbInsertCamData.zoneId = zoneObject.zone_id;
+            } else if (zoneObject.zone_id === 9 && i < 15) {
+              dbInsertCamData.personOID = 3000001 + i;
+              dbInsertCamData.zoneId = zoneObject.zone_id;
+            } else if (zoneObject.zone_id === 10 && i < 15) {
+              dbInsertCamData.personOID = 4000001 + i;
+              dbInsertCamData.zoneId = zoneObject.zone_id;
+            } else {
+              dbInsertCamData.personOID = genOID();
+              dbInsertCamData.zoneId = zoneObject.zone_id;
+            }
+            _performDBInsert(dbInsertCamData);
+            dataList.push(dbInsertCamData);
+          }
         }
       });
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log("not able to get connection " + err);
     });
   responseObject.status = "SUCCESS";
@@ -172,7 +168,7 @@ router.get("/", function(req, res) {
 });
 
 function _performDBInsert(dbInsertCamData) {
-  return new Promise(function(fulfill, reject) {
+  return new Promise(function (fulfill, reject) {
     var insertQueryForDB =
       "INSERT INTO meraki.visitor_predictions " +
       "(person_oid," +
@@ -218,21 +214,21 @@ function _performDBInsert(dbInsertCamData) {
       "')";
 
     db.none(insertQueryForDB)
-      .then(function(response) {
+      .then(function (response) {
         console.log(
           "db insert success for oid and zone  ",
           dbInsertCamData.personOID + " zone " + dbInsertCamData.zoneId
         );
         fulfill(response);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         reject(err);
       });
   });
 }
 
-router.post("/clients", function(req, res) {
+router.post("/clients", function (req, res) {
   var zoneId = req.body.zoneId;
   var timeRange = req.body.timeRange || "today";
 
@@ -253,11 +249,11 @@ router.post("/clients", function(req, res) {
       "' group by dateformat_hour order by dateformat_hour";
 
     db.any(selectDataQuery)
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
@@ -275,11 +271,11 @@ router.post("/clients", function(req, res) {
       formattedDateString +
       "' group by dateformat_hour order by dateformat_hour";
     db.any(selectDataQuery)
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
@@ -298,11 +294,11 @@ router.post("/clients", function(req, res) {
       yearValue +
       " group by dateformat_date order by dateformat_date";
     db.any(selectDataQuery)
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
@@ -322,11 +318,11 @@ router.post("/clients", function(req, res) {
       yearValue +
       " group by dateformat_date order by dateformat_date";
     db.any(selectDataQuery)
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
@@ -345,11 +341,11 @@ router.post("/clients", function(req, res) {
       yearValue +
       " group by dateformat_week order by dateformat_week";
     db.any(selectDataQuery)
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
@@ -368,35 +364,35 @@ router.post("/clients", function(req, res) {
       yearValue +
       " group by dateformat_week order by dateformat_week";
     db.any(selectDataQuery)
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
   }
 });
 
-router.get("/zones", function(req, res) {
+router.get("/zones", function (req, res) {
   var responseObject = {};
 
   var zoneList = [];
   var selectQuery =
     "select zone_id as zoneId, zone_name as zoneName from meraki.meraki_zones where zone_name not like 'Checkout%'";
   db.any(selectQuery)
-    .then(function(result) {
+    .then(function (result) {
       console.log("db select success for date ", result);
       res.status(200).send(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log("not able to get connection " + err);
       res.status(500).send(JSON.stringify(err.message));
     });
 });
 
-router.get("/currentVisitorsPerZone", function(req, res) {
+router.get("/currentVisitorsPerZone", function (req, res) {
   var datetime = new Date();
   let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
   let hourValue = dateFormat(datetime, "H");
@@ -427,16 +423,16 @@ router.get("/currentVisitorsPerZone", function(req, res) {
 
   var finalSelect = selectQuery + " UNION ALL " + checkoutSelectQuery;
   db.any(finalSelect)
-    .then(function(result) {
+    .then(function (result) {
       console.log("db select success for date ", result);
       res.status(200).send(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log("not able to get connection " + err);
       res.status(500).send(JSON.stringify(err.message));
     });
 });
-router.post("/datasetgen", function(req, res) {
+router.post("/datasetgen", function (req, res) {
   var responseObject = {};
   var dataList = [];
   var zoneList = [];
@@ -445,9 +441,9 @@ router.post("/datasetgen", function(req, res) {
 
   var selectQuery = "select zone_id, zone_name from meraki.meraki_zones";
   db.any(selectQuery)
-    .then(function(result) {
-      result.forEach(function(zoneObject) {
-         //Generate number of clients.
+    .then(function (result) {
+      result.forEach(function (zoneObject) {
+        //Generate number of clients.
         var gen1 = rn.generator({
           min: 0,
           max: 2,
@@ -480,7 +476,7 @@ router.post("/datasetgen", function(req, res) {
 
         var datetime = new Date(dateValue);
         let ts = datetime.getTime();
-         let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
+        let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
         let yearValue = dateFormat(datetime, "yyyy");
         let monthValue = dateFormat(datetime, "m");
         let weekValue = dateFormat(datetime, "W");
@@ -573,7 +569,7 @@ router.post("/datasetgen", function(req, res) {
         }
       });
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log("not able to get connection " + err);
     });
   responseObject.status = "SUCCESS";
@@ -581,7 +577,7 @@ router.post("/datasetgen", function(req, res) {
 });
 
 
-router.get("/dailyPredictions", function(req, res) {
+router.get("/dailyPredictions", function (req, res) {
   var now = new Date();
   let dayValue = dateFormat(now, "dddd");
   if (dayValue === "Tuesday") {
@@ -601,21 +597,21 @@ router.get("/dailyPredictions", function(req, res) {
 
   console.log('PRINT DATE ', date)
   var selectQuery =
-    "select dateformat_date as day, sum(count) as predicted from meraki.prediction_value_table where dateformat_date >= '"+date+"'  group by dateformat_date order by dateformat_date limit 7";
+    "select dateformat_date as day, sum(count) as predicted from meraki.prediction_value_table where dateformat_date >= '" + date + "'  group by dateformat_date order by dateformat_date limit 7";
 
-    console.log("DAILY PREDICTIONS::::::",selectQuery)
+  console.log("DAILY PREDICTIONS::::::", selectQuery)
   db.any(selectQuery)
-    .then(function(result) {
+    .then(function (result) {
       console.log("db select success for date ", result);
       res.status(200).send(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log("not able to get connection " + err);
       res.status(500).send(JSON.stringify(err.message));
     });
 });
 
-router.get("/hourlyPredictions", function(req, res) {
+router.get("/hourlyPredictions", function (req, res) {
   var d = new Date();
   var day = d.getDate();
   var month = d.getMonth() + 1;
@@ -629,55 +625,55 @@ router.get("/hourlyPredictions", function(req, res) {
   }
 
   var year = d.getFullYear().toString().substr(-2);
-  var dateString = "'"+month + "/" + day + "/" + year+"'";
-  
-  var selectQuery ="select count as predicted from meraki.prediction_value_table where dateformat_date="+dateString;
+  var dateString = "'" + month + "/" + day + "/" + year + "'";
+
+  var selectQuery = "select count as predicted from meraki.prediction_value_table where dateformat_date=" + dateString;
   db.any(selectQuery)
-    .then(function(result) {
+    .then(function (result) {
       console.log("db select success for date ", result);
       res.status(200).send(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log("not able to get connection " + err);
       res.status(500).send(JSON.stringify(err.message));
     });
 });
 
-router.get("/monthWiseDailyPredictions", function(req, res) {
+router.get("/monthWiseDailyPredictions", function (req, res) {
   var selectQuery =
     "select dateformat_date, sum(count) as predicted from meraki.prediction_value_table group by dateformat_date order by dateformat_date;";
   db.any(selectQuery)
-    .then(function(result) {
+    .then(function (result) {
       console.log("db select success for date ", result);
       res.status(200).send(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log("not able to get connection " + err);
       res.status(500).send(JSON.stringify(err.message));
     });
 });
 
-router.get("/visitorCountByDate", function(req, res) {
+router.get("/visitorCountByDate", function (req, res) {
   var datetime = new Date();
   let date = req.query.date || dateFormat(datetime, "yyyy-mm-dd");
   console.log("value of date ", date);
 
   db.any(
     "select count (distinct (person_oid)) from meraki.visitor_predictions where dateformat_date ='" +
-      date +
-      "' and zoneid=1"
+    date +
+    "' and zoneid=1"
   )
-    .then(function(result) {
+    .then(function (result) {
       console.log("db select success for date ", result);
       res.status(200).send(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log("not able to get connection " + err);
       res.status(500).send(JSON.stringify(err.message));
     });
 });
 
-router.get("/currentVisitorCount", function(req, res) {
+router.get("/currentVisitorCount", function (req, res) {
   var datetime = new Date();
   let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
   let hourValue = dateFormat(datetime, "H");
@@ -694,17 +690,17 @@ router.get("/currentVisitorCount", function(req, res) {
 
   console.log("CURRENT VISITORS  ", selectQuery);
   db.any(selectQuery)
-    .then(function(result) {
+    .then(function (result) {
       console.log("db select success for date ", result);
       res.status(200).send(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log("not able to get connection " + err);
       res.status(500).send(JSON.stringify(err.message));
     });
 });
 
-router.get("/historicalDataByCamera", function(req, res) {
+router.get("/historicalDataByCamera", function (req, res) {
   let pattern = req.query.pattern || "today";
   if (pattern == "today") {
     var datetime = new Date();
@@ -718,11 +714,11 @@ router.get("/historicalDataByCamera", function(req, res) {
       " ON  T1.dateformat_hour = T2.dateformat_hour group by T1.dateformat_hour order by T1.dateformat_hour  ";
     // db.any("select count (distinct (person_oid)), dateformat_hour  as timeRange from meraki.visitor_predictions where dateformat_date ='" + date + "' group by dateformat_hour")
     db.any(selectQuery)
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success for date ", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
@@ -733,14 +729,14 @@ router.get("/historicalDataByCamera", function(req, res) {
 
     db.any(
       "select count (distinct (person_oid)), dateformat_hour as timeRange from meraki.visitor_predictions where dateformat_date ='" +
-        date +
-        "' group by dateformat_hour"
+      date +
+      "' group by dateformat_hour"
     )
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success for date ", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
@@ -761,11 +757,11 @@ router.get("/historicalDataByCamera", function(req, res) {
       " ON  T1.dateformat_date = T2.dateformat_date " +
       " group by T1.dateformat_date order by T1.dateformat_date ";
     db.any(selectQuery)
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success for date ", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
@@ -776,16 +772,16 @@ router.get("/historicalDataByCamera", function(req, res) {
     weekValue = weekValue - 1;
     db.any(
       "select count (distinct (person_oid)), dateformat_date as timeRange from meraki.visitor_predictions where dateformat_week =" +
-        weekValue +
-        " and dateformat_year = " +
-        yearValue +
-        " group by dateformat_date"
+      weekValue +
+      " and dateformat_year = " +
+      yearValue +
+      " group by dateformat_date"
     )
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success for date ", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
@@ -800,11 +796,11 @@ router.get("/historicalDataByCamera", function(req, res) {
       "' ) as  T2 " +
       " ON  T1.dateformat_date = T2.dateformat_day group by T1.dateformat_date order by T1.dateformat_date  "
     )
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success for date ", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
@@ -820,11 +816,11 @@ router.get("/historicalDataByCamera", function(req, res) {
       "' ) as  T2 " +
       " ON  T1.dateformat_date = T2.dateformat_day group by T1.dateformat_date order by T1.dateformat_date  "
     )
-      .then(function(result) {
+      .then(function (result) {
         console.log("db select success for date ", result);
         res.status(200).send(result);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         res.status(500).send(JSON.stringify(err.message));
       });
@@ -832,7 +828,7 @@ router.get("/historicalDataByCamera", function(req, res) {
 });
 
 function _datasetGeneration(dbInsertCamData) {
-  return new Promise(function(fulfill, reject) {
+  return new Promise(function (fulfill, reject) {
     var insertQueryForDB =
       "INSERT INTO meraki.visitor_data_without_oid " +
       "(visitor_count," +
@@ -869,21 +865,21 @@ function _datasetGeneration(dbInsertCamData) {
       "')";
 
     db.none(insertQueryForDB)
-      .then(function(response) {
+      .then(function (response) {
         console.log(
           "db insert success for oid  ",
           dbInsertCamData.visitor_count
         );
         fulfill(response);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log("not able to get connection " + err);
         reject(err);
       });
   });
 }
 
-router.post("/datasetnew", function(req, res) {
+router.post("/datasetnew", function (req, res) {
   var responseObject = {};
   var dataList = [];
   let dateValue = req.body.tsValue;
