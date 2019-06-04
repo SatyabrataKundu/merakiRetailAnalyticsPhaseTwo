@@ -436,7 +436,6 @@ router.get("/currentVisitorsPerZone", function(req, res) {
       res.status(500).send(JSON.stringify(err.message));
     });
 });
-
 router.post("/datasetgen", function(req, res) {
   var responseObject = {};
   var dataList = [];
@@ -448,7 +447,7 @@ router.post("/datasetgen", function(req, res) {
   db.any(selectQuery)
     .then(function(result) {
       result.forEach(function(zoneObject) {
-        //Generate number of clients.
+         //Generate number of clients.
         var gen1 = rn.generator({
           min: 0,
           max: 2,
@@ -456,7 +455,7 @@ router.post("/datasetgen", function(req, res) {
         });
 
         var gen2 = rn.generator({
-          min: 0,
+          min: 5,
           max: 10,
           integer: true
         });
@@ -481,7 +480,7 @@ router.post("/datasetgen", function(req, res) {
 
         var datetime = new Date(dateValue);
         let ts = datetime.getTime();
-        let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
+         let formattedDateString = dateFormat(datetime, "yyyy-mm-dd");
         let yearValue = dateFormat(datetime, "yyyy");
         let monthValue = dateFormat(datetime, "m");
         let weekValue = dateFormat(datetime, "W");
@@ -517,12 +516,6 @@ router.post("/datasetgen", function(req, res) {
         ) {
           numberOfPeopleDetected = gen3();
         }
-        // else if (zoneObject.zone_id === 2) {
-        //     numberOfPeopleDetected = gen4();
-        // }
-        // else if (zoneObject.zone_id === 6) {
-        //     numberOfPeopleDetected = gen5();
-        // }
         else if (zoneObject.zone_id === 7) {
           numberOfPeopleDetected = gen1();
         } else if (zoneObject.zone_id === 8 || zoneObject.zone_id === 11) {
@@ -586,6 +579,7 @@ router.post("/datasetgen", function(req, res) {
   responseObject.status = "SUCCESS";
   res.status(200).send(responseObject);
 });
+
 
 router.get("/dailyPredictions", function(req, res) {
   var now = new Date();
