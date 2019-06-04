@@ -14,3 +14,8 @@ TABLESPACE pg_default;
 
 ALTER TABLE meraki.prediction_value_table
     OWNER to postgres;
+
+
+drop table meraki.daily_visitor_predictions;
+drop table meraki.hourly_visitor_predictions;
+drop table meraki.weekly_visitor_predictions;
