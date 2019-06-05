@@ -25,7 +25,10 @@ dateArray.forEach(function (dateValue) {
 
 		let requestParams = {};
 		requestParams.tsValue = tempDateForEachMinute;
-		requestParams.incremental = config.get("simulator.datasetup.incremental");
+		let monthValue = dateFormat(tempDate, "m");
+		
+	
+		requestParams.incremental = 4*monthValue;
 		Request.post({
 			"headers": {
 				"Content-Type": "application/json",

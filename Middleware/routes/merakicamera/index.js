@@ -74,7 +74,7 @@ router.get("/", function (req, res) {
         let minuteValue = dateFormat(datetime, "M");
         let dayStringValue = dateFormat(datetime, "dddd");
 
-        if (hourValue >= 9 && hourValue <= 21) {
+        if (hourValue >= 8 && hourValue <= 22) {
           console.log("DAY OF THE WEEK ", dayStringValue);
           console.log("HOUR OF THE DAY IS ", hourValue);
 
@@ -887,7 +887,7 @@ router.post("/datasetnew", function (req, res) {
 
   var gen1 = rn.generator({
     min: 0,
-    max: 3,
+    max: 1,
     integer: true
   });
 
@@ -905,7 +905,7 @@ router.post("/datasetnew", function (req, res) {
 
   var gen1WE = rn.generator({
     min: 0,
-    max: 6,
+    max: 1,
     integer: true
   });
 
@@ -951,7 +951,7 @@ router.post("/datasetnew", function (req, res) {
     if (hourValue == 18 || hourValue == 19) {
       countOfVisitors = gen3WE();
     } else if (hourValue >= 23 || hourValue <= 7) {
-      countOfVisitors = gen1WE();
+      countOfVisitors = 0;
     } else {
       countOfVisitors = gen2WE();
     }
@@ -959,13 +959,13 @@ router.post("/datasetnew", function (req, res) {
     if (hourValue == 18 || hourValue == 19) {
       countOfVisitors = gen3();
     } else if (hourValue >= 23 || hourValue <= 7) {
-      countOfVisitors = gen1();
+      countOfVisitors = 0;
     } else {
       countOfVisitors = gen2();
     }
   }
 
-  dbInsertCamData.visitor_count = countOfVisitors;
+  dbInsertCamData.visitor_count = countOfVisitors*10;
 
   _datasetGeneration(dbInsertCamData);
   dataList.push(dbInsertCamData);

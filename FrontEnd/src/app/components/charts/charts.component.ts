@@ -185,7 +185,12 @@ export class ChartsComponent implements OnInit {
         }
 
         for (let i of this.proximityPredDataFetched) {
-          this.chartData[1]["data"].push(i.predicted);
+          if(i.predicted < 0){
+            this.chartData[1]["data"].push(0);
+          }
+          else{
+            this.chartData[1]["data"].push(i.predicted);
+          }
         }
       });
     } else if (granularity == "Daily" || granularity == "Hourly") {
@@ -207,7 +212,12 @@ export class ChartsComponent implements OnInit {
           this.chartData[0]["data"].push(i.count);
         }
         for (let i of predicted) {
-          this.chartData[1]["data"].push(i.predicted);
+          if(i.predicted < 0){
+            this.chartData[1]["data"].push(0);
+          }
+          else{
+            this.chartData[1]["data"].push(i.predicted);
+          }
         }
       });
     }
@@ -229,7 +239,12 @@ export class ChartsComponent implements OnInit {
           this.chartData[0]["data"].push(i.count);
         }
         for (let i of predicted) {
-          this.chartData[1]["data"].push(i.predicted);
+          if(i.predicted < 0){
+            this.chartData[1]["data"].push(0);
+          }
+          else{
+            this.chartData[1]["data"].push(i.predicted);
+          }
         }
       });
     }
@@ -511,7 +526,13 @@ export class ChartsComponent implements OnInit {
       }
 
       for (let i of this.predictedArray) {
-        this.chartData[1]["data"].push(i.predicted);
+        if(i.predicted < 0){
+          this.chartData[1]["data"].push(0);
+        }
+        else{
+          this.chartData[1]["data"].push(i.predicted);
+        }
+        
       }
     });
   }
