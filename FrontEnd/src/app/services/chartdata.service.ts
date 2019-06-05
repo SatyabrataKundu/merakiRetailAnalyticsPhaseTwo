@@ -79,10 +79,12 @@ export class ChartdataService {
   }
 
   else if(this.granularity == "last week"){
-    return (this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity)
+    return forkJoin([
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/dailyPredictions")])
      .pipe(map(res => {
        return res;
-     })))
+     }))
   }
 
   else if(this.granularity == "today"){
@@ -95,10 +97,12 @@ export class ChartdataService {
   }
 
   else if(this.granularity == "yesterday"){
-    return (this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity)
+    return forkJoin([
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/hourlyPredictions")])
      .pipe(map(res => {
        return res;
-     })))
+     }))
   }
 
   else if(this.granularity == "this month"){
@@ -111,7 +115,8 @@ export class ChartdataService {
   }
   else if(this.granularity == "last month"){
     return forkJoin([
-      this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity)])
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/monthWiseDailyPredictions")])
      .pipe(map(res => {
        return res;
      }))

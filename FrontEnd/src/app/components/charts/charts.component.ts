@@ -205,8 +205,8 @@ export class ChartsComponent implements OnInit {
 
         console.log(res);
         console.log(granularity);
-        let current = res[0];
-        let predicted = res[1];
+        let current:any = res[0];
+        let predicted:any = res[1];
 
         for (let i of current) {
           this.chartData[0]["data"].push(i.count);
@@ -229,8 +229,8 @@ export class ChartsComponent implements OnInit {
           { label: "predicted", data: [] }
         ];
         let temp: any = [];
-        let current = res[0];
-        let predicted = res[1];
+        let current:any = res[0];
+        let predicted:any = res[1];
 
         console.log('monthly data',res);
         console.log(granularity);
