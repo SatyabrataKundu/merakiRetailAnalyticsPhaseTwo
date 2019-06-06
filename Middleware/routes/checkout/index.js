@@ -203,7 +203,7 @@ router.get("/totalAbandonments", function (req, res) {
     } else if (pattern == 'This Month') {
         var datetime = new Date();
         let monthValue = dateFormat(datetime, "m");
-        queryString="select (case when personCount-transactionCount>0 Then personCount-transactionCount   ELSE 0 END) as count, person.timeRange from (select count(distinct (person_oid)) as personCount, dateformat_week as timeRange from meraki.visitor_predictions where zoneid in (select zone_id from meraki.meraki_zones where zone_name like 'Checkout%')and dateformat_month = '"+ monthValue +"' group by dateformat_week) as person,(select count(unique_pos_data_key) as transactionCount, dateformat_week as timeRange from meraki.pos_data where dateformat_month = '"+ monthValue +"' group by dateformat_week order by dateformat_week) as posdata where person.timeRange=posdata.timeRange";
+        queryString="select (case when personCount-transactionCount>0 Then personCount-transactionCount   ELSE 0 END) as count, CONCAT('week : ',person.timeRange) as timeRange from (select count(distinct (person_oid)) as personCount, dateformat_week as timeRange from meraki.visitor_predictions where zoneid in (select zone_id from meraki.meraki_zones where zone_name like 'Checkout%')and dateformat_month = '"+ monthValue +"' group by dateformat_week) as person,(select count(unique_pos_data_key) as transactionCount, dateformat_week as timeRange from meraki.pos_data where dateformat_month = '"+ monthValue +"' group by dateformat_week order by dateformat_week) as posdata where person.timeRange=posdata.timeRange";
         db.any(queryString)
             .then(function (result) {
                 res.status(200).send(result);
@@ -216,7 +216,7 @@ router.get("/totalAbandonments", function (req, res) {
         var datetime = new Date();
         let monthValue = dateFormat(datetime, "m");
         monthValue = monthValue - 1;
-        queryString="select (case when personCount-transactionCount>0 Then personCount-transactionCount   ELSE 0 END) as count, person.timeRange from (select count(distinct (person_oid)) as personCount, dateformat_week as timeRange from meraki.visitor_predictions where zoneid in (select zone_id from meraki.meraki_zones where zone_name like 'Checkout%')and dateformat_month = '"+ monthValue +"' group by dateformat_week) as person,(select count(unique_pos_data_key) as transactionCount, dateformat_week as timeRange from meraki.pos_data where dateformat_month = '"+ monthValue +"' group by dateformat_week order by dateformat_week) as posdata where person.timeRange=posdata.timeRange";
+        queryString="select (case when personCount-transactionCount>0 Then personCount-transactionCount   ELSE 0 END) as count, CONCAT('week : ',person.timeRange) as timeRange from (select count(distinct (person_oid)) as personCount, dateformat_week as timeRange from meraki.visitor_predictions where zoneid in (select zone_id from meraki.meraki_zones where zone_name like 'Checkout%')and dateformat_month = '"+ monthValue +"' group by dateformat_week) as person,(select count(unique_pos_data_key) as transactionCount, dateformat_week as timeRange from meraki.pos_data where dateformat_month = '"+ monthValue +"' group by dateformat_week order by dateformat_week) as posdata where person.timeRange=posdata.timeRange";
         db.any(queryString)
             .then(function (result) {
                 res.status(200).send(result);
