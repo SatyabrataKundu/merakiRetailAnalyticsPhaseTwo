@@ -259,7 +259,7 @@ export class ChartsComponent implements OnInit {
       this.chartService.getChartData().subscribe(res => {
         this.chartLabels = [];
 
-        if (this.granularity == "Daily Till Now") {
+        
           this.proximityDataFetched = res[0];
           for (let i of this.proximityDataFetched) {
             let now = i.timerange;
@@ -267,15 +267,7 @@ export class ChartsComponent implements OnInit {
             let dateString = newDate.toString().split(" ")[0];
             this.chartLabels.push(dateString);
           }
-        } else {
-          this.proximityDataFetched = res;
-          for (let i of this.proximityDataFetched) {
-            let now = i.timerange;
-            let newDate = new Date(now);
-            let dateString = newDate.toString().split(" ")[0];
-            this.chartLabels.push(dateString);
-          }
-        }
+        
       });
 
       this.setChartLabels(this.chartLabels);
