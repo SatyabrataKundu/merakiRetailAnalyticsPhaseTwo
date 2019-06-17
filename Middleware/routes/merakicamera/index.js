@@ -639,9 +639,31 @@ router.get("/hourlyPredictions", function (req, res) {
     });
 });
 
-router.get("/monthWiseDailyPredictions", function (req, res) {
+router.get("/currentMonthWiseDailyPredictions", function (req, res) {
+  var d = new Date();
+  var month = dateFormat(d,'mm');
+  
   var selectQuery =
-    "select dateformat_date, sum(count) as predicted from meraki.prediction_value_table group by dateformat_date order by dateformat_date;";
+    "select dateformat_date, sum(count) as predicted from meraki.prediction_value_table where dateformat_date >= '"+month+"/01/19' and dateformat_date <= '"+month+"/31/19' group by dateformat_date order by dateformat_date;";
+  db.any(selectQuery)
+    .then(function (result) {
+      console.log("db select success for date ", result);
+      res.status(200).send(result);
+    })
+    .catch(function (err) {
+      console.log("not able to get connection " + err);
+      res.status(500).send(JSON.stringify(err.message));
+    });
+});
+
+router.get("/previousMonthWiseDailyPredictions", function (req, res) {
+  var d = new Date();
+  var month = '0'+ (dateFormat(d,'mm') - 1).toString();
+  console.log(month);
+  
+  var selectQuery =
+  "select dateformat_date, sum(count) as predicted from meraki.prediction_value_table where dateformat_date >= '"+month+"/01/19' and dateformat_date <= '"+month+"/31/19' group by dateformat_date order by dateformat_date;";
+  
   db.any(selectQuery)
     .then(function (result) {
       console.log("db select success for date ", result);

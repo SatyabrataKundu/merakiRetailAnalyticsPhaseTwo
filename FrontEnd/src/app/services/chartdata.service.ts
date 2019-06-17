@@ -108,7 +108,7 @@ export class ChartdataService {
   else if(this.granularity == "this month"){
     return forkJoin([
       this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
-      this.http.get(config.ipAddress+"/api/v0/meraki/camera/monthWiseDailyPredictions")])
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/currentMonthWiseDailyPredictions")])
      .pipe(map(res => {
        return res;
      }))
@@ -116,7 +116,7 @@ export class ChartdataService {
   else if(this.granularity == "last month"){
     return forkJoin([
       this.http.get(config.ipAddress+"/api/v0/meraki/camera/historicalDataByCamera?pattern="+this.granularity),
-      this.http.get(config.ipAddress+"/api/v0/meraki/camera/monthWiseDailyPredictions")])
+      this.http.get(config.ipAddress+"/api/v0/meraki/camera/previousMonthWiseDailyPredictions")])
      .pipe(map(res => {
        return res;
      }))
