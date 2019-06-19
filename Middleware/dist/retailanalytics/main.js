@@ -350,7 +350,7 @@ var AppRoutingModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar color=\"primary\" style=\"background: rgb(255, 255, 255);\r\nbackground: linear-gradient(90deg, rgb(16, 38, 59) 0%, rgba(13, 143, 182, 0.774) 100%);\">\r\n  <mat-toolbar-row style=\"display: flex; justify-content: space-between\">\r\n\r\n    <img src=\"../assets/MerakleTransparent.png\" alt=\"\" height=\"40px\" style=\"margin-right: 20px;\">\r\n\r\n    <span>Meraki Retail Analytics</span>\r\n\r\n    <div>\r\n\r\n      <button mat-icon-button [matMenuTriggerFor]=\"toggleMenu\">\r\n        <mat-icon>highlight</mat-icon>\r\n      </button>\r\n\r\n      <button mat-icon-button [matMenuTriggerFor]=\"notificationMenu\" (click)=\"clearNotification()\">\r\n        <mat-icon matBadge={{notificationCount}} matBadgeColor=\"warn\">notification_important</mat-icon>\r\n      </button>\r\n\r\n\r\n      <mat-menu #notificationMenu=\"matMenu\">\r\n        <mat-list>\r\n          <mat-list-item *ngFor=\"let i of emptyZones\"> <strong\r\n              style=\"color: rgb(143, 143, 143); font-size: 15px;\">{{i}}</strong> </mat-list-item>\r\n        </mat-list>\r\n        <button mat-button style=\"float: right; margin: 0px 10px 10px 0px;\" (click)=\"clearNotificationList()\">\r\n          <mat-icon>clear</mat-icon>\r\n        </button>\r\n      </mat-menu>\r\n\r\n\r\n      <mat-menu #toggleMenu=\"matMenu\">\r\n        <h6 style=\"text-align: center;\">Light Controls</h6>\r\n        <mat-list (click)=\"$event.stopPropagation()\">\r\n          <mat-list-item *ngFor=\"let i of zones\">\r\n            <strong style=\"float:left; width: 150px;\">{{i.zonename}}</strong>\r\n\r\n            <mat-slide-toggle [color]=\"color\" [checked]=\"checked\" [disabled]=\"disabled\" (change)=\"toggle(i,$event)\">\r\n            </mat-slide-toggle>\r\n          </mat-list-item>\r\n        </mat-list>\r\n      </mat-menu>\r\n\r\n\r\n\r\n    </div>\r\n  </mat-toolbar-row>\r\n</mat-toolbar>\r\n\r\n\r\n\r\n<div style=\"background-color: #eeeeee52;\">\r\n  <div class=wrapper>\r\n    <information-cards></information-cards>\r\n  </div>\r\n\r\n  <div class=\"chart-wrapper\">\r\n    <div class=\"info-center\">\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"donut-chart\" style=\"display:flex; margin-top: 1vw; justify-content: space-between\">\r\n\r\n    <div style=\"width:fit-content; text-align: center;\">\r\n      <donut-chart></donut-chart>\r\n    </div>\r\n\r\n  </div>\r\n  <div class=\"chart-wrapper\">\r\n    <div class=\"info-center\">\r\n      <p>Checkout Wait Time</p>\r\n      <div class=\"wait-time-wrapper\">\r\n        <div [ngClass]=\"{'card-black': i.waittime_inminutes<0,\r\n                         'card-green': i.waittime_inminutes>=0 && i.waittime_inminutes<=15, \r\n                         'card-yellow': i.waittime_inminutes>15 && i.waittime_inminutes<25, \r\n                         'card-red': i.waittime_inminutes>=25}\" *ngFor=\"let i of posWaitTime\">\r\n          <span *ngIf=\"i.waittime_inminutes>=0\">Counter {{i.pos_counter_number}} : <h5>{{i.waittime_inminutes}} min</h5></span>\r\n          <span *ngIf=\"i.waittime_inminutes<0\">Counter {{i.pos_counter_number}} : <h5>Counter Closed</h5></span>\r\n        </div>\r\n      </div>\r\n\r\n\r\n    </div>\r\n  </div>\r\n  <div class=\"bar-chart-wrapper\">\r\n    <charts></charts>\r\n  </div>\r\n<br>\r\n<br>\r\n\r\n  <div class=\"abandoned-chart-container\">\r\n    <div class=\"row\">\r\n      <div class=\"col-12\">\r\n          <abandoned-chart></abandoned-chart>\r\n      </div>\r\n  </div>\r\n  </div>\r\n\r\n  <!-- <div class=\"stacked-chart-container\">\r\n    <div class=\"row\">\r\n      <div class=\"col-12\">\r\n        <stacked-bar-chart></stacked-bar-chart>\r\n      </div>\r\n  </div>\r\n  </div> -->\r\n\r\n  <!-- <notifier-container></notifier-container> -->\r\n\r\n\r\n  <footer\r\n    style=\"background-color:rgb(228, 228, 228); height: 100px; display: flex; justify-content: center; align-items: center;\">\r\n    <p>Ⓒ Team Merakle Semicolons 2019</p>\r\n  </footer>\r\n\r\n  <router-outlet></router-outlet>"
+module.exports = "<mat-toolbar color=\"primary\" style=\"background: rgb(255, 255, 255);\r\nbackground: linear-gradient(90deg, rgb(16, 38, 59) 0%, rgba(13, 143, 182, 0.774) 100%);\">\r\n  <mat-toolbar-row style=\"display: flex; justify-content: space-between\">\r\n\r\n    <img src=\"../assets/MerakleTransparent.png\" alt=\"\" height=\"40px\" style=\"margin-right: 20px;\">\r\n\r\n    <span>Meraki AI Video Analytics</span>\r\n\r\n    <div>\r\n\r\n      <button mat-icon-button [matMenuTriggerFor]=\"toggleMenu\">\r\n        <mat-icon>highlight</mat-icon>\r\n      </button>\r\n\r\n      <button mat-icon-button [matMenuTriggerFor]=\"notificationMenu\" (click)=\"clearNotification()\">\r\n        <mat-icon matBadge={{notificationCount}} matBadgeColor=\"warn\">notification_important</mat-icon>\r\n      </button>\r\n\r\n\r\n      <mat-menu #notificationMenu=\"matMenu\">\r\n        <mat-list>\r\n          <mat-list-item *ngFor=\"let i of emptyZones\"> <strong\r\n              style=\"color: rgb(143, 143, 143); font-size: 15px;\">{{i}}</strong> </mat-list-item>\r\n        </mat-list>\r\n        <button mat-button style=\"float: right; margin: 0px 10px 10px 0px;\" (click)=\"clearNotificationList()\">\r\n          <mat-icon>clear</mat-icon>\r\n        </button>\r\n      </mat-menu>\r\n\r\n\r\n      <mat-menu #toggleMenu=\"matMenu\">\r\n        <h6 style=\"text-align: center;\">Light Controls</h6>\r\n        <mat-list (click)=\"$event.stopPropagation()\">\r\n          <mat-list-item *ngFor=\"let i of zones\">\r\n            <strong style=\"float:left; width: 150px;\">{{i.zonename}}</strong>\r\n\r\n            <mat-slide-toggle [color]=\"color\" [checked]=\"checked\" [disabled]=\"disabled\" (change)=\"toggle(i,$event)\">\r\n            </mat-slide-toggle>\r\n          </mat-list-item>\r\n        </mat-list>\r\n      </mat-menu>\r\n\r\n\r\n\r\n    </div>\r\n  </mat-toolbar-row>\r\n</mat-toolbar>\r\n\r\n\r\n\r\n<div style=\"background-color: #eeeeee52;\">\r\n  <div class=wrapper>\r\n    <information-cards></information-cards>\r\n  </div>\r\n\r\n  <div class=\"chart-wrapper\">\r\n    <div class=\"info-center\">\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"donut-chart\" style=\"display:flex; margin-top: 1vw; justify-content: space-between\">\r\n\r\n    <div style=\"width:fit-content; text-align: center;\">\r\n      <donut-chart></donut-chart>\r\n    </div>\r\n\r\n  </div>\r\n  <div class=\"chart-wrapper\">\r\n    <div class=\"info-center\">\r\n      <p>Checkout Wait Time</p>\r\n      <div class=\"wait-time-wrapper\">\r\n        <div [ngClass]=\"{'card-black': i.waittime_inminutes<0,\r\n                         'card-green': i.waittime_inminutes>=0 && i.waittime_inminutes<=15, \r\n                         'card-yellow': i.waittime_inminutes>15 && i.waittime_inminutes<25, \r\n                         'card-red': i.waittime_inminutes>=25}\" *ngFor=\"let i of posWaitTime\">\r\n          <span *ngIf=\"i.waittime_inminutes>=0\">Counter {{i.pos_counter_number}} : <h5>{{i.waittime_inminutes}} min</h5></span>\r\n          <span *ngIf=\"i.waittime_inminutes<0\">Counter {{i.pos_counter_number}} : <h5>Counter Closed</h5></span>\r\n        </div>\r\n      </div>\r\n\r\n\r\n    </div>\r\n  </div>\r\n  <div class=\"bar-chart-wrapper\">\r\n    <charts></charts>\r\n  </div>\r\n<br>\r\n<br>\r\n\r\n  <div class=\"abandoned-chart-container\">\r\n    <div class=\"row\">\r\n      <div class=\"col-12\">\r\n          <abandoned-chart></abandoned-chart>\r\n      </div>\r\n  </div>\r\n  </div>\r\n\r\n  <!-- <div class=\"stacked-chart-container\">\r\n    <div class=\"row\">\r\n      <div class=\"col-12\">\r\n        <stacked-bar-chart></stacked-bar-chart>\r\n      </div>\r\n  </div>\r\n  </div> -->\r\n\r\n  <!-- <notifier-container></notifier-container> -->\r\n\r\n\r\n  <footer\r\n    style=\"background-color:rgb(228, 228, 228); height: 100px; display: flex; justify-content: center; align-items: center;\">\r\n    <p>Ⓒ Team Merakle Semicolons 2019</p>\r\n  </footer>\r\n\r\n  <router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -1008,6 +1008,9 @@ var ChartsComponent = /** @class */ (function () {
                 _this.proximityPredDataFetched = res[1];
                 console.log(res);
                 console.log(granularity);
+                if (granularity == "Hourly Till Now") {
+                    _this.proximityPredDataFetched.unshift(0);
+                }
                 for (var _i = 0, _a = _this.proximityDataFetched; _i < _a.length; _i++) {
                     var i = _a[_i];
                     _this.chartData[0]["data"].push(Math.ceil(i.count));
@@ -1036,6 +1039,9 @@ var ChartsComponent = /** @class */ (function () {
                 console.log(granularity);
                 var current = res[0];
                 var predicted = res[1];
+                if (granularity == "Hourly") {
+                    predicted.unshift(0);
+                }
                 for (var _i = 0, current_1 = current; _i < current_1.length; _i++) {
                     var i = current_1[_i];
                     _this.chartData[0]["data"].push(i.count);
@@ -1086,25 +1092,13 @@ var ChartsComponent = /** @class */ (function () {
         if (this.granularity == "Daily Till Now" || this.granularity == "Daily") {
             this.chartService.getChartData().subscribe(function (res) {
                 _this.chartLabels = [];
-                if (_this.granularity == "Daily Till Now") {
-                    _this.proximityDataFetched = res[0];
-                    for (var _i = 0, _a = _this.proximityDataFetched; _i < _a.length; _i++) {
-                        var i = _a[_i];
-                        var now = i.timerange;
-                        var newDate = new Date(now);
-                        var dateString = newDate.toString().split(" ")[0];
-                        _this.chartLabels.push(dateString);
-                    }
-                }
-                else {
-                    _this.proximityDataFetched = res;
-                    for (var _b = 0, _c = _this.proximityDataFetched; _b < _c.length; _b++) {
-                        var i = _c[_b];
-                        var now = i.timerange;
-                        var newDate = new Date(now);
-                        var dateString = newDate.toString().split(" ")[0];
-                        _this.chartLabels.push(dateString);
-                    }
+                _this.proximityDataFetched = res[0];
+                for (var _i = 0, _a = _this.proximityDataFetched; _i < _a.length; _i++) {
+                    var i = _a[_i];
+                    var now = i.timerange;
+                    var newDate = new Date(now);
+                    var dateString = newDate.toString().split(" ")[0];
+                    _this.chartLabels.push(dateString);
                 }
             });
             this.setChartLabels(this.chartLabels);
@@ -1322,6 +1316,7 @@ var ChartsComponent = /** @class */ (function () {
             ];
             _this.currentArray = res[0];
             _this.predictedArray = res[1];
+            _this.predictedArray.unshift(0);
             for (var _i = 0, _a = _this.currentArray; _i < _a.length; _i++) {
                 var i = _a[_i];
                 if (i.timerange <= 7 || i.timerange >= 23) {
@@ -1550,7 +1545,7 @@ var DonutChartComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"information-cards-wrapper\">\r\n\r\n  <div class=\"cards\" style=\"background: rgb(30,87,116);\r\n  background: linear-gradient(90deg, rgb(56, 126, 28) 0%, rgb(52, 175, 14) 100%);\">\r\n  <div class='map'>\r\n    <div class='pulse'></div>\r\n  </div>\r\n    <div class=\"info\">\r\n      <span>{{currentVisitor}}</span>\r\n      <p>Current Visitors</p>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"cards\" style=\"background: rgb(30,87,116);\r\n  background: linear-gradient(90deg, rgb(218, 156, 23) 0%, rgb(224, 178, 25) 100%);\">\r\n  <div class='map'>\r\n    <div class='pulse'></div>\r\n  </div>\r\n    <div class=\"info\">\r\n      <span>{{totalVisitors}}</span>\r\n      <p>Today's Total Visitors</p>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"cards\" style=\"background: rgb(133,194,50);\r\n  background: linear-gradient(-90deg, rgb(6, 90, 168) 0%, rgb(6, 46, 121) 100%);\">\r\n  <div class='map'>\r\n    <div class='pulse'></div>\r\n  </div>\r\n    <div class=\"info\">\r\n      <span>{{totalCheckouts}}</span>\r\n      <p>Today's Total Transactions</p>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"cards\" style=\"background: rgb(235,195,130);\r\n  background: linear-gradient(90deg, rgb(165, 55, 11) 0%, rgba(227,32,26,1) 100%);\">\r\n  <div class='map'>\r\n    <div class='pulse'></div>\r\n  </div>\r\n    <div class=\"info\">\r\n      <span>${{totalAmount}}</span>\r\n      <p>Today's Total Sales</p>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"information-cards-wrapper\">\r\n\r\n  <div class=\"cards\" style=\"background: rgb(30,87,116);\r\n  background: linear-gradient(90deg, rgb(56, 126, 28) 0%, rgb(52, 175, 14) 100%);\">\r\n  <div class='map'>\r\n    <div class='pulse'></div>\r\n  </div>\r\n    <div class=\"info\">\r\n      <span>{{currentVisitor}}</span>\r\n      <p>Current Visitors</p>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"cards\" style=\"background: rgb(30,87,116);\r\n  background: linear-gradient(90deg, rgb(218, 156, 23) 0%, rgb(224, 178, 25) 100%);\">\r\n  <div class='map'>\r\n    <div class='pulse'></div>\r\n  </div>\r\n    <div class=\"info\">\r\n      <span>{{totalVisitors}}</span>\r\n      <p>Today's Total Visitors</p>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"cards\" style=\"background: rgb(133,194,50);\r\n  background: linear-gradient(-90deg, rgb(6, 90, 168) 0%, rgb(6, 46, 121) 100%);\">\r\n  <div class='map'>\r\n    <div class='pulse'></div>\r\n  </div>\r\n    <div class=\"info\">\r\n      <span>{{totalCheckouts}}</span>\r\n      <p>Today's Total Transactions</p>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"cards\" style=\"background: rgb(235,195,130);\r\n  background: linear-gradient(90deg, rgb(165, 11, 165) 0%, rgb(204, 26, 227) 100%);\">\r\n  <div class='map'>\r\n    <div class='pulse'></div>\r\n  </div>\r\n    <div class=\"info\">\r\n      <span>${{totalAmount}}</span>\r\n      <p>Today's Total Sales</p>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -2130,7 +2125,7 @@ var ChartdataService = /** @class */ (function () {
         else if (this.granularity == "this month") {
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["forkJoin"])([
                 this.http.get(_environments_config__WEBPACK_IMPORTED_MODULE_5__["config"].ipAddress + "/api/v0/meraki/camera/historicalDataByCamera?pattern=" + this.granularity),
-                this.http.get(_environments_config__WEBPACK_IMPORTED_MODULE_5__["config"].ipAddress + "/api/v0/meraki/camera/monthWiseDailyPredictions")
+                this.http.get(_environments_config__WEBPACK_IMPORTED_MODULE_5__["config"].ipAddress + "/api/v0/meraki/camera/currentMonthWiseDailyPredictions")
             ])
                 .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
                 return res;
@@ -2139,7 +2134,7 @@ var ChartdataService = /** @class */ (function () {
         else if (this.granularity == "last month") {
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["forkJoin"])([
                 this.http.get(_environments_config__WEBPACK_IMPORTED_MODULE_5__["config"].ipAddress + "/api/v0/meraki/camera/historicalDataByCamera?pattern=" + this.granularity),
-                this.http.get(_environments_config__WEBPACK_IMPORTED_MODULE_5__["config"].ipAddress + "/api/v0/meraki/camera/monthWiseDailyPredictions")
+                this.http.get(_environments_config__WEBPACK_IMPORTED_MODULE_5__["config"].ipAddress + "/api/v0/meraki/camera/previousMonthWiseDailyPredictions")
             ])
                 .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
                 return res;
