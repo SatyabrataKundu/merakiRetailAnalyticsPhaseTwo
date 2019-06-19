@@ -176,10 +176,11 @@ export class ChartsComponent implements OnInit {
         console.log(granularity);
         this.proximityDataFetched = res[0];
         this.proximityPredDataFetched = res[1];
-
         console.log(res);
         console.log(granularity);
-
+        if(granularity == "Hourly Till Now"){
+          this.proximityPredDataFetched.unshift(0);
+        }
         for (let i of this.proximityDataFetched) {
           this.chartData[0]["data"].push(Math.ceil(i.count));
         }
@@ -207,6 +208,9 @@ export class ChartsComponent implements OnInit {
         console.log(granularity);
         let current:any = res[0];
         let predicted:any = res[1];
+        if(granularity == "Hourly"){
+          predicted.unshift(0);
+        }
 
         for (let i of current) {
           this.chartData[0]["data"].push(i.count);
@@ -508,6 +512,8 @@ export class ChartsComponent implements OnInit {
       ];
       this.currentArray = res[0];
       this.predictedArray = res[1];
+      
+      this.predictedArray.unshift(0);
 
       for (let i of this.currentArray) {
         if (i.timerange <= 7 || i.timerange >= 23) {

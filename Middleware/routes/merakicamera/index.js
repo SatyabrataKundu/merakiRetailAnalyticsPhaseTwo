@@ -74,90 +74,86 @@ router.get("/", function (req, res) {
         let minuteValue = dateFormat(datetime, "M");
         let dayStringValue = dateFormat(datetime, "dddd");
 
-        if (hourValue >= 8 && hourValue <= 22) {
-          console.log("DAY OF THE WEEK ", dayStringValue);
-          console.log("HOUR OF THE DAY IS ", hourValue);
+        console.log("DAY OF THE WEEK ", dayStringValue);
+        console.log("HOUR OF THE DAY IS ", hourValue);
 
-          let dbInsertCamData = {};
-          dbInsertCamData.ts = ts;
-          dbInsertCamData.dateFormat_date = formattedDateString;
-          dbInsertCamData.dateFormat_year = yearValue;
-          dbInsertCamData.dateFormat_month = monthValue;
-          dbInsertCamData.dateFormat_week = weekValue;
-          dbInsertCamData.dateFormat_day = dayValue;
-          dbInsertCamData.dateFormat_hour = hourValue;
-          dbInsertCamData.dateFormat_minute = minuteValue;
-          dbInsertCamData.rush_hour = false;
-          dbInsertCamData.shop_closed = false;
+        let dbInsertCamData = {};
+        dbInsertCamData.ts = ts;
+        dbInsertCamData.dateFormat_date = formattedDateString;
+        dbInsertCamData.dateFormat_year = yearValue;
+        dbInsertCamData.dateFormat_month = monthValue;
+        dbInsertCamData.dateFormat_week = weekValue;
+        dbInsertCamData.dateFormat_day = dayValue;
+        dbInsertCamData.dateFormat_hour = hourValue;
+        dbInsertCamData.dateFormat_minute = minuteValue;
+        dbInsertCamData.rush_hour = false;
+        dbInsertCamData.shop_closed = false;
 
-          var numberOfPeopleDetected = 0;
-          if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
-            numberOfPeopleDetected = gen2();
-          } else if (
-            zoneObject.zone_id === 3 ||
-            zoneObject.zone_id === 4 ||
-            zoneObject.zone_id === 5 ||
-            zoneObject.zone_id === 2 ||
-            zoneObject.zone_id === 6
-          ) {
-            numberOfPeopleDetected = gen3();
-          }
-
-
-          else if (zoneObject.zone_id === 7) {
-            numberOfPeopleDetected = gen1();
-          } else if (zoneObject.zone_id === 8 || zoneObject.zone_id === 11) {
-            numberOfPeopleDetected = 20 + gen1();
-          } else {
-            numberOfPeopleDetected = 15 + gen1();
-          }
-
-          if (dayStringValue === "Sunday" || dayStringValue === "Saturday") {
-            console.log("ITS WEEEKEND");
-
-            numberOfPeopleDetected = numberOfPeopleDetected + 4;
-          }
-          if (hourValue == 18 || hourValue == 19) {
-            numberOfPeopleDetected = numberOfPeopleDetected + 3;
-            dbInsertCamData.rush_hour = true;
-            console.log(
-              "HOUR IS 18 SO ADDING 10 TO THE NUMBEROFPEOPLEDETECTED, ",
-              numberOfPeopleDetected
-            );
-          }
-
-
-          if (hourValue >= 23 || hourValue <= 7) {
-            dbInsertCamData.shop_closed = true;
-          }
-
-          for (i = 0; i < numberOfPeopleDetected; i++) {
-            var genOID = rn.generator({
-              min: 100000,
-              max: 999999,
-              integer: true
-            });
-            if (zoneObject.zone_id === 8 && i < 20) {
-              dbInsertCamData.personOID = 1000001 + i;
-              dbInsertCamData.zoneId = zoneObject.zone_id;
-            }
-            if (zoneObject.zone_id === 11 && i < 20) {
-              dbInsertCamData.personOID = 2000001 + i;
-              dbInsertCamData.zoneId = zoneObject.zone_id;
-            } else if (zoneObject.zone_id === 9 && i < 15) {
-              dbInsertCamData.personOID = 3000001 + i;
-              dbInsertCamData.zoneId = zoneObject.zone_id;
-            } else if (zoneObject.zone_id === 10 && i < 15) {
-              dbInsertCamData.personOID = 4000001 + i;
-              dbInsertCamData.zoneId = zoneObject.zone_id;
-            } else {
-              dbInsertCamData.personOID = genOID();
-              dbInsertCamData.zoneId = zoneObject.zone_id;
-            }
-            _performDBInsert(dbInsertCamData);
-            dataList.push(dbInsertCamData);
-          }
+        var numberOfPeopleDetected = 0;
+        if (zoneObject.zone_id === 1 || zoneObject.zone_id === 12) {
+          numberOfPeopleDetected = gen2();
+        } else if (
+          zoneObject.zone_id === 3 ||
+          zoneObject.zone_id === 4 ||
+          zoneObject.zone_id === 5 ||
+          zoneObject.zone_id === 2 ||
+          zoneObject.zone_id === 6
+        ) {
+          numberOfPeopleDetected = gen3();
+        } else if (zoneObject.zone_id === 7) {
+          numberOfPeopleDetected = gen1();
+        } else if (zoneObject.zone_id === 8 || zoneObject.zone_id === 11) {
+          numberOfPeopleDetected = 20 + gen1();
+        } else {
+          numberOfPeopleDetected = 15 + gen1();
         }
+
+        if (dayStringValue === "Sunday" || dayStringValue === "Saturday") {
+          console.log("ITS WEEEKEND");
+
+          numberOfPeopleDetected = numberOfPeopleDetected + 4;
+        }
+        if (hourValue == 18 || hourValue == 19) {
+          numberOfPeopleDetected = numberOfPeopleDetected + 3;
+          dbInsertCamData.rush_hour = true;
+          console.log(
+            "HOUR IS 18 SO ADDING 10 TO THE NUMBEROFPEOPLEDETECTED, ",
+            numberOfPeopleDetected
+          );
+        }
+
+
+        if (hourValue >= 23 || hourValue <= 7) {
+          dbInsertCamData.shop_closed = true;
+        }
+
+        for (i = 0; i < numberOfPeopleDetected; i++) {
+          var genOID = rn.generator({
+            min: 100000,
+            max: 999999,
+            integer: true
+          });
+          if (zoneObject.zone_id === 8 && i < 20) {
+            dbInsertCamData.personOID = 1000001 + i;
+            dbInsertCamData.zoneId = zoneObject.zone_id;
+          }
+          if (zoneObject.zone_id === 11 && i < 20) {
+            dbInsertCamData.personOID = 2000001 + i;
+            dbInsertCamData.zoneId = zoneObject.zone_id;
+          } else if (zoneObject.zone_id === 9 && i < 15) {
+            dbInsertCamData.personOID = 3000001 + i;
+            dbInsertCamData.zoneId = zoneObject.zone_id;
+          } else if (zoneObject.zone_id === 10 && i < 15) {
+            dbInsertCamData.personOID = 4000001 + i;
+            dbInsertCamData.zoneId = zoneObject.zone_id;
+          } else {
+            dbInsertCamData.personOID = genOID();
+            dbInsertCamData.zoneId = zoneObject.zone_id;
+          }
+          _performDBInsert(dbInsertCamData);
+          dataList.push(dbInsertCamData);
+        }
+
       });
     })
     .catch(function (err) {
@@ -511,8 +507,7 @@ router.post("/datasetgen", function (req, res) {
           zoneObject.zone_id === 6
         ) {
           numberOfPeopleDetected = gen3();
-        }
-        else if (zoneObject.zone_id === 7) {
+        } else if (zoneObject.zone_id === 7) {
           numberOfPeopleDetected = gen1();
         } else if (zoneObject.zone_id === 8 || zoneObject.zone_id === 11) {
           numberOfPeopleDetected = 20 + gen1();
@@ -581,17 +576,17 @@ router.get("/dailyPredictions", function (req, res) {
   var now = new Date();
   let dayValue = dateFormat(now, "dddd");
   if (dayValue === "Tuesday") {
-    now.setDate(now.getDate() - 1);
-  } else if (dayValue === "Wednesday") {
     now.setDate(now.getDate() - 2);
-  } else if (dayValue === "Thursday") {
+  } else if (dayValue === "Wednesday") {
     now.setDate(now.getDate() - 3);
-  } else if (dayValue === "Friday") {
+  } else if (dayValue === "Thursday") {
     now.setDate(now.getDate() - 4);
-  } else if (dayValue === "Saturday") {
+  } else if (dayValue === "Friday") {
     now.setDate(now.getDate() - 5);
-  } else if (dayValue === "Sunday") {
+  } else if (dayValue === "Saturday") {
     now.setDate(now.getDate() - 6);
+  } else if (dayValue === "Sunday") {
+    now.setDate(now.getDate() - 7);
   }
   let date = dateFormat(now, "mm/dd/yyyy");
 
@@ -641,10 +636,10 @@ router.get("/hourlyPredictions", function (req, res) {
 
 router.get("/currentMonthWiseDailyPredictions", function (req, res) {
   var d = new Date();
-  var month = dateFormat(d,'mm');
-  
+  var month = dateFormat(d, 'mm');
+
   var selectQuery =
-    "select dateformat_date, sum(count) as predicted from meraki.prediction_value_table where dateformat_date >= '"+month+"/01/19' and dateformat_date <= '"+month+"/31/19' group by dateformat_date order by dateformat_date;";
+    "select dateformat_date, sum(count) as predicted from meraki.prediction_value_table where dateformat_date >= '" + month + "/01/19' and dateformat_date <= '" + month + "/31/19' group by dateformat_date order by dateformat_date;";
   db.any(selectQuery)
     .then(function (result) {
       console.log("db select success for date ", result);
@@ -658,12 +653,12 @@ router.get("/currentMonthWiseDailyPredictions", function (req, res) {
 
 router.get("/previousMonthWiseDailyPredictions", function (req, res) {
   var d = new Date();
-  var month = '0'+ (dateFormat(d,'mm') - 1).toString();
+  var month = '0' + (dateFormat(d, 'mm') - 1).toString();
   console.log(month);
-  
+
   var selectQuery =
-  "select dateformat_date, sum(count) as predicted from meraki.prediction_value_table where dateformat_date >= '"+month+"/01/19' and dateformat_date <= '"+month+"/31/19' group by dateformat_date order by dateformat_date;";
-  
+    "select dateformat_date, sum(count) as predicted from meraki.prediction_value_table where dateformat_date >= '" + month + "/01/19' and dateformat_date <= '" + month + "/31/19' group by dateformat_date order by dateformat_date;";
+
   db.any(selectQuery)
     .then(function (result) {
       console.log("db select success for date ", result);
@@ -681,10 +676,10 @@ router.get("/visitorCountByDate", function (req, res) {
   console.log("value of date ", date);
 
   db.any(
-    "select count (distinct (person_oid)) from meraki.visitor_predictions where dateformat_date ='" +
-    date +
-    "' and zoneid=1"
-  )
+      "select count (distinct (person_oid)) from meraki.visitor_predictions where dateformat_date ='" +
+      date +
+      "' and zoneid=1"
+    )
     .then(function (result) {
       console.log("db select success for date ", result);
       res.status(200).send(result);
@@ -750,13 +745,13 @@ router.get("/historicalDataByCamera", function (req, res) {
     let date = dateFormat(datetime, "yyyy-mm-dd");
 
     let selectQuery =
-    "SELECT CASE WHEN count(distinct(T2.person_oid)) > 0" +
-    " THEN count(distinct(T2.person_oid)) ELSE 0 END as count , T1.dateformat_hour as timeRange FROM (SELECT * FROM generate_series(0,23) as dateformat_hour)as T1 " +
-    " FULL OUTER  JOIN (select * from meraki.visitor_predictions where dateformat_date ='" +
-    date +
-    "' and zoneid = 1) as  T2 " +
-    " ON  T1.dateformat_hour = T2.dateformat_hour group by T1.dateformat_hour order by T1.dateformat_hour  ";
-  
+      "SELECT CASE WHEN count(distinct(T2.person_oid)) > 0" +
+      " THEN count(distinct(T2.person_oid)) ELSE 0 END as count , T1.dateformat_hour as timeRange FROM (SELECT * FROM generate_series(0,23) as dateformat_hour)as T1 " +
+      " FULL OUTER  JOIN (select * from meraki.visitor_predictions where dateformat_date ='" +
+      date +
+      "' and zoneid = 1) as  T2 " +
+      " ON  T1.dateformat_hour = T2.dateformat_hour group by T1.dateformat_hour order by T1.dateformat_hour  ";
+
     db.any(selectQuery)
       .then(function (result) {
         console.log("db select success for date ", result);
@@ -783,7 +778,7 @@ router.get("/historicalDataByCamera", function (req, res) {
       " ON  T1.dateformat_date = T2.dateformat_date " +
       " group by T1.dateformat_date order by T1.dateformat_date ";
 
-      console.log('THIS WEEK QUERY: ',selectQuery)
+    console.log('THIS WEEK QUERY: ', selectQuery)
     db.any(selectQuery)
       .then(function (result) {
         console.log("db select success for date ", result);
@@ -825,14 +820,14 @@ router.get("/historicalDataByCamera", function (req, res) {
     let yearValue = dateFormat(datetime, "yyyy");
     console.log(monthValue);
     db.any(
-      "SELECT CASE WHEN count(distinct(T2.person_oid)) > 0" +
-      " THEN count(distinct(T2.person_oid)) ELSE 0 END as count , T1.dateformat_date as timeRange FROM (SELECT * FROM generate_series(1,31) as dateformat_date)as T1 " +
-      " FULL OUTER  JOIN (select * from meraki.visitor_predictions where dateformat_month ='" +
-      monthValue +
-      "' and dateformat_year =" +
-      yearValue +" and zoneid=1) as  T2 " +
-      " ON  T1.dateformat_date = T2.dateformat_day group by T1.dateformat_date order by T1.dateformat_date  "
-    )
+        "SELECT CASE WHEN count(distinct(T2.person_oid)) > 0" +
+        " THEN count(distinct(T2.person_oid)) ELSE 0 END as count , T1.dateformat_date as timeRange FROM (SELECT * FROM generate_series(1,31) as dateformat_date)as T1 " +
+        " FULL OUTER  JOIN (select * from meraki.visitor_predictions where dateformat_month ='" +
+        monthValue +
+        "' and dateformat_year =" +
+        yearValue + " and zoneid=1) as  T2 " +
+        " ON  T1.dateformat_date = T2.dateformat_day group by T1.dateformat_date order by T1.dateformat_date  "
+      )
       .then(function (result) {
         console.log("db select success for date ", result);
         res.status(200).send(result);
@@ -847,17 +842,17 @@ router.get("/historicalDataByCamera", function (req, res) {
     monthValue = monthValue - 1;
     console.log(monthValue);
     let selectQuery = "SELECT CASE WHEN count(distinct(T2.person_oid)) > 0" +
-    " THEN count(distinct(T2.person_oid)) ELSE 0 END as count , T1.dateformat_date as timeRange FROM (SELECT * FROM generate_series(1,31) as dateformat_date)as T1 " +
-    " FULL OUTER  JOIN (select * from meraki.visitor_predictions where dateformat_month ='" +
-    monthValue +
-    "' and dateformat_year =" +
-    yearValue +" and zoneid=1) as  T2 " +
-    " ON  T1.dateformat_date = T2.dateformat_day group by T1.dateformat_date order by T1.dateformat_date  ";
+      " THEN count(distinct(T2.person_oid)) ELSE 0 END as count , T1.dateformat_date as timeRange FROM (SELECT * FROM generate_series(1,31) as dateformat_date)as T1 " +
+      " FULL OUTER  JOIN (select * from meraki.visitor_predictions where dateformat_month ='" +
+      monthValue +
+      "' and dateformat_year =" +
+      yearValue + " and zoneid=1) as  T2 " +
+      " ON  T1.dateformat_date = T2.dateformat_day group by T1.dateformat_date order by T1.dateformat_date  ";
 
-    console.log('LAST MONTH QUERY: ',selectQuery);
+    console.log('LAST MONTH QUERY: ', selectQuery);
     db.any(
-      selectQuery
-    )
+        selectQuery
+      )
       .then(function (result) {
         console.log("db select success for date ", result);
         res.status(200).send(result);
@@ -1007,7 +1002,7 @@ router.post("/datasetnew", function (req, res) {
     }
   }
 
-  dbInsertCamData.visitor_count = countOfVisitors*10;
+  dbInsertCamData.visitor_count = countOfVisitors * 10;
 
   _datasetGeneration(dbInsertCamData);
   dataList.push(dbInsertCamData);
