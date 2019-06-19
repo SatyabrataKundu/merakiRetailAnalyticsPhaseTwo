@@ -18,7 +18,7 @@ var checkout = require("./routes/checkout/index");
 var mvsense = require("./routes/mvsense/index");
 var cronJobForSavingCamDataForQWT = require("./jobs/SaveCameraDataForWaitTime");
 
-
+const path = require('path');
 cronJobForSavingCamDataForQWT.saveCamData();
 //cronJobForAPClients.clientsJob();
 cronJobForPosData.posJob();
@@ -31,6 +31,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 app.use(morgan("tiny"));
+app.use(express.static(__dirname + '/dist/retailanalytics'));
+//app.get("/*",(req,res) => res.sendfile(path.join(__dirname)));
+
 app.use("/api/v0/meraki/scanning", scanningapi);
 app.use("/api/v0/meraki/scanningsimulator", scanningsimulator);
 app.use("/api/v0/meraki/posSimulator", possimulator);
@@ -68,6 +71,7 @@ app.set("port", process.env.PORT || expressPort);
 server.listen(app.get("port"), function () {
 	debug(`Express server listening on port ${chalk.red(server.address().port)}`);
 });
+
 
 var datetime = new Date();
 let dayStringValue = dateFormat(datetime, "dddd");
