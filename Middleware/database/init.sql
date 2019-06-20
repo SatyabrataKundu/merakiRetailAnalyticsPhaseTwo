@@ -1,5 +1,3 @@
-CREATE DATABASE merakidb;
-
 CREATE SCHEMA meraki;
 
 CREATE SEQUENCE meraki.scanning_ap_data_unique_scanning_key_seq;
