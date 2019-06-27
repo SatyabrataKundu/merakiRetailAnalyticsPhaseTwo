@@ -1,0 +1,27 @@
+version: "2.2"
+services:
+  db:
+    image: postgresdb
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: merakidb
+    #volumes:
+    #  - ./pgdata:/var/lib/postgressql/data 
+    ports:
+      - "5000:5432"
+    # expose:
+    #   - "5432"
+    networks:
+      - elk
+  web:
+    image: web
+    depends_on:
+      - db
+    ports:
+      - "9000:4004"
+    networks:
+      - elk
+networks:
+  elk:
+    driver: bridge
