@@ -15,7 +15,7 @@ var connectionString =
   config.get("environment.merakiConfig.dbUserName") +
   ":" +
   config.get("environment.merakiConfig.dbPassword") +
-  "@localhost:" +
+  "@db:" +
   config.get("environment.merakiConfig.dbPort") +
   "/" +
   config.get("environment.merakiConfig.dbName");

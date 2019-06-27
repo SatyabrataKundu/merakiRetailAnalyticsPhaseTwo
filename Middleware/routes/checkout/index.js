@@ -26,7 +26,7 @@ router.get("/getimage",function(req,res){
     res.sendFile(filePath);
 })
 var connectionString = "postgres://" + config.get("environment.merakiConfig.dbUserName") + ":" +
-    config.get("environment.merakiConfig.dbPassword") + "@localhost:" + config.get("environment.merakiConfig.dbPort") +
+    config.get("environment.merakiConfig.dbPassword") + "@db:" + config.get("environment.merakiConfig.dbPort") +
     "/" + config.get("environment.merakiConfig.dbName");
 var db = pgp(connectionString);
 
