@@ -9,11 +9,11 @@
       "constants": {
         "expressPort": 4004,
         "homeDirectory":"D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/",
-        "apclientsJobTimer" : "*/10 8-22 * * *",
-        "posJobTimer" : "*/10 * 8-22 * * *",
-        "mvCameraJobTimer" : "*/1 8-22 * * *",
-        "snapshotTimer" : "*/1 8-22 * * *",
-        "mvsenseSaveRecentApiData" : "*/1 8-22 * * *"
+        "apclientsJobTimer" : "*/10 2-14 * * *",
+        "posJobTimer" : "*/10 2-14 * * *",
+        "mvCameraJobTimer" : "*/1 2-14 * * *",
+        "snapshotTimer" : "*/1 2-14 * * *",
+        "mvsenseSaveRecentApiData" : "*/1 2-14 * * *"
       }
     },
     "simulator": {

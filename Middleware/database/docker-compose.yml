@@ -6,7 +6,8 @@ volumes:
 
 services:
   db:
-    image: db
+    build: .
+    # image: db
     restart: always
     environment:
       POSTGRES_DB: merakidb
@@ -28,3 +29,8 @@ services:
       - ./api:/usr/src/app/
     links:
       - db
+#     networks:
+#       - elk
+# networks:
+#   elk:
+#     driver: bridge
