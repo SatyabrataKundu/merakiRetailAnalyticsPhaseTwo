@@ -9,5 +9,8 @@ RUN pip install -r requirements.txt
 
 WORKDIR /WeaponDetection/research/object_detection/
 
+ENTRYPOINT [ "python" ]
 
-CMD [ "python", "./flaskApi.py" ]
+CMD [ "flaskApi.py" ]
+
+# CMD [ "python", "flaskApi.py" ]
