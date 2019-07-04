@@ -22,7 +22,7 @@ router.get("/getimage",function(req,res){
 
     let fileName = gen() + ".jpg";
     var raltivePath =  path.join(__dirname, '..','..','..');
-    let filePath = raltivePath+"/Weapon_Detection/TensorFlow/Data/SnapShots/" + fileName;
+    let filePath = raltivePath+"/Middleware/SnapShots/" + fileName;
     res.sendFile(filePath);
 })
 var connectionString = "postgres://" + config.get("environment.merakiConfig.dbUserName") + ":" +
