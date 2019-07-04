@@ -1,4 +1,4 @@
-#!flask/bin/python
+#!/usr/local/bin/python3
 from flask import Flask
 import os
 import cv2
@@ -20,7 +20,7 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 # defining the api-endpoint
-API_ENDPOINT = "http://localhost:4004/api/v0/meraki/checkout/getimage"
+API_ENDPOINT = "http://web:4004/api/v0/meraki/checkout/getimage"
 
 cron = Scheduler(daemon=True)
 # Explicitly kick off the background thread
@@ -32,7 +32,7 @@ def job():
     print("I'm working...")
     ts = calendar.timegm(time.gmtime())
     IMAGE_NAME = "image-snapshot-" + str(ts) + ".jpg"
-    path="D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/downloaded/"+IMAGE_NAME
+    path="/WeaponDetection/research/object_detection/downloaded/"+IMAGE_NAME
     r = requests.get(url=API_ENDPOINT,stream=True)
     if r.status_code == 200:
         with open(path, 'wb') as f:
@@ -43,19 +43,19 @@ def job():
 
 def index(IMAGE_NAME):
     print('IN PYTHON FILE')
-    os.chdir("D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/")
+    os.chdir("/WeaponDetection/research/object_detection/")
     # Import utilitescls
     from utils import label_map_util
     from utils import visualization_utils as vis_util
     # Name of the directory containing the object detection module we're using
     MODEL_NAME = 'inference_graph'
     # Source of the image directory and name of the snapshot images
-    SOURCE_IMAGE_PATH = "D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/downloaded/"
+    SOURCE_IMAGE_PATH = "/WeaponDetection/research/object_detection/downloaded/"
     ts = calendar.timegm(time.gmtime())
     # IMAGE_NAME = "image-snapshot-"+str(ts)+".jpg"
     CURRENT_IMAGE_PATH = str(SOURCE_IMAGE_PATH) + "/" + str(IMAGE_NAME)
     print('Name of the Image: ',CURRENT_IMAGE_PATH)
-    DESTINATION_IMAGE_PATH = "D:/MERAKI-RETAIL-ANALYTICS-PHASE2/merakiRetailAnalyticsPhaseTwo/Weapon_Detection/TensorFlow/models/research/object_detection/detected/";
+    DESTINATION_IMAGE_PATH = "/WeaponDetection/research/object_detection/detected/";
     CWD_PATH = os.getcwd()
     # Path to frozen detection graph .pb file, which contains the model that is used
     # for object detection.

@@ -8,6 +8,7 @@ services:
   db:
     build: .
     # image: db
+    hostname: db
     restart: always
     environment:
       POSTGRES_DB: merakidb
@@ -17,10 +18,13 @@ services:
       - 5000:5432
     volumes:
       - database_data:/var/lib/postgresql/data
+    networks:
+      - elk
 
   web:
     build: ../
     # image: web
+    hostname: web
     expose:
       - 8080
     ports:
@@ -29,8 +33,21 @@ services:
       - ./api:/usr/src/app/
     links:
       - db
-#     networks:
-#       - elk
-# networks:
-#   elk:
-#     driver: bridge
+    networks:
+      - elk
+
+  pyapp:
+    build: ../../Weapon_Detection/Tensorflow/models
+    hostname: pyapp
+    expose:
+      - 5002
+    ports:
+      - 5002:5002
+    links:
+      - web
+    #image: pyapp
+    networks:
+      - elk
+networks:
+   elk:
+     driver: bridge
