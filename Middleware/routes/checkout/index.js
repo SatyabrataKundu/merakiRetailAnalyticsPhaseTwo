@@ -21,8 +21,8 @@ router.get("/getimage",function(req,res){
     })
 
     let fileName = gen() + ".jpg";
-    var raltivePath =  path.join(__dirname, '..','..','..');
-    let filePath = raltivePath+"/Middleware/SnapShots/" + fileName;
+    var raltivePath =  path.join(__dirname, '..','..');
+    let filePath = raltivePath+"/SnapShots/" + fileName;
     res.sendFile(filePath);
 })
 var connectionString = "postgres://" + config.get("environment.merakiConfig.dbUserName") + ":" +
