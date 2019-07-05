@@ -1,0 +1,7 @@
+numpy
+pandas
+psycopg2
+datetime
+matplotlib
+statsmodels
+sklearn

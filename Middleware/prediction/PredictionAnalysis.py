@@ -45,10 +45,7 @@ for t in predictions:
 
 print(predictedValues)
 
-
-
-
-conn = psycopg2.connect("dbname=merakidb user=postgres password=postgres")
+conn = psycopg2.connect("host=db, port=5432, dbname=merakidb user=postgres password=postgres")
 cur = conn.cursor()
 
 yearParam = today.year

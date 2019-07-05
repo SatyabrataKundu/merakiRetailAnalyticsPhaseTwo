@@ -48,6 +48,17 @@ services:
     #image: pyapp
     networks:
       - elk
+
+  predictionapp:
+    build: ../prediction/
+    hostname: predictionapp
+    ports:
+      - 4100:4100
+    links:
+      - db
+    #image: predictionapp
+    networks:
+      - elk
 networks:
    elk:
      driver: bridge
