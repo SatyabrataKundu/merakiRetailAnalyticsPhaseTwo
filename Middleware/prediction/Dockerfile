@@ -10,8 +10,8 @@ RUN pip install -r requirements.txt
 
 WORKDIR /predict/
 
-RUN chmod 644 PredictionAnalysis.py
+RUN chmod 644 PredictionAnalysis.ipynb
 
-#ENTRYPOINT [ "python" ]
+ENTRYPOINT [ "runipy" ]
 
-#CMD [ "PredictionAnalysis.py" ]
+CMD [ "PredictionAnalysis.ipynb" ]
