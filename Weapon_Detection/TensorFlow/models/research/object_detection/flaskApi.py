@@ -27,7 +27,7 @@ cron = Scheduler(daemon=True)
 cron.start()
 
 
-@cron.interval_schedule(seconds=30)
+@cron.interval_schedule(seconds=300)
 def job():
     print("I'm working...")
     ts = calendar.timegm(time.gmtime())
@@ -155,6 +155,9 @@ def index(IMAGE_NAME):
 # Shutdown your cron thread if the web process is stopped
 atexit.register(lambda: cron.shutdown(wait=False))
 
+@app.route('/sample', methods=['GET'])
+def get_companies():
+  return "Python API is Running"
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5002)
+    app.run(port=5555, debug=True, host='0.0.0.0')

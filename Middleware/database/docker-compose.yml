@@ -26,7 +26,7 @@ services:
     # image: web
     hostname: web
     expose:
-      - 8080
+      - 4004
     ports:
       - 4004:4004
     volumes:
@@ -39,24 +39,11 @@ services:
   pyapp:
     build: ../../Weapon_Detection/Tensorflow/models
     hostname: pyapp
-    expose:
-      - 5002
     ports:
-      - 5002:5002
+      - 5555:5555
     links:
       - web
     #image: pyapp
-    networks:
-      - elk
-
-  predictionapp:
-    build: ../prediction/
-    hostname: predictionapp
-    ports:
-      - 4100:4100
-    links:
-      - db
-    #image: predictionapp
     networks:
       - elk
 networks:

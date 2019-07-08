@@ -24,7 +24,7 @@ export class AppComponent implements OnInit{
   emptyZones: Array<string> =[];
   chatService: ChatService;
 
-  private url = 'http://127.0.0.1:5002';
+  private url = 'http://localhost:5555';
   private socket;
 
   zoneid:any;
