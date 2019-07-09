@@ -6,8 +6,8 @@ volumes:
 
 services:
   db:
-    build: .
-    # image: db
+    #build: .
+    image: sonia679/merakipoc:databaseimage
     hostname: db
     restart: always
     environment:
@@ -22,8 +22,8 @@ services:
       - elk
 
   web:
-    build: ../
-    # image: web
+    #build: ../
+    image: sonia679/merakipoc:middlewareimage
     hostname: web
     expose:
       - 4004
@@ -37,7 +37,8 @@ services:
       - elk
 
   pyapp:
-    build: ../../Weapon_Detection/Tensorflow/models
+    #build: ../../Weapon_Detection/Tensorflow/models
+    image: sonia679/merakipoc:objdetectionimage
     hostname: pyapp
     ports:
       - 5555:5555
@@ -48,7 +49,8 @@ services:
       - elk
 
   predictionapp:
-    build: ../prediction/
+    #build: ../prediction/
+    image: sonia679/merakipoc:predictionimage
     hostname: predictionapp
     ports:
       - 4100:4100
