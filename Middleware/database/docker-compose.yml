@@ -1,4 +1,4 @@
-version: '3.1'
+version: '2.0'
 
 volumes:
   database_data:
@@ -7,7 +7,7 @@ volumes:
 services:
   db:
     #build: .
-    image: sonia679/merakipoc:databaseimage
+    image: merakle/meraki:databaseimage
     hostname: db
     restart: always
     environment:
@@ -23,7 +23,7 @@ services:
 
   web:
     #build: ../
-    image: sonia679/merakipoc:middlewareimage
+    image: merakle/meraki:middlewareimage
     hostname: web
     expose:
       - 4004
@@ -38,7 +38,7 @@ services:
 
   pyapp:
     #build: ../../Weapon_Detection/Tensorflow/models
-    image: sonia679/merakipoc:objdetectionimage
+    image: merakle/meraki:objdetectionimage
     hostname: pyapp
     ports:
       - 5555:5555
@@ -50,7 +50,7 @@ services:
 
   predictionapp:
     #build: ../prediction/
-    image: sonia679/merakipoc:predictionimage
+    image: merakle/meraki:predictionimage
     hostname: predictionapp
     ports:
       - 4100:4100
