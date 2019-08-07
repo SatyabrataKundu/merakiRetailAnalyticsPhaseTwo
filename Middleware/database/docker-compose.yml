@@ -23,7 +23,9 @@ services:
 
   web:
     #build: ../
-    image: merakle/meraki:middlewareimage
+    #middlewareimage is build specific to VM ip 
+    #image: merakle/meraki:middlewareimage
+    image: merakle/meraki:middlewareimage_local
     hostname: web
     expose:
       - 4004
