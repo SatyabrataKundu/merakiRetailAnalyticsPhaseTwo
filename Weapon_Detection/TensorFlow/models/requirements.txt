@@ -14,5 +14,5 @@ psycopg2==2.8.1
 Flask-Jsonpify==1.5.0
 Flask-RESTful==0.3.7
 Flask-SocketIO==3.3.2
-tensorflow==1.13.1
+tensorflow==1.15.4
 urllib3==1.24.3
