@@ -30,3 +30,9 @@ Run command: cd merakiRetailAnalytics
 Run command: cd FrontEnd  npm install  npm start [this installs the required modules and starts the frontend server]
 Run command: cd Middleware  npm install  npm start [this installs the required modules and starts the frontend server]
 FrontEnd Server: http://localhost:4200/
+
+***RUN FROM Docker-compose***
+Run command: git clone https://github.com/SatyabrataKundu/merakiRetailAnalyticsPhaseTwo.git
+Go to <merakiRetailAnalyticsPhaseTwo>\Middleware\database
+docker-compose Up
+http://localhost:4004/
