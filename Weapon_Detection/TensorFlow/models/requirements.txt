@@ -3,7 +3,7 @@ Flask-SocketIO==3.3.2
 APScheduler==2.1.2
 opencv-python==4.0.0.21
 pandas==0.24.2
-Pillow==6.0.0
+Pillow==9.3.0
 python-socketio==3.1.2
 requests==2.21.0
 scikit-learn==0.20.3
